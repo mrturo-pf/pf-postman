@@ -48,7 +48,13 @@ Required repository secrets:
 - service API keys for LOCAL/GCP environments;
 - `PF_SHEETS_API_KEY`.
 
-## Validation
+## Contribution workflow
+
+Work on a dedicated branch and submit collection or environment changes through a
+pull request targeting protected `main`. The `Validate` workflow must pass before
+merge. Merging to `main` triggers synchronization to Postman; direct pushes to
+`main` are blocked.
+
 
 Before committing collection or environment changes:
 
