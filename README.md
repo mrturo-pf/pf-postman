@@ -101,7 +101,7 @@ GitHub Secret's value on sync) -- to rotate a key, update the GitHub Secret inst
    or an already-authorized path instead if `gcloud secrets versions access` is denied.
 
 4. Push a change in this repository to `main` (or `gh workflow run "CI / Sync Postman
-   Collection" --repo mrturo-pf/pf-base`) and check the **Actions** tab — both jobs
+   Collection" --repo mrturo-pf/pf-postman`) and check the **Actions** tab — both jobs
    (`sync-collection`, `sync-environments`) should turn green.
 
 ## Structure
