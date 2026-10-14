@@ -2,10 +2,7 @@ name: CI / Documentation language
 
 on:
   pull_request:
-    paths:
-      - "**/*.md"
-      - "**/*.mdx"
-      - ".github/workflows/language-check.yml"
+    branches: [main]
   workflow_dispatch: {}
 
 permissions:
