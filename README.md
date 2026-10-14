@@ -9,7 +9,7 @@ edited like any other file in this repo (by hand, by code-puppy, in a PR).
 ## Contribution workflow
 
 Create a dedicated branch and open a pull request targeting the protected `main`
-branch. The `Validate` check runs on every pull request and must pass before merge.
+branch. The `Postman assets validation` check runs on every pull request and must pass before merge.
 Merging to `main` triggers the Postman synchronization workflow; do not push
 directly to `main`.
 
