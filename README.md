@@ -6,17 +6,23 @@ plus two environments (`LOCAL`, `GCP`). After an authorized push to `main`, the 
 syncs the repository assets to Postman. Everything lives here as plain JSON so it can be
 edited like any other file in this repo (by hand, by code-puppy, in a PR).
 
-## How the sync works
+## Contribution workflow
+
+Create a dedicated branch and open a pull request targeting the protected `main`
+branch. The `Validate` check runs on every pull request and must pass before merge.
+Merging to `main` triggers the Postman synchronization workflow; do not push
+directly to `main`.
+
 
 ```
 edit pf-ecosystem.postman_collection.json
   or pf-ecosystem.postman_environment.{local,gcp}.json
         │
         ▼
-   git push to main
+   pull request → Validate → merge to main
         │
         ▼
-.github/workflows/sync-postman.yml
+   .github/workflows/sync-postman.yml
   ├─ sync-collection      → PUT .../collections/{POSTMAN_COLLECTION_UID}
   └─ sync-environments    → PUT .../environments/{POSTMAN_ENV_UID_LOCAL|GCP}
         │                    (api-key values injected from GitHub Secrets
@@ -100,9 +106,10 @@ GitHub Secret's value on sync) -- to rotate a key, update the GitHub Secret inst
    by VPC Service Controls, depending on org policy -- fetch them via the GCP Console
    or an already-authorized path instead if `gcloud secrets versions access` is denied.
 
-4. Push a change in this repository to `main` (or `gh workflow run "CI / Sync Postman
-   Collection" --repo mrturo-pf/pf-postman`) and check the **Actions** tab — both jobs
-   (`sync-collection`, `sync-environments`) should turn green.
+4. After merging a validated pull request to `main`, check the **Actions** tab — both
+   sync jobs (`sync-collection`, `sync-environments`) should turn green. For a manual
+   operational retry, use `gh workflow run`; do not bypass the pull-request workflow
+   for normal collection changes.
 
 ## Structure
 
