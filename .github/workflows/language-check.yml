@@ -1,12 +1,6 @@
 name: CI / Documentation language
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "**/*.md"
-      - "**/*.mdx"
-      - ".github/workflows/language-check.yml"
   pull_request:
     paths:
       - "**/*.md"
