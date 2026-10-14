@@ -60,7 +60,7 @@ jobs:
 
           if [ -z "${POSTMAN_API_KEY}" ] || [ -z "${POSTMAN_COLLECTION_UID}" ]; then
             echo "::error::POSTMAN_API_KEY and/or POSTMAN_COLLECTION_UID secrets are not set." \
-                 "See postman/README.md for one-time setup steps." >&2
+                 "See README.md for one-time setup steps." >&2
             exit 1
           fi
 
@@ -78,7 +78,7 @@ jobs:
           # empty string, no placeholder marker syntax to keep in sync.
           jq --arg sheets_key "${PF_SHEETS_API_KEY}" '
             (.variable[] | select(.key == "pf_sheets_api_key") | .value) = $sheets_key
-          ' postman/pf-ecosystem.postman_collection.json > /tmp/materialized-collection.json
+          ' pf-ecosystem.postman_collection.json > /tmp/materialized-collection.json
 
           jq -n --slurpfile collection /tmp/materialized-collection.json \
             '{collection: $collection[0]}' > /tmp/payload.json
@@ -105,12 +105,12 @@ jobs:
       matrix:
         include:
           - name: LOCAL
-            file: postman/pf-ecosystem.postman_environment.local.json
+            file: pf-ecosystem.postman_environment.local.json
             env_uid_secret: POSTMAN_ENV_UID_LOCAL
             rates_key_secret: PF_RATES_API_KEY_LOCAL
             payroll_key_secret: PF_PAYROLL_API_KEY_LOCAL
           - name: GCP
-            file: postman/pf-ecosystem.postman_environment.gcp.json
+            file: pf-ecosystem.postman_environment.gcp.json
             env_uid_secret: POSTMAN_ENV_UID_GCP
             rates_key_secret: PF_RATES_API_KEY_GCP
             payroll_key_secret: PF_PAYROLL_API_KEY_GCP
