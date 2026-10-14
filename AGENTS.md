@@ -51,8 +51,8 @@ Required repository secrets:
 ## Contribution workflow
 
 Work on a dedicated branch and submit collection or environment changes through a
-pull request targeting protected `main`. The `Validate` workflow must pass before
-merge. Merging to `main` triggers synchronization to Postman; direct pushes to
+pull request targeting protected `main`. The `Postman assets validation` workflow
+must pass before merge. Merging to `main` triggers synchronization to Postman;
 `main` are blocked.
 
 

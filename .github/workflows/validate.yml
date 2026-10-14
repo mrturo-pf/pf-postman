@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   validate:
-    name: Validate
+    name: Postman assets validation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
