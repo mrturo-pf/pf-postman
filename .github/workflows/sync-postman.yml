@@ -132,7 +132,7 @@ jobs:
 
           if [ -z "${POSTMAN_API_KEY}" ] || [ -z "${ENV_UID}" ]; then
             echo "::error::POSTMAN_API_KEY and/or ${{ matrix.env_uid_secret }} secrets are not set." \
-                 "See postman/README.md for one-time setup steps." >&2
+                 "See README.md for one-time setup steps." >&2
             exit 1
           fi
 
