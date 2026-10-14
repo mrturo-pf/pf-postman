@@ -36,6 +36,7 @@ on:
       - "pf-ecosystem.postman_collection.json"
       - "pf-ecosystem.postman_environment.local.json"
       - "pf-ecosystem.postman_environment.gcp.json"
+      - ".github/workflows/sync-postman.yml"
   workflow_dispatch: {}
 
 permissions:
