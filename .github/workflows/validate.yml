@@ -1,8 +1,13 @@
 name: CI / Validate Postman assets
 
 on:
-  pull_request:
+  push:
     branches: [main]
+    paths:
+      - "pf-ecosystem.postman_collection.json"
+      - "pf-ecosystem.postman_environment.local.json"
+      - "pf-ecosystem.postman_environment.gcp.json"
+      - ".github/workflows/validate.yml"
   workflow_dispatch: {}
 
 permissions:
@@ -22,14 +27,14 @@ jobs:
         run: jq empty pf-ecosystem.postman_environment.local.json
       - name: Validate GCP environment JSON
         run: jq empty pf-ecosystem.postman_environment.gcp.json
-      - name: Check whitespace errors in the change
+      - name: Check whitespace errors in the push
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
-          if [ -n "${BASE_SHA}" ] && [ -n "${HEAD_SHA}" ]; then
-            git diff --check "${BASE_SHA}" "${HEAD_SHA}"
+          if git rev-parse --verify "${BEFORE_SHA}^{commit}" >/dev/null 2>&1; then
+            git diff --check "${BEFORE_SHA}" "${HEAD_SHA}"
           else
-            git diff --check HEAD^ HEAD
+            git diff --check "${HEAD_SHA}^" "${HEAD_SHA}"
           fi

@@ -50,10 +50,10 @@ Required repository secrets:
 
 ## Contribution workflow
 
-Work on a dedicated branch and submit collection or environment changes through a
-pull request targeting protected `main`. The `Postman assets validation` workflow
-must pass before merge. Merging to `main` triggers synchronization to Postman;
-`main` are blocked.
+Commit collection or environment changes directly to `main`. The `Postman assets
+validation` workflow runs on the push before synchronization, and the same push
+triggers synchronization to Postman. Pull requests may be used for discussion or
+external contributions, but they are not required for the normal release path.
 
 
 Before committing collection or environment changes:

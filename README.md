@@ -4,22 +4,20 @@ Single Postman collection covering all `pf-*` services with an HTTP surface (`pf
 `pf-payroll`, and `pf-sheets` — `pf-db` has no HTTP API; it is DDL/migrations only),
 plus two environments (`LOCAL`, `GCP`). After an authorized push to `main`, the workflow
 syncs the repository assets to Postman. Everything lives here as plain JSON so it can be
-edited like any other file in this repo (by hand, by code-puppy, in a PR).
+edited like any other file in this repo (by hand or by code-puppy).
 
 ## Contribution workflow
 
-Create a dedicated branch and open a pull request targeting the protected `main`
-branch. The `Postman assets validation` check runs on every pull request and must pass before merge.
-Merging to `main` triggers the Postman synchronization workflow; do not push
-directly to `main`.
-
+Commit collection or environment changes directly to `main`. The `Postman assets
+validation` check runs on the push and must pass before synchronization. The same
+push to `main` triggers the Postman synchronization workflow.
 
 ```
 edit pf-ecosystem.postman_collection.json
   or pf-ecosystem.postman_environment.{local,gcp}.json
         │
         ▼
-   pull request → Validate → merge to main
+   push to main → Validate → Synchronize
         │
         ▼
    .github/workflows/sync-postman.yml
@@ -106,10 +104,9 @@ GitHub Secret's value on sync) -- to rotate a key, update the GitHub Secret inst
    by VPC Service Controls, depending on org policy -- fetch them via the GCP Console
    or an already-authorized path instead if `gcloud secrets versions access` is denied.
 
-4. After merging a validated pull request to `main`, check the **Actions** tab — both
-   sync jobs (`sync-collection`, `sync-environments`) should turn green. For a manual
-   operational retry, use `gh workflow run`; do not bypass the pull-request workflow
-   for normal collection changes.
+4. After pushing a validated change to `main`, check the **Actions** tab — the
+   validation and both sync jobs (`sync-collection`, `sync-environments`) should
+   turn green. For a manual operational retry, use `gh workflow run`.
 
 ## Structure
 
