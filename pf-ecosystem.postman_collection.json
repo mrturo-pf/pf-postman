@@ -665,9 +665,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{pf-payroll-url}}/health",
+              "raw": "{{pf-svc-income-url}}/health",
               "host": [
-                "{{pf-payroll-url}}/health"
+                "{{pf-svc-income-url}}/health"
               ]
             },
             "description": "No auth required."
@@ -702,13 +702,13 @@
                     "header": [
                       {
                         "key": "X-Api-Key",
-                        "value": "{{pf-payroll-api-key}}"
+                        "value": "{{pf-svc-income-api-key}}"
                       }
                     ],
                     "url": {
-                      "raw": "{{pf-payroll-url}}/payroll/pdf-preview",
+                      "raw": "{{pf-svc-income-url}}/payroll/pdf-preview",
                       "host": [
-                        "{{pf-payroll-url}}/payroll/pdf-preview"
+                        "{{pf-svc-income-url}}/payroll/pdf-preview"
                       ]
                     },
                     "description": "Read-only, never persists -- deliberately not under /payroll/import/*, since (unlike the two requests in the Import folder) this one never imports anything, it just converts one or more PDF payslips into a JSON array of previews (one per file, in upload order). Add more 'files' form-data rows with the same key to preview a batch of distinct liquidaciones in one request. See docs/payroll-workflow.md.",
@@ -738,13 +738,13 @@
                     "header": [
                       {
                         "key": "X-Api-Key",
-                        "value": "{{pf-payroll-api-key}}"
+                        "value": "{{pf-svc-income-api-key}}"
                       }
                     ],
                     "url": {
-                      "raw": "{{pf-payroll-url}}/payroll/import/spreadsheet",
+                      "raw": "{{pf-svc-income-url}}/payroll/import/spreadsheet",
                       "host": [
-                        "{{pf-payroll-url}}/payroll/import/spreadsheet"
+                        "{{pf-svc-income-url}}/payroll/import/spreadsheet"
                       ]
                     },
                     "description": "mode form field defaults to \"commit\" when omitted -- send mode=validate to preview reconciliation conflicts for the whole file without persisting anything (see pf-payroll/docs/api.md).",
@@ -774,7 +774,7 @@
                     "header": [
                       {
                         "key": "X-Api-Key",
-                        "value": "{{pf-payroll-api-key}}"
+                        "value": "{{pf-svc-income-api-key}}"
                       },
                       {
                         "key": "Content-Type",
@@ -782,9 +782,9 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{pf-payroll-url}}/payroll/import/json",
+                      "raw": "{{pf-svc-income-url}}/payroll/import/json",
                       "host": [
-                        "{{pf-payroll-url}}/payroll/import/json"
+                        "{{pf-svc-income-url}}/payroll/import/json"
                       ]
                     },
                     "description": "validate runs the real pipeline then rolls back; unresolved_rows in the response lists rows with concept_code=null (identified by period_index + row_index). periods must have at least one element, and no two elements may share the same (employer, period_year, period_month). Resend with mode=commit once resolved.",
@@ -831,7 +831,7 @@
                     "header": [
                       {
                         "key": "X-Api-Key",
-                        "value": "{{pf-payroll-api-key}}"
+                        "value": "{{pf-svc-income-api-key}}"
                       },
                       {
                         "key": "Content-Type",
@@ -839,9 +839,9 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{pf-payroll-url}}/payroll/import/json",
+                      "raw": "{{pf-svc-income-url}}/payroll/import/json",
                       "host": [
-                        "{{pf-payroll-url}}/payroll/import/json"
+                        "{{pf-svc-income-url}}/payroll/import/json"
                       ]
                     },
                     "description": "Same endpoint as 'Import JSON (mode=validate)', but the body is built entirely from the last 'Preview a PDF payslip' response by this request's Pre-request Script -- run that request first (with one or more PDFs attached), then run this one to validate the extracted periods without retyping anything. Sends whatever mode is set in the 'import_json_mode' collection variable, defaulting to 'validate' when that variable is empty/unset -- set 'import_json_mode' to 'commit' in the collection's variable list when you actually want to persist; no script editing needed.",
@@ -870,13 +870,13 @@
                     "header": [
                       {
                         "key": "X-Api-Key",
-                        "value": "{{pf-payroll-api-key}}"
+                        "value": "{{pf-svc-income-api-key}}"
                       }
                     ],
                     "url": {
-                      "raw": "{{pf-payroll-url}}/payroll/spreadsheet/template?format=csv",
+                      "raw": "{{pf-svc-income-url}}/payroll/spreadsheet/template?format=csv",
                       "host": [
-                        "{{pf-payroll-url}}/payroll/spreadsheet/template"
+                        "{{pf-svc-income-url}}/payroll/spreadsheet/template"
                       ],
                       "query": [
                         {
@@ -897,13 +897,13 @@
                     "header": [
                       {
                         "key": "X-Api-Key",
-                        "value": "{{pf-payroll-api-key}}"
+                        "value": "{{pf-svc-income-api-key}}"
                       }
                     ],
                     "url": {
-                      "raw": "{{pf-payroll-url}}/payroll/spreadsheet?format=csv",
+                      "raw": "{{pf-svc-income-url}}/payroll/spreadsheet?format=csv",
                       "host": [
-                        "{{pf-payroll-url}}/payroll/spreadsheet"
+                        "{{pf-svc-income-url}}/payroll/spreadsheet"
                       ],
                       "query": [
                         {
@@ -945,13 +945,13 @@
                     "header": [
                       {
                         "key": "X-Api-Key",
-                        "value": "{{pf-payroll-api-key}}"
+                        "value": "{{pf-svc-income-api-key}}"
                       }
                     ],
                     "url": {
-                      "raw": "{{pf-payroll-url}}/payroll",
+                      "raw": "{{pf-svc-income-url}}/payroll",
                       "host": [
-                        "{{pf-payroll-url}}/payroll"
+                        "{{pf-svc-income-url}}/payroll"
                       ],
                       "query": [
                         {
@@ -979,13 +979,13 @@
                     "header": [
                       {
                         "key": "X-Api-Key",
-                        "value": "{{pf-payroll-api-key}}"
+                        "value": "{{pf-svc-income-api-key}}"
                       }
                     ],
                     "url": {
-                      "raw": "{{pf-payroll-url}}/payroll/{{period_id}}",
+                      "raw": "{{pf-svc-income-url}}/payroll/{{period_id}}",
                       "host": [
-                        "{{pf-payroll-url}}/payroll/{{period_id}}"
+                        "{{pf-svc-income-url}}/payroll/{{period_id}}"
                       ]
                     },
                     "description": "Same unified nested shape (id/employer/period/amount) as one item of 'List payroll periods' above, filtered to this period_id. Unlike that endpoint, not bound by any previous_months/future_months window -- works for any historical period_id. 404 if not found."
@@ -1005,13 +1005,13 @@
                     "header": [
                       {
                         "key": "X-Api-Key",
-                        "value": "{{pf-payroll-api-key}}"
+                        "value": "{{pf-svc-income-api-key}}"
                       }
                     ],
                     "url": {
-                      "raw": "{{pf-payroll-url}}/payroll/481",
+                      "raw": "{{pf-svc-income-url}}/payroll/481",
                       "host": [
-                        "{{pf-payroll-url}}/payroll/481"
+                        "{{pf-svc-income-url}}/payroll/481"
                       ]
                     }
                   }
@@ -1023,7 +1023,7 @@
                     "header": [
                       {
                         "key": "X-Api-Key",
-                        "value": "{{pf-payroll-api-key}}"
+                        "value": "{{pf-svc-income-api-key}}"
                       },
                       {
                         "key": "Content-Type",
@@ -1031,9 +1031,9 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{pf-payroll-url}}/payroll",
+                      "raw": "{{pf-svc-income-url}}/payroll",
                       "host": [
-                        "{{pf-payroll-url}}/payroll"
+                        "{{pf-svc-income-url}}/payroll"
                       ]
                     },
                     "body": {
@@ -1062,7 +1062,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -1070,9 +1070,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/templates",
+                  "raw": "{{pf-svc-income-url}}/payroll/templates",
                   "host": [
-                    "{{pf-payroll-url}}/payroll/templates"
+                    "{{pf-svc-income-url}}/payroll/templates"
                   ]
                 },
                 "description": "employer_id is required -- the employer must already have a PAY_EMPLOYER row (i.e. its first payroll import has already run; there is no standalone endpoint to create one ahead of that). It is an admin-only FK -- matching against a real PDF only ever uses employer_match_pattern. There is no employer_name field: the response's employer_name is always resolved fresh from PAY_EMPLOYER.name at read time, never stored. Every regex (employer_match_pattern and each field's pdf_label_pattern) is compile-checked before reaching the database -- an invalid one is a 422. Fields have no kind -- the server always resolves it from PAY_CONCEPT via concept_code (an unknown concept_code is a 400, not a silent guess). Returns 201. A duplicate template_id is also a 400 (see pf-payroll/docs/api.md).",
@@ -1095,13 +1095,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/templates?include_inactive=false",
+                  "raw": "{{pf-svc-income-url}}/payroll/templates?include_inactive=false",
                   "host": [
-                    "{{pf-payroll-url}}/payroll/templates"
+                    "{{pf-svc-income-url}}/payroll/templates"
                   ],
                   "query": [
                     {
@@ -1122,13 +1122,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/templates/walmart-chile-v1",
+                  "raw": "{{pf-svc-income-url}}/payroll/templates/walmart-chile-v1",
                   "host": [
-                    "{{pf-payroll-url}}/payroll/templates/walmart-chile-v1"
+                    "{{pf-svc-income-url}}/payroll/templates/walmart-chile-v1"
                   ]
                 },
                 "description": "Found regardless of is_active status -- a direct lookup by template_id always finds it. 404 if it never existed."
@@ -1142,7 +1142,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -1150,9 +1150,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/templates/acme-chile-v1",
+                  "raw": "{{pf-svc-income-url}}/payroll/templates/acme-chile-v1",
                   "host": [
-                    "{{pf-payroll-url}}/payroll/templates/acme-chile-v1"
+                    "{{pf-svc-income-url}}/payroll/templates/acme-chile-v1"
                   ]
                 },
                 "description": "Mutates the existing row in place -- does not create a new template_id/version (bump version in the body yourself if desired). Same body shape/validation as Create, minus template_id (taken from the path). 404 if it doesn't exist; 400 on the same constraint violations as Create.",
@@ -1175,13 +1175,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/templates/acme-chile-v1",
+                  "raw": "{{pf-svc-income-url}}/payroll/templates/acme-chile-v1",
                   "host": [
-                    "{{pf-payroll-url}}/payroll/templates/acme-chile-v1"
+                    "{{pf-svc-income-url}}/payroll/templates/acme-chile-v1"
                   ]
                 },
                 "description": "Logical delete only -- sets is_active=false, never a row DELETE. A subsequent POST /payroll/pdf-preview no longer matches it, but Get one template still finds it. 404 if it doesn't exist."
@@ -1201,13 +1201,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-payroll-url}}/reference-data/pension-institutions",
+                  "raw": "{{pf-svc-income-url}}/reference-data/pension-institutions",
                   "host": [
-                    "{{pf-payroll-url}}/reference-data/pension-institutions"
+                    "{{pf-svc-income-url}}/reference-data/pension-institutions"
                   ]
                 },
                 "description": ""
@@ -1221,13 +1221,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-payroll-url}}/reference-data/health-institutions",
+                  "raw": "{{pf-svc-income-url}}/reference-data/health-institutions",
                   "host": [
-                    "{{pf-payroll-url}}/reference-data/health-institutions"
+                    "{{pf-svc-income-url}}/reference-data/health-institutions"
                   ]
                 },
                 "description": ""
@@ -1241,13 +1241,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-payroll-url}}/reference-data/pension-plans",
+                  "raw": "{{pf-svc-income-url}}/reference-data/pension-plans",
                   "host": [
-                    "{{pf-payroll-url}}/reference-data/pension-plans"
+                    "{{pf-svc-income-url}}/reference-data/pension-plans"
                   ]
                 },
                 "description": ""
@@ -1261,13 +1261,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-payroll-url}}/reference-data/health-plans",
+                  "raw": "{{pf-svc-income-url}}/reference-data/health-plans",
                   "host": [
-                    "{{pf-payroll-url}}/reference-data/health-plans"
+                    "{{pf-svc-income-url}}/reference-data/health-plans"
                   ]
                 },
                 "description": ""
@@ -1281,13 +1281,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-payroll-url}}/reference-data/contribution-caps",
+                  "raw": "{{pf-svc-income-url}}/reference-data/contribution-caps",
                   "host": [
-                    "{{pf-payroll-url}}/reference-data/contribution-caps"
+                    "{{pf-svc-income-url}}/reference-data/contribution-caps"
                   ]
                 },
                 "description": ""
@@ -1301,13 +1301,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-payroll-url}}/reference-data/payroll-concepts",
+                  "raw": "{{pf-svc-income-url}}/reference-data/payroll-concepts",
                   "host": [
-                    "{{pf-payroll-url}}/reference-data/payroll-concepts"
+                    "{{pf-svc-income-url}}/reference-data/payroll-concepts"
                   ]
                 },
                 "description": ""
@@ -1327,13 +1327,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/employers",
+                  "raw": "{{pf-svc-income-url}}/payroll/employers",
                   "host": [
-                    "{{pf-payroll-url}}/payroll/employers"
+                    "{{pf-svc-income-url}}/payroll/employers"
                   ]
                 },
                 "description": "Lists employers with nested contracts. Each nested contract contains id, started_at, ended_at, is_indefinite, position, and is_in_effect; the employer is not repeated."
@@ -1346,7 +1346,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -1354,9 +1354,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/employers",
+                  "raw": "{{pf-svc-income-url}}/payroll/employers",
                   "host": [
-                    "{{pf-payroll-url}}/payroll/employers"
+                    "{{pf-svc-income-url}}/payroll/employers"
                   ]
                 },
                 "body": {
@@ -1378,13 +1378,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/contracts",
+                  "raw": "{{pf-svc-income-url}}/payroll/contracts",
                   "host": [
-                    "{{pf-payroll-url}}/payroll/contracts"
+                    "{{pf-svc-income-url}}/payroll/contracts"
                   ]
                 },
                 "description": "Lists contracts as { id, employer: { id, name }, started_at, ended_at, is_indefinite, position, is_in_effect }. is_in_effect reflects today's date within the contract interval."
@@ -1397,7 +1397,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -1405,9 +1405,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/contracts",
+                  "raw": "{{pf-svc-income-url}}/payroll/contracts",
                   "host": [
-                    "{{pf-payroll-url}}/payroll/contracts"
+                    "{{pf-svc-income-url}}/payroll/contracts"
                   ]
                 },
                 "body": {
@@ -1429,7 +1429,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -1446,9 +1446,9 @@
                   }
                 },
                 "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/employers",
+                  "raw": "{{pf-svc-income-url}}/payroll/employers",
                   "host": [
-                    "{{pf-payroll-url}}/payroll/employers"
+                    "{{pf-svc-income-url}}/payroll/employers"
                   ]
                 },
                 "description": "Operational deletion by stable IDs. Use only with IDs whose dependency guards permit deletion."
@@ -1461,7 +1461,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -1478,9 +1478,9 @@
                   }
                 },
                 "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/contracts",
+                  "raw": "{{pf-svc-income-url}}/payroll/contracts",
                   "host": [
-                    "{{pf-payroll-url}}/payroll/contracts"
+                    "{{pf-svc-income-url}}/payroll/contracts"
                   ]
                 },
                 "description": "Operational deletion by stable IDs. Use only with IDs whose dependency guards permit deletion."
@@ -1574,12 +1574,12 @@
       "type": "string"
     },
     {
-      "key": "pf-payroll-url",
+      "key": "pf-svc-income-url",
       "value": "http://localhost:8000",
       "type": "string"
     },
     {
-      "key": "pf-payroll-api-key",
+      "key": "pf-svc-income-api-key",
       "value": "",
       "type": "string"
     },
