@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "1b67e88d-11f3-475f-982d-404d16227e85",
     "name": "pf ecosystem",
-    "description": "All pf-* services in one collection: pf-rates, pf-payroll, pf-sheets. pf-db is DDL/migrations only and exposes no HTTP API. Managed as JSON in pf-postman -- see the pf-postman README for how edits here sync to your real Postman workspace.",
+    "description": "All pf-* services in one collection: pf-rates, pf-svc-income, pf-sheets. pf-db is DDL/migrations only and exposes no HTTP API. Managed as JSON in pf-postman -- see the pf-postman README for how edits here sync to your real Postman workspace.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -657,7 +657,7 @@
       "description": "See modules/pf-rates/docs/api.md for the full reference."
     },
     {
-      "name": "pf-payroll",
+      "name": "pf-svc-income",
       "item": [
         {
           "name": "Health",
@@ -675,7 +675,7 @@
           "response": []
         },
         {
-          "name": "Periods",
+          "name": "Payroll",
           "item": [
             {
               "name": "Preview",
@@ -747,7 +747,7 @@
                         "{{pf-svc-income-url}}/payroll/import/spreadsheet"
                       ]
                     },
-                    "description": "mode form field defaults to \"commit\" when omitted -- send mode=validate to preview reconciliation conflicts for the whole file without persisting anything (see pf-payroll/docs/api.md).",
+                    "description": "mode form field defaults to \"commit\" when omitted -- send mode=validate to preview reconciliation conflicts for the whole file without persisting anything (see pf-svc-income/docs/api.md).",
                     "body": {
                       "mode": "formdata",
                       "formdata": [
@@ -844,7 +844,7 @@
                         "{{pf-svc-income-url}}/payroll/import/json"
                       ]
                     },
-                    "description": "Same endpoint as 'Import JSON (mode=validate)', but the body is built entirely from the last 'Preview a PDF payslip' response by this request's Pre-request Script -- run that request first (with one or more PDFs attached), then run this one to validate the extracted periods without retyping anything. Sends whatever mode is set in the 'import_json_mode' collection variable, defaulting to 'validate' when that variable is empty/unset -- set 'import_json_mode' to 'commit' in the collection's variable list when you actually want to persist; no script editing needed.",
+                    "description": "Same endpoint as 'Import JSON (mode=validate)', but the body is built entirely from the last 'Preview a PDF payslip' response by this request's Pre-request Script -- run that request first (with one or more PDFs attached), then run this one to validate the extracted payrolls without retyping anything. Sends whatever mode is set in the 'import_json_mode' collection variable, defaulting to 'validate' when that variable is empty/unset -- set 'import_json_mode' to 'commit' in the collection's variable list when you actually want to persist; no script editing needed.",
                     "body": {
                       "mode": "raw",
                       "raw": "{\n  \"mode\": \"validate\",\n  \"periods\": []\n}",
@@ -939,7 +939,7 @@
               "name": "Queries",
               "item": [
                 {
-                  "name": "List multiple payroll periods",
+                  "name": "List multiple payrolls",
                   "request": {
                     "method": "GET",
                     "header": [
@@ -958,7 +958,7 @@
                           "key": "previous_months",
                           "value": "",
                           "disabled": true,
-                          "description": "Any non-negative integer. Defaults to 12 (padded with inferred placeholders if history is shorter). Passing this explicitly -- even as 12 -- disables that padding; only periods genuinely in the database are returned."
+                          "description": "Any non-negative integer. Defaults to 12 (padded with inferred placeholders if history is shorter). Passing this explicitly -- even as 12 -- disables that padding; only payrolls genuinely in the database are returned."
                         },
                         {
                           "key": "future_months",
@@ -988,7 +988,7 @@
                         "{{pf-svc-income-url}}/payroll/{{period_id}}"
                       ]
                     },
-                    "description": "Same unified nested shape (id/employer/period/amount) as one item of 'List payroll periods' above, filtered to this period_id. Unlike that endpoint, not bound by any previous_months/future_months window -- works for any historical period_id. 404 if not found."
+                    "description": "Same unified nested shape (id/employer/period/amount) as one item of 'List payrolls' above, filtered to this period_id. Unlike that endpoint, not bound by any previous_months/future_months window -- works for any historical period_id. 404 if not found."
                   },
                   "response": []
                 }
@@ -1017,7 +1017,7 @@
                   }
                 },
                 {
-                  "name": "Delete periods (atomic batch)",
+                  "name": "Delete payroll (atomic batch)",
                   "request": {
                     "method": "DELETE",
                     "header": [
@@ -1075,7 +1075,7 @@
                     "{{pf-svc-income-url}}/payroll/templates"
                   ]
                 },
-                "description": "employer_id is required -- the employer must already have a PAY_EMPLOYER row (i.e. its first payroll import has already run; there is no standalone endpoint to create one ahead of that). It is an admin-only FK -- matching against a real PDF only ever uses employer_match_pattern. There is no employer_name field: the response's employer_name is always resolved fresh from PAY_EMPLOYER.name at read time, never stored. Every regex (employer_match_pattern and each field's pdf_label_pattern) is compile-checked before reaching the database -- an invalid one is a 422. Fields have no kind -- the server always resolves it from PAY_CONCEPT via concept_code (an unknown concept_code is a 400, not a silent guess). Returns 201. A duplicate template_id is also a 400 (see pf-payroll/docs/api.md).",
+                "description": "employer_id is required -- the employer must already have a PAY_EMPLOYER row (i.e. its first payroll import has already run; there is no standalone endpoint to create one ahead of that). It is an admin-only FK -- matching against a real PDF only ever uses employer_match_pattern. There is no employer_name field: the response's employer_name is always resolved fresh from PAY_EMPLOYER.name at read time, never stored. Every regex (employer_match_pattern and each field's pdf_label_pattern) is compile-checked before reaching the database -- an invalid one is a 422. Fields have no kind -- the server always resolves it from PAY_CONCEPT via concept_code (an unknown concept_code is a 400, not a silent guess). Returns 201. A duplicate template_id is also a 400 (see pf-svc-income/docs/api.md).",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"template_id\": \"acme-chile-v1\",\n  \"employer_id\": 1,\n  \"employer_match_pattern\": \"(?i)acme-chile\",\n  \"version\": 1,\n  \"fields\": [\n    {\n      \"pdf_label_pattern\": \"(?i)^SUELDO$\",\n      \"concept_code\": \"SALARY_BASE\",\n      \"confidence\": 0.9\n    }\n  ]\n}",
@@ -1489,7 +1489,7 @@
           ]
         }
       ],
-      "description": "See modules/pf-payroll/docs/api.md for the full reference."
+      "description": "See modules/pf-svc-income/docs/api.md for the full reference."
     },
     {
       "name": "pf-sheets",

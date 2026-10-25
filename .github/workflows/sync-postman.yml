@@ -12,9 +12,9 @@
 #   POSTMAN_ENV_UID_LOCAL    — LOCAL environment's UID
 #   POSTMAN_ENV_UID_GCP      — GCP environment's UID
 #   PF_RATES_API_KEY_LOCAL   — pf-rates dev API key (injected into LOCAL env)
-#   PF_PAYROLL_API_KEY_LOCAL — pf-payroll dev API key (injected into LOCAL env)
+#   PF_SVC_INCOME_API_KEY_LOCAL — pf-svc-income dev API key (injected into LOCAL env)
 #   PF_RATES_API_KEY_GCP     — pf-rates production API key (injected into GCP env)
-#   PF_PAYROLL_API_KEY_GCP   — pf-payroll production API key (injected into GCP env)
+#   PF_SVC_INCOME_API_KEY_GCP   — pf-svc-income production API key (injected into GCP env)
 #   PF_SHEETS_API_KEY        — pf-sheets GET_CLP_API_KEY Script Property
 #                              (injected into the collection's own variable --
 #                              pf-sheets has no local/gcp split, single deployment)
@@ -136,12 +136,12 @@ jobs:
             file: pf-ecosystem.postman_environment.local.json
             env_uid_secret: POSTMAN_ENV_UID_LOCAL
             rates_key_secret: PF_RATES_API_KEY_LOCAL
-            payroll_key_secret: PF_PAYROLL_API_KEY_LOCAL
+            income_key_secret: PF_SVC_INCOME_API_KEY_LOCAL
           - name: GCP
             file: pf-ecosystem.postman_environment.gcp.json
             env_uid_secret: POSTMAN_ENV_UID_GCP
             rates_key_secret: PF_RATES_API_KEY_GCP
-            payroll_key_secret: PF_PAYROLL_API_KEY_GCP
+            income_key_secret: PF_SVC_INCOME_API_KEY_GCP
     steps:
       - uses: actions/checkout@v7
 
@@ -153,7 +153,7 @@ jobs:
           POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
           ENV_UID: ${{ secrets[matrix.env_uid_secret] }}
           RATES_API_KEY: ${{ secrets[matrix.rates_key_secret] }}
-          PAYROLL_API_KEY: ${{ secrets[matrix.payroll_key_secret] }}
+          SVC_INCOME_API_KEY: ${{ secrets[matrix.income_key_secret] }}
         run: |
           set -euo pipefail
 
@@ -166,8 +166,8 @@ jobs:
           # Refuse to sync with a blank api-key -- a missing secret must
           # fail loudly, never silently overwrite a real key already set in
           # Postman with an empty string (this happened once, see git log).
-          if [ -z "${RATES_API_KEY}" ] || [ -z "${PAYROLL_API_KEY}" ]; then
-            echo "::error::${{ matrix.rates_key_secret }} and/or ${{ matrix.payroll_key_secret }} secrets are not set or empty." \
+          if [ -z "${RATES_API_KEY}" ] || [ -z "${SVC_INCOME_API_KEY}" ]; then
+            echo "::error::${{ matrix.rates_key_secret }} and/or ${{ matrix.income_key_secret }} secrets are not set or empty." \
                  "Refusing to push -- this would overwrite the real keys already in Postman with blanks." >&2
             exit 1
           fi
@@ -175,9 +175,9 @@ jobs:
           # Inject by variable key name, never by blind text substitution --
           # the committed template's api-key values are just empty strings,
           # no placeholder marker syntax to keep in sync.
-          jq --arg rates_key "${RATES_API_KEY}" --arg payroll_key "${PAYROLL_API_KEY}" '
+          jq --arg rates_key "${RATES_API_KEY}" --arg svc_income_key "${SVC_INCOME_API_KEY}" '
             (.values[] | select(.key == "pf-rates-api-key") | .value) = $rates_key
-            | (.values[] | select(.key == "pf-payroll-api-key") | .value) = $payroll_key
+            | (.values[] | select(.key == "pf-svc-income-api-key") | .value) = $svc_income_key
           ' "${{ matrix.file }}" > /tmp/materialized-environment.json
 
           jq -n --slurpfile environment /tmp/materialized-environment.json \

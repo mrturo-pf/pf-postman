@@ -8,7 +8,7 @@ environment URLs, and the repository-to-Postman synchronization workflow.
 
 This repository owns:
 
-- Postman collections for `pf-rates`, `pf-payroll`, and `pf-sheets`;
+- Postman collections for `pf-rates`, `pf-svc-income`, and `pf-sheets`;
 - LOCAL and GCP Postman environments;
 - sanitized request examples and chained request scripts;
 - the GitHub Actions workflow that syncs these files to Postman.
