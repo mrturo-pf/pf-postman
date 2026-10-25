@@ -72,6 +72,17 @@ git diff --check
   explicit owner authorization.
 - Keep collection requests grouped by service and synchronized with each
   service's `docs/api.md`.
+- Keep the collection covered by the OpenAPI-to-Postman checker in
+  `scripts/check-api-coverage.py` and the read-only `run-api-coverage.yml` workflow;
+  missing, stale, or duplicate mappings must be resolved or explicitly documented
+  before release.
+- The `run-postman-smoke.yml` workflow may execute only the generated read-only
+  subset. Mutating, destructive, provider-refresh, and job-stop requests require
+  isolated fixtures and a separate explicit safety boundary.
+- The local integration runner must reject non-loopback URLs, generate unique
+  synthetic identifiers, and attempt cleanup in `finally`. The disposable wrapper
+  may reset only the local database after creating a backup. Never run either
+  runner against GCP, Neon, or production.
 - Sort every `item` array alphabetically by the item's `name`, case-insensitively,
   including top-level service folders, nested folders, subfolders, and requests.
   Preserve this deterministic ordering whenever adding or moving collection items.

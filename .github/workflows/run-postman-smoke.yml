@@ -1,0 +1,90 @@
+name: CI / Run Postman smoke tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment"
+        required: true
+        type: choice
+        options:
+          - local
+          - gcp
+      pf_rates_url:
+        description: "pf-rates base URL"
+        required: true
+        type: string
+      pf_svc_income_url:
+        description: "pf-svc-income base URL"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: Read-only Postman smoke tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Newman
+        run: npm install --global newman
+
+      - name: Materialize smoke environment
+        env:
+          TARGET: ${{ inputs.environment }}
+          PF_RATES_URL: ${{ inputs.pf_rates_url }}
+          PF_SVC_INCOME_URL: ${{ inputs.pf_svc_income_url }}
+          PF_RATES_API_KEY_LOCAL: ${{ secrets.PF_RATES_API_KEY_LOCAL }}
+          PF_SVC_INCOME_API_KEY_LOCAL: ${{ secrets.PF_SVC_INCOME_API_KEY_LOCAL }}
+          PF_RATES_API_KEY_GCP: ${{ secrets.PF_RATES_API_KEY_GCP }}
+          PF_SVC_INCOME_API_KEY_GCP: ${{ secrets.PF_SVC_INCOME_API_KEY_GCP }}
+        run: |
+          set -euo pipefail
+          case "$TARGET" in
+            local)
+              rates_key="$PF_RATES_API_KEY_LOCAL"
+              income_key="$PF_SVC_INCOME_API_KEY_LOCAL"
+              template="pf-ecosystem.postman_environment.local.json"
+              ;;
+            gcp)
+              rates_key="$PF_RATES_API_KEY_GCP"
+              income_key="$PF_SVC_INCOME_API_KEY_GCP"
+              template="pf-ecosystem.postman_environment.gcp.json"
+              ;;
+            *)
+              echo "Unsupported target: $TARGET" >&2
+              exit 2
+              ;;
+          esac
+          test -n "$rates_key" && test -n "$income_key"
+          jq \
+            --arg rates_url "$PF_RATES_URL" \
+            --arg income_url "$PF_SVC_INCOME_URL" \
+            --arg rates_key "$rates_key" \
+            --arg income_key "$income_key" \
+            '(.values[] | select(.key == "pf-rates-url") | .value) = $rates_url
+             | (.values[] | select(.key == "pf-rates-api-key") | .value) = $rates_key
+             | (.values[] | select(.key == "pf-svc-income-url") | .value) = $income_url
+             | (.values[] | select(.key == "pf-svc-income-api-key") | .value) = $income_key' \
+            "$template" > "$RUNNER_TEMP/postman-smoke-environment.json"
+
+      - name: Run read-only smoke subset
+        run: |
+          python3 scripts/run-postman-smoke.py \
+            --environment "$RUNNER_TEMP/postman-smoke-environment.json" \
+            --report "$RUNNER_TEMP/postman-smoke.xml"
+
+      - name: Upload JUnit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: postman-smoke-report
+          path: ${{ runner.temp }}/postman-smoke.xml
+          if-no-files-found: ignore

@@ -5,6 +5,54 @@
     "description": "All pf-* services in one collection: pf-rates, pf-svc-income, pf-sheets. pf-db is DDL/migrations only and exposes no HTTP API. Managed as JSON in pf-postman -- see the pf-postman README for how edits here sync to your real Postman workspace.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.test(\"HTTP response is successful\", function () {",
+          "  pm.expect(pm.response.code).to.be.within(200, 299);",
+          "});",
+          "",
+          "pm.test(\"Response time is bounded\", function () {",
+          "  pm.expect(pm.response.responseTime).to.be.below(15000);",
+          "});",
+          "",
+          "const contentType = pm.response.headers.get(\"Content-Type\") || \"\";",
+          "pm.test(\"Response has a content type\", function () {",
+          "  pm.expect(contentType).to.not.equal(\"\");",
+          "});",
+          "",
+          "if (contentType.toLowerCase().includes(\"json\")) {",
+          "  pm.test(\"JSON response is parseable\", function () {",
+          "    pm.response.json();",
+          "  });",
+          "}",
+          "",
+          "const csvRequests = [\"Download blank template (format=csv)\", \"Export spreadsheet (format=csv)\"];",
+          "if (csvRequests.includes(pm.info.requestName)) {",
+          "  pm.test(\"CSV response has content\", function () {",
+          "    pm.expect(pm.response.text().trim()).to.not.equal(\"\");",
+          "  });",
+          "  pm.test(\"CSV response has a header row\", function () {",
+          "    pm.expect(pm.response.text()).to.match(/period_month|period_year/);",
+          "  });",
+          "}",
+          "",
+          "if (pm.info.requestName === \"Health\") {",
+          "  const health = pm.response.json();",
+          "  pm.test(\"Health status is ok\", function () {",
+          "    pm.expect(health.status).to.equal(\"ok\");",
+          "  });",
+          "  pm.test(\"Health identifies a PF service\", function () {",
+          "    pm.expect([\"pf-rates\", \"pf-svc-income\"]).to.include(health.service);",
+          "  });",
+          "}"
+        ]
+      }
+    }
+  ],
   "item": [
     {
       "name": "pf-rates",
@@ -369,9 +417,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/exports/jobs/{{export_job_id}}",
+                  "raw": "{{pf-rates-url}}/exports/jobs/{{job_id}}",
                   "host": [
-                    "{{pf-rates-url}}/exports/jobs/{{export_job_id}}"
+                    "{{pf-rates-url}}/exports/jobs/{{job_id}}"
                   ]
                 },
                 "description": ""
@@ -439,9 +487,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/exports/jobs/{{export_job_id}}/stop",
+                  "raw": "{{pf-rates-url}}/exports/jobs/{{job_id}}/stop",
                   "host": [
-                    "{{pf-rates-url}}/exports/jobs/{{export_job_id}}/stop"
+                    "{{pf-rates-url}}/exports/jobs/{{job_id}}/stop"
                   ]
                 },
                 "description": ""
@@ -932,9 +980,9 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{pf-svc-income-url}}/payroll/481",
+                      "raw": "{{pf-svc-income-url}}/payroll/{{period_id}}",
                       "host": [
-                        "{{pf-svc-income-url}}/payroll/481"
+                        "{{pf-svc-income-url}}/payroll/{{period_id}}"
                       ]
                     }
                   }
@@ -1337,9 +1385,9 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{pf-svc-income-url}}/payroll/templates/acme-chile-v1",
+                      "raw": "{{pf-svc-income-url}}/payroll/templates/{{template_id}}",
                       "host": [
-                        "{{pf-svc-income-url}}/payroll/templates/acme-chile-v1"
+                        "{{pf-svc-income-url}}/payroll/templates/{{template_id}}"
                       ]
                     },
                     "description": "Logical delete only -- sets is_active=false, never a row DELETE. A subsequent POST /payroll/pdf-preview no longer matches it, but Get one template still finds it. 404 if it doesn't exist."
@@ -1357,9 +1405,9 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{pf-svc-income-url}}/payroll/templates/walmart-chile-v1",
+                      "raw": "{{pf-svc-income-url}}/payroll/templates/{{template_id}}",
                       "host": [
-                        "{{pf-svc-income-url}}/payroll/templates/walmart-chile-v1"
+                        "{{pf-svc-income-url}}/payroll/templates/{{template_id}}"
                       ]
                     },
                     "description": "Found regardless of is_active status -- a direct lookup by template_id always finds it. 404 if it never existed."
@@ -1408,9 +1456,9 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{pf-svc-income-url}}/payroll/templates/acme-chile-v1",
+                      "raw": "{{pf-svc-income-url}}/payroll/templates/{{template_id}}",
                       "host": [
-                        "{{pf-svc-income-url}}/payroll/templates/acme-chile-v1"
+                        "{{pf-svc-income-url}}/payroll/templates/{{template_id}}"
                       ]
                     },
                     "description": "Mutates the existing row in place -- does not create a new template_id/version (bump version in the body yourself if desired). Same body shape/validation as Create, minus template_id (taken from the path). 404 if it doesn't exist; 400 on the same constraint violations as Create.",
@@ -1607,12 +1655,22 @@
     },
     {
       "key": "period_id",
-      "value": "1",
+      "value": "527",
       "type": "string"
     },
     {
       "key": "export_job_id",
       "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "job_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "template_id",
+      "value": "walmart-chile-v1",
       "type": "string"
     }
   ]

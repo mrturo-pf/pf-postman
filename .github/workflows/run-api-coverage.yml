@@ -1,0 +1,47 @@
+name: CI / Check API coverage
+
+on:
+  workflow_dispatch:
+    inputs:
+      pf_rates_openapi_url:
+        description: "Read-only pf-rates /openapi.json URL"
+        required: true
+        type: string
+      pf_svc_income_openapi_url:
+        description: "Read-only pf-svc-income /openapi.json URL"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  coverage:
+    name: Compare OpenAPI with Postman
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch OpenAPI snapshots
+        env:
+          PF_RATES_OPENAPI_URL: ${{ inputs.pf_rates_openapi_url }}
+          PF_SVC_INCOME_OPENAPI_URL: ${{ inputs.pf_svc_income_openapi_url }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/openapi"
+          curl --fail --silent --show-error --location --retry 2 --max-time 30 \
+            --header 'Accept: application/json' \
+            "$PF_RATES_OPENAPI_URL" \
+            --output "$RUNNER_TEMP/openapi/pf-rates.json"
+          curl --fail --silent --show-error --location --retry 2 --max-time 30 \
+            --header 'Accept: application/json' \
+            "$PF_SVC_INCOME_OPENAPI_URL" \
+            --output "$RUNNER_TEMP/openapi/pf-svc-income.json"
+          jq empty "$RUNNER_TEMP/openapi/pf-rates.json"
+          jq empty "$RUNNER_TEMP/openapi/pf-svc-income.json"
+
+      - name: Check OpenAPI to Postman coverage
+        run: |
+          python3 scripts/check-api-coverage.py \
+            --openapi pf-rates="$RUNNER_TEMP/openapi/pf-rates.json" \
+            --openapi pf-svc-income="$RUNNER_TEMP/openapi/pf-svc-income.json"

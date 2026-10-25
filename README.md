@@ -108,6 +108,90 @@ GitHub Secret's value on sync) -- to rotate a key, update the GitHub Secret inst
    validation and both sync jobs (`sync-collection`, `sync-environments`) should
    turn green. For a manual operational retry, use `gh workflow run`.
 
+## Automated endpoint coverage
+
+[`scripts/check-api-coverage.py`](scripts/check-api-coverage.py) compares the
+OpenAPI operations exported by `pf-rates` and `pf-svc-income` with the requests
+in this collection. It reports missing and stale method/path pairs without
+calling an API or mutating data.
+
+Generate sanitized OpenAPI snapshots from the running services, then run:
+
+```bash
+python3 scripts/check-api-coverage.py \
+  --openapi pf-rates=/tmp/pf-rates-openapi.json \
+  --openapi pf-svc-income=/tmp/pf-svc-income-openapi.json
+```
+
+The command exits non-zero when a service folder is missing, an OpenAPI operation
+has no Postman request, a Postman request no longer exists in OpenAPI, or an
+an undocumented operation appears more than once in the collection. The current
+intentional duplicates are refresh operations with different modes and the two
+JSON import workflows; they are listed in `INTENTIONAL_DUPLICATES` in the checker.
+Snapshots are runtime inputs and must not contain credentials, authorization headers, or
+production payloads. The checker can also fetch the documents directly with GET:
+
+```bash
+python3 scripts/check-api-coverage.py \
+  --openapi-url pf-rates=https://example-rates/openapi.json \
+  --openapi-url pf-svc-income=https://example-income/openapi.json
+```
+
+The manual workflow
+[`run-api-coverage.yml`](.github/workflows/run-api-coverage.yml) accepts those
+read-only URLs, stores snapshots only in the ephemeral Actions runner directory,
+and fails when coverage differs. This coverage check is the first layer of
+`IMP-011`; Newman execution and mutating fixture workflows remain separate safety
+tiers.
+
+### Read-only Newman smoke tests
+
+[`scripts/run-postman-smoke.py`](scripts/run-postman-smoke.py) creates a temporary
+collection containing only `GET`, `HEAD`, and `OPTIONS` requests, then runs it with
+Newman and produces a JUnit report. It excludes `pf-sheets` by default because its
+committed URL is an external Web App; pass `--include-sheets` only when that call is
+explicitly approved. It never changes the committed collection.
+
+Install Newman and run locally with a materialized environment:
+
+```bash
+npm install --global newman
+python3 scripts/run-postman-smoke.py \
+  --environment /tmp/postman-environment.json \
+  --report test-results/postman-smoke.xml
+```
+
+Use `--include-sheets` only for an explicitly approved external Web App check.
+
+The manual [`run-postman-smoke.yml`](.github/workflows/run-postman-smoke.yml)
+workflow injects API keys into an ephemeral environment file and supports LOCAL or
+GCP targets. It is intentionally read-only; imports, refreshes, creates, updates,
+deletes, and stop-job requests require a separate safety boundary.
+
+### Local integration fixtures
+
+[`scripts/run-postman-integration.py`](scripts/run-postman-integration.py) runs a
+synthetic `pf-svc-income` employer → contract → template create/update workflow.
+It rejects non-loopback URLs, requires an explicit local API key, generates unique
+fixture identifiers, and always attempts cleanup in `finally`:
+
+```bash
+PF_INCOME_API_KEY="..." \
+  python3 scripts/run-postman-integration.py
+```
+
+Use `--dry-run` to inspect the workflow without mutation. For the full disposable
+local run, use:
+
+```bash
+PF_INCOME_API_KEY="..." \
+  scripts/run-local-integration.sh
+```
+
+That wrapper backs up the local database, rebuilds it with `local-up-test`, runs the
+integration workflow, and rebuilds the test database again on exit. It rejects
+non-loopback targets. Never point either runner at GCP, Neon, or production.
+
 ## Structure
 
 - `pf-ecosystem.postman_collection.json` — the collection itself (requests, folders per
