@@ -72,3 +72,6 @@ git diff --check
   explicit owner authorization.
 - Keep collection requests grouped by service and synchronized with each
   service's `docs/api.md`.
+- Sort every `item` array alphabetically by the item's `name`, case-insensitively,
+  including top-level service folders, nested folders, subfolders, and requests.
+  Preserve this deterministic ordering whenever adding or moving collection items.

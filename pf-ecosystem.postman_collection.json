@@ -10,45 +10,43 @@
       "name": "pf-rates",
       "item": [
         {
-          "name": "Health",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{pf-rates-url}}/health",
-              "host": [
-                "{{pf-rates-url}}/health"
-              ]
-            },
-            "description": "No auth required."
-          },
-          "response": []
-        },
-        {
-          "name": "Exchange rates",
+          "name": "Economic indices",
           "item": [
             {
-              "name": "List monetary units",
+              "name": "Batch economic index values",
               "request": {
-                "method": "GET",
+                "method": "POST",
                 "header": [
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-rates-api-key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
                   }
                 ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pairs\": [\n    {\n      \"code\": \"IPC_CL\",\n      \"period_year\": 2026,\n      \"period_month\": 1\n    },\n    {\n      \"code\": \"IPC_CL\",\n      \"period_year\": 2026,\n      \"period_month\": 2\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
-                  "raw": "{{pf-rates-url}}/monetary-units",
+                  "raw": "{{pf-rates-url}}/economic-indices/values",
                   "host": [
-                    "{{pf-rates-url}}/monetary-units"
+                    "{{pf-rates-url}}/economic-indices/values"
                   ]
                 },
-                "description": "Renamed from /currencies -- returns both fiat currencies (is_fiat=true, unit_kind=currency) and index units like UF/UTM (is_fiat=false, unit_kind=index_unit); see pf-rates/docs/api.md."
+                "description": "Batch lookup; each result preserves its input pair and may return null when the value is unavailable. Maximum 500 pairs."
               },
               "response": []
             },
             {
-              "name": "List exchange rates",
+              "name": "Get economic index value",
               "request": {
                 "method": "GET",
                 "header": [
@@ -58,14 +56,22 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/exchange-rates?currency_code=USD",
+                  "raw": "{{pf-rates-url}}/economic-indices/value?code=UF&year=2026&month=1",
                   "host": [
-                    "{{pf-rates-url}}/exchange-rates"
+                    "{{pf-rates-url}}/economic-indices/value"
                   ],
                   "query": [
                     {
-                      "key": "currency_code",
-                      "value": "USD"
+                      "key": "code",
+                      "value": "UF"
+                    },
+                    {
+                      "key": "year",
+                      "value": "2026"
+                    },
+                    {
+                      "key": "month",
+                      "value": "1"
                     }
                   ]
                 },
@@ -73,6 +79,104 @@
               },
               "response": []
             },
+            {
+              "name": "List economic indices",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-rates-api-key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-rates-url}}/economic-indices?code=UF",
+                  "host": [
+                    "{{pf-rates-url}}/economic-indices"
+                  ],
+                  "query": [
+                    {
+                      "key": "code",
+                      "value": "UF"
+                    }
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Refresh economic indices (manual)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-rates-api-key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-rates-url}}/economic-indices/refresh",
+                  "host": [
+                    "{{pf-rates-url}}/economic-indices/refresh"
+                  ]
+                },
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"economic_indices\": [\n    {\n      \"code\": \"IPC_CL\",\n      \"period_year\": 2026,\n      \"period_month\": 1,\n      \"index_value\": \"125.50\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Refresh economic indices (provider fetch)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-rates-api-key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-rates-url}}/economic-indices/refresh",
+                  "host": [
+                    "{{pf-rates-url}}/economic-indices/refresh"
+                  ]
+                },
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fetch_economic_indices\": [\n    {\n      \"code\": \"IPC_CL\",\n      \"period_year\": 2013,\n      \"period_month\": 1\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            }
+          ],
+          "description": ""
+        },
+        {
+          "name": "Exchange rates",
+          "item": [
             {
               "name": "Batch exchange rate values",
               "request": {
@@ -133,6 +237,52 @@
                   ]
                 },
                 "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "List exchange rates",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-rates-api-key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-rates-url}}/exchange-rates?currency_code=USD",
+                  "host": [
+                    "{{pf-rates-url}}/exchange-rates"
+                  ],
+                  "query": [
+                    {
+                      "key": "currency_code",
+                      "value": "USD"
+                    }
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "List monetary units",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-rates-api-key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-rates-url}}/monetary-units",
+                  "host": [
+                    "{{pf-rates-url}}/monetary-units"
+                  ]
+                },
+                "description": "Renamed from /currencies -- returns both fiat currencies (is_fiat=true, unit_kind=currency) and index units like UF/UTM (is_fiat=false, unit_kind=index_unit); see pf-rates/docs/api.md."
               },
               "response": []
             },
@@ -206,10 +356,10 @@
           "description": ""
         },
         {
-          "name": "Economic indices",
+          "name": "Exports",
           "item": [
             {
-              "name": "List economic indices",
+              "name": "Get export job status",
               "request": {
                 "method": "GET",
                 "header": [
@@ -219,15 +369,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/economic-indices?code=UF",
+                  "raw": "{{pf-rates-url}}/exports/jobs/{{export_job_id}}",
                   "host": [
-                    "{{pf-rates-url}}/economic-indices"
-                  ],
-                  "query": [
-                    {
-                      "key": "code",
-                      "value": "UF"
-                    }
+                    "{{pf-rates-url}}/exports/jobs/{{export_job_id}}"
                   ]
                 },
                 "description": ""
@@ -235,7 +379,7 @@
               "response": []
             },
             {
-              "name": "Get economic index value",
+              "name": "List export jobs",
               "request": {
                 "method": "GET",
                 "header": [
@@ -245,22 +389,18 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/economic-indices/value?code=UF&year=2026&month=1",
+                  "raw": "{{pf-rates-url}}/exports/jobs?status=failed&limit=20",
                   "host": [
-                    "{{pf-rates-url}}/economic-indices/value"
+                    "{{pf-rates-url}}/exports/jobs"
                   ],
                   "query": [
                     {
-                      "key": "code",
-                      "value": "UF"
+                      "key": "status",
+                      "value": "failed"
                     },
                     {
-                      "key": "year",
-                      "value": "2026"
-                    },
-                    {
-                      "key": "month",
-                      "value": "1"
+                      "key": "limit",
+                      "value": "20"
                     }
                   ]
                 },
@@ -269,7 +409,47 @@
               "response": []
             },
             {
-              "name": "Batch economic index values",
+              "name": "Stop all export jobs",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-rates-api-key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-rates-url}}/exports/jobs/stop",
+                  "host": [
+                    "{{pf-rates-url}}/exports/jobs/stop"
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Stop one export job",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-rates-api-key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-rates-url}}/exports/jobs/{{export_job_id}}/stop",
+                  "host": [
+                    "{{pf-rates-url}}/exports/jobs/{{export_job_id}}/stop"
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Trigger financial-data export (async)",
               "request": {
                 "method": "POST",
                 "header": [
@@ -282,49 +462,16 @@
                     "value": "application/json"
                   }
                 ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"pairs\": [\n    {\n      \"code\": \"IPC_CL\",\n      \"period_year\": 2026,\n      \"period_month\": 1\n    },\n    {\n      \"code\": \"IPC_CL\",\n      \"period_year\": 2026,\n      \"period_month\": 2\n    }\n  ]\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
                 "url": {
-                  "raw": "{{pf-rates-url}}/economic-indices/values",
+                  "raw": "{{pf-rates-url}}/exports/financial-data",
                   "host": [
-                    "{{pf-rates-url}}/economic-indices/values"
-                  ]
-                },
-                "description": "Batch lookup; each result preserves its input pair and may return null when the value is unavailable. Maximum 500 pairs."
-              },
-              "response": []
-            },
-            {
-              "name": "Refresh economic indices (manual)",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
-                  },
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-rates-url}}/economic-indices/refresh",
-                  "host": [
-                    "{{pf-rates-url}}/economic-indices/refresh"
+                    "{{pf-rates-url}}/exports/financial-data"
                   ]
                 },
                 "description": "",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"economic_indices\": [\n    {\n      \"code\": \"IPC_CL\",\n      \"period_year\": 2026,\n      \"period_month\": 1,\n      \"index_value\": \"125.50\"\n    }\n  ]\n}",
+                  "raw": "{\n  \"lookback_days\": 6100,\n  \"forward_days\": 30,\n  \"async\": true\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -335,40 +482,42 @@
               "response": []
             },
             {
-              "name": "Refresh economic indices (provider fetch)",
+              "name": "Trigger financial-data export (sync)",
               "request": {
                 "method": "POST",
                 "header": [
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-rates-api-key}}"
-                  },
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/economic-indices/refresh",
+                  "raw": "{{pf-rates-url}}/exports/financial-data",
                   "host": [
-                    "{{pf-rates-url}}/economic-indices/refresh"
+                    "{{pf-rates-url}}/exports/financial-data"
                   ]
                 },
-                "description": "",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"fetch_economic_indices\": [\n    {\n      \"code\": \"IPC_CL\",\n      \"period_year\": 2013,\n      \"period_month\": 1\n    }\n  ]\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
+                "description": ""
               },
               "response": []
             }
           ],
           "description": ""
+        },
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{pf-rates-url}}/health",
+              "host": [
+                "{{pf-rates-url}}/health"
+              ]
+            },
+            "description": "No auth required."
+          },
+          "response": []
         },
         {
           "name": "Income tax brackets",
@@ -503,38 +652,94 @@
             }
           ],
           "description": ""
+        }
+      ],
+      "description": "See modules/pf-rates/docs/api.md for the full reference."
+    },
+    {
+      "name": "pf-sheets",
+      "item": [
+        {
+          "name": "GET_CLP (single lookup)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{pf_sheets_webapp_url}}?date=2026-09-15&code=USD&key={{pf_sheets_api_key}}",
+              "host": [
+                "{{pf_sheets_webapp_url}}"
+              ],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2026-09-15"
+                },
+                {
+                  "key": "code",
+                  "value": "USD"
+                },
+                {
+                  "key": "key",
+                  "value": "{{pf_sheets_api_key}}"
+                }
+              ]
+            },
+            "description": "Plain-text response: a bare number, 'Unauthorized', 'Missing parameters', or 'Not found'."
+          },
+          "response": []
         },
         {
-          "name": "Exports",
+          "name": "GET_CLP_RANGE (batch lookup)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{pf_sheets_webapp_url}}?key={{pf_sheets_api_key}}",
+              "host": [
+                "{{pf_sheets_webapp_url}}"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{pf_sheets_api_key}}"
+                }
+              ]
+            },
+            "description": "JSON array response, same order/length as 'pairs'. Max 500 real pairs per request.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pairs\": [\n    {\n      \"date\": \"2026-09-15\",\n      \"code\": \"USD\"\n    },\n    {\n      \"date\": \"2026-09-16\",\n      \"code\": \"USD\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Apps Script Web App -- see modules/pf-sheets/docs/api.md. pf-db has no HTTP API (DDL/migrations only), so it has no folder here."
+    },
+    {
+      "name": "pf-svc-income",
+      "item": [
+        {
+          "name": "Employer",
           "item": [
             {
-              "name": "Trigger financial-data export (sync)",
+              "name": "Create or update contracts",
               "request": {
                 "method": "POST",
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-rates-url}}/exports/financial-data",
-                  "host": [
-                    "{{pf-rates-url}}/exports/financial-data"
-                  ]
-                },
-                "description": ""
-              },
-              "response": []
-            },
-            {
-              "name": "Trigger financial-data export (async)",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -542,123 +747,159 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/exports/financial-data",
+                  "raw": "{{pf-svc-income-url}}/payroll/contracts",
                   "host": [
-                    "{{pf-rates-url}}/exports/financial-data"
+                    "{{pf-svc-income-url}}/payroll/contracts"
                   ]
                 },
-                "description": "",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"lookback_days\": 6100,\n  \"forward_days\": 30,\n  \"async\": true\n}",
+                  "raw": "{\n  \"contracts\": [\n    {\n      \"employer_id\": 1,\n      \"started_at\": \"2026-01-01\",\n      \"ended_at\": null,\n      \"is_indefinite\": true,\n      \"position\": \"Synthetic position\"\n    }\n  ]\n}",
                   "options": {
                     "raw": {
                       "language": "json"
                     }
                   }
-                }
-              },
-              "response": []
+                },
+                "description": "Atomic batch: contracts require a persisted employer_id and started_at."
+              }
             },
             {
-              "name": "List export jobs",
+              "name": "Create or update employers",
               "request": {
-                "method": "GET",
+                "method": "POST",
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/exports/jobs?status=failed&limit=20",
+                  "raw": "{{pf-svc-income-url}}/payroll/employers",
                   "host": [
-                    "{{pf-rates-url}}/exports/jobs"
-                  ],
-                  "query": [
-                    {
-                      "key": "status",
-                      "value": "failed"
-                    },
-                    {
-                      "key": "limit",
-                      "value": "20"
+                    "{{pf-svc-income-url}}/payroll/employers"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"employers\": [\n    {\n      \"name\": \"Synthetic Employer\",\n      \"tax_id\": \"synthetic-tax-id\",\n      \"country_code\": \"CL\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
                     }
-                  ]
+                  }
                 },
-                "description": ""
-              },
-              "response": []
+                "description": "Atomic batch: omit id to create; include an existing id to update. Do not use this request as a negative-test fixture."
+              }
             },
             {
-              "name": "Get export job status",
+              "name": "Delete contracts",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-svc-income-api-key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ids\": [1]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{pf-svc-income-url}}/payroll/contracts",
+                  "host": [
+                    "{{pf-svc-income-url}}/payroll/contracts"
+                  ]
+                },
+                "description": "Operational deletion by stable IDs. Use only with IDs whose dependency guards permit deletion."
+              }
+            },
+            {
+              "name": "Delete employers",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-svc-income-api-key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ids\": [1]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{pf-svc-income-url}}/payroll/employers",
+                  "host": [
+                    "{{pf-svc-income-url}}/payroll/employers"
+                  ]
+                },
+                "description": "Operational deletion by stable IDs. Use only with IDs whose dependency guards permit deletion."
+              }
+            },
+            {
+              "name": "List contracts",
               "request": {
                 "method": "GET",
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/exports/jobs/{{export_job_id}}",
+                  "raw": "{{pf-svc-income-url}}/payroll/contracts",
                   "host": [
-                    "{{pf-rates-url}}/exports/jobs/{{export_job_id}}"
+                    "{{pf-svc-income-url}}/payroll/contracts"
                   ]
                 },
-                "description": ""
-              },
-              "response": []
+                "description": "Lists contracts as { id, employer: { id, name }, started_at, ended_at, is_indefinite, position, is_in_effect }. is_in_effect reflects today's date within the contract interval."
+              }
             },
             {
-              "name": "Stop one export job",
+              "name": "List employers",
               "request": {
-                "method": "POST",
+                "method": "GET",
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-svc-income-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/exports/jobs/{{export_job_id}}/stop",
+                  "raw": "{{pf-svc-income-url}}/payroll/employers",
                   "host": [
-                    "{{pf-rates-url}}/exports/jobs/{{export_job_id}}/stop"
+                    "{{pf-svc-income-url}}/payroll/employers"
                   ]
                 },
-                "description": ""
-              },
-              "response": []
-            },
-            {
-              "name": "Stop all export jobs",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-rates-url}}/exports/jobs/stop",
-                  "host": [
-                    "{{pf-rates-url}}/exports/jobs/stop"
-                  ]
-                },
-                "description": ""
-              },
-              "response": []
+                "description": "Lists employers with nested contracts. Each nested contract contains id, started_at, ended_at, is_indefinite, position, and is_in_effect; the employer is not repeated."
+              }
             }
-          ],
-          "description": ""
-        }
-      ],
-      "description": "See modules/pf-rates/docs/api.md for the full reference."
-    },
-    {
-      "name": "pf-svc-income",
-      "item": [
+          ]
+        },
         {
           "name": "Health",
           "request": {
@@ -678,27 +919,12 @@
           "name": "Payroll",
           "item": [
             {
-              "name": "Preview",
+              "name": "Delete",
               "item": [
                 {
-                  "name": "Preview a PDF payslip",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "// Stash the raw preview array so 'Import JSON (from last Preview)' can",
-                          "// wrap it into a { mode, periods } body without any copy/pasting.",
-                          "if (pm.response.code === 200) {",
-                          "    pm.collectionVariables.set('last_pdf_preview_response', pm.response.text());",
-                          "}"
-                        ]
-                      }
-                    }
-                  ],
+                  "name": "Delete one period",
                   "request": {
-                    "method": "POST",
+                    "method": "DELETE",
                     "header": [
                       {
                         "key": "X-Api-Key",
@@ -706,71 +932,17 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{pf-svc-income-url}}/payroll/pdf-preview",
+                      "raw": "{{pf-svc-income-url}}/payroll/481",
                       "host": [
-                        "{{pf-svc-income-url}}/payroll/pdf-preview"
-                      ]
-                    },
-                    "description": "Read-only, never persists -- deliberately not under /payroll/import/*, since (unlike the two requests in the Import folder) this one never imports anything, it just converts one or more PDF payslips into a JSON array of previews (one per file, in upload order). Add more 'files' form-data rows with the same key to preview a batch of distinct liquidaciones in one request. See docs/payroll-workflow.md.",
-                    "body": {
-                      "mode": "formdata",
-                      "formdata": [
-                        {
-                          "key": "files",
-                          "type": "file",
-                          "src": []
-                        }
+                        "{{pf-svc-income-url}}/payroll/481"
                       ]
                     }
-                  },
-                  "response": []
-                }
-              ],
-              "description": ""
-            },
-            {
-              "name": "Import",
-              "item": [
-                {
-                  "name": "Import Spreadsheet (mode=validate)",
-                  "request": {
-                    "method": "POST",
-                    "header": [
-                      {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-svc-income-api-key}}"
-                      }
-                    ],
-                    "url": {
-                      "raw": "{{pf-svc-income-url}}/payroll/import/spreadsheet",
-                      "host": [
-                        "{{pf-svc-income-url}}/payroll/import/spreadsheet"
-                      ]
-                    },
-                    "description": "mode form field defaults to \"commit\" when omitted -- send mode=validate to preview reconciliation conflicts for the whole file without persisting anything (see pf-svc-income/docs/api.md).",
-                    "body": {
-                      "mode": "formdata",
-                      "formdata": [
-                        {
-                          "key": "file",
-                          "type": "file",
-                          "src": []
-                        },
-                        {
-                          "key": "mode",
-                          "type": "text",
-                          "value": "validate",
-                          "description": "\"commit\" (default) or \"validate\"."
-                        }
-                      ]
-                    }
-                  },
-                  "response": []
+                  }
                 },
                 {
-                  "name": "Import JSON (mode=validate)",
+                  "name": "Delete payroll (atomic batch)",
                   "request": {
-                    "method": "POST",
+                    "method": "DELETE",
                     "header": [
                       {
                         "key": "X-Api-Key",
@@ -782,83 +954,23 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{pf-svc-income-url}}/payroll/import/json",
+                      "raw": "{{pf-svc-income-url}}/payroll",
                       "host": [
-                        "{{pf-svc-income-url}}/payroll/import/json"
+                        "{{pf-svc-income-url}}/payroll"
                       ]
                     },
-                    "description": "validate runs the real pipeline then rolls back; unresolved_rows in the response lists rows with concept_code=null (identified by period_index + row_index). periods must have at least one element, and no two elements may share the same (employer, period_year, period_month). Resend with mode=commit once resolved.",
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"mode\": \"validate\",\n  \"periods\": [\n    {\n      \"employer\": \"ACME\",\n      \"period_year\": 2026,\n      \"period_month\": 1,\n      \"payment_date\": \"2026-01-31\",\n      \"employment_contract_kind\": \"indefinite\",\n      \"rows\": [\n        {\n          \"concept_code\": \"SALARY_BASE\",\n          \"amount_clp\": \"1000000\"\n        }\n      ]\n    }\n  ]\n}",
+                      "raw": "{\"period_ids\": [481, 482]}",
                       "options": {
                         "raw": {
                           "language": "json"
                         }
                       }
                     }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "Import JSON (from last Preview)",
-                  "event": [
-                    {
-                      "listen": "prerequest",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "// Chains off 'Preview a PDF payslip': wraps whatever that request's",
-                          "// Tests script stashed into last_pdf_preview_response into a valid",
-                          "// { mode, periods } body -- run the preview request at least once first.",
-                          "const rawPreview = pm.collectionVariables.get('last_pdf_preview_response');",
-                          "if (!rawPreview) {",
-                          "    throw new Error(\"No stashed preview found -- run 'Preview a PDF payslip' first (its Tests script saves the response into 'last_pdf_preview_response').\");",
-                          "}",
-                          "const periods = JSON.parse(rawPreview);",
-                          "// mode comes from the 'import_json_mode' collection variable so you can",
-                          "// flip commit/validate from the Postman variable list -- no script",
-                          "// editing needed. Defaults to 'validate' if unset/blank, on purpose: a",
-                          "// chained import must never silently persist real payroll data.",
-                          "const mode = pm.collectionVariables.get('import_json_mode') || 'validate';",
-                          "pm.request.body.raw = JSON.stringify({ mode: mode, periods: periods }, null, 2);"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "method": "POST",
-                    "header": [
-                      {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-svc-income-api-key}}"
-                      },
-                      {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                      }
-                    ],
-                    "url": {
-                      "raw": "{{pf-svc-income-url}}/payroll/import/json",
-                      "host": [
-                        "{{pf-svc-income-url}}/payroll/import/json"
-                      ]
-                    },
-                    "description": "Same endpoint as 'Import JSON (mode=validate)', but the body is built entirely from the last 'Preview a PDF payslip' response by this request's Pre-request Script -- run that request first (with one or more PDFs attached), then run this one to validate the extracted payrolls without retyping anything. Sends whatever mode is set in the 'import_json_mode' collection variable, defaulting to 'validate' when that variable is empty/unset -- set 'import_json_mode' to 'commit' in the collection's variable list when you actually want to persist; no script editing needed.",
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n  \"mode\": \"validate\",\n  \"periods\": []\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    }
-                  },
-                  "response": []
+                  }
                 }
-              ],
-              "description": ""
+              ]
             },
             {
               "name": "Export",
@@ -936,8 +1048,211 @@
               "description": ""
             },
             {
+              "name": "Import",
+              "item": [
+                {
+                  "name": "Import JSON (from last Preview)",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "// Chains off 'Preview a PDF payslip': wraps whatever that request's",
+                          "// Tests script stashed into last_pdf_preview_response into a valid",
+                          "// { mode, periods } body -- run the preview request at least once first.",
+                          "const rawPreview = pm.collectionVariables.get('last_pdf_preview_response');",
+                          "if (!rawPreview) {",
+                          "    throw new Error(\"No stashed preview found -- run 'Preview a PDF payslip' first (its Tests script saves the response into 'last_pdf_preview_response').\");",
+                          "}",
+                          "const periods = JSON.parse(rawPreview);",
+                          "// mode comes from the 'import_json_mode' collection variable so you can",
+                          "// flip commit/validate from the Postman variable list -- no script",
+                          "// editing needed. Defaults to 'validate' if unset/blank, on purpose: a",
+                          "// chained import must never silently persist real payroll data.",
+                          "const mode = pm.collectionVariables.get('import_json_mode') || 'validate';",
+                          "pm.request.body.raw = JSON.stringify({ mode: mode, periods: periods }, null, 2);"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-svc-income-api-key}}"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-svc-income-url}}/payroll/import/json",
+                      "host": [
+                        "{{pf-svc-income-url}}/payroll/import/json"
+                      ]
+                    },
+                    "description": "Same endpoint as 'Import JSON (mode=validate)', but the body is built entirely from the last 'Preview a PDF payslip' response by this request's Pre-request Script -- run that request first (with one or more PDFs attached), then run this one to validate the extracted payrolls without retyping anything. Sends whatever mode is set in the 'import_json_mode' collection variable, defaulting to 'validate' when that variable is empty/unset -- set 'import_json_mode' to 'commit' in the collection's variable list when you actually want to persist; no script editing needed.",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"mode\": \"validate\",\n  \"periods\": []\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Import JSON (mode=validate)",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-svc-income-api-key}}"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-svc-income-url}}/payroll/import/json",
+                      "host": [
+                        "{{pf-svc-income-url}}/payroll/import/json"
+                      ]
+                    },
+                    "description": "validate runs the real pipeline then rolls back; unresolved_rows in the response lists rows with concept_code=null (identified by period_index + row_index). periods must have at least one element, and no two elements may share the same (employer, period_year, period_month). Resend with mode=commit once resolved.",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"mode\": \"validate\",\n  \"periods\": [\n    {\n      \"employer\": \"ACME\",\n      \"period_year\": 2026,\n      \"period_month\": 1,\n      \"payment_date\": \"2026-01-31\",\n      \"employment_contract_kind\": \"indefinite\",\n      \"rows\": [\n        {\n          \"concept_code\": \"SALARY_BASE\",\n          \"amount_clp\": \"1000000\"\n        }\n      ]\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Import Spreadsheet (mode=validate)",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-svc-income-api-key}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-svc-income-url}}/payroll/import/spreadsheet",
+                      "host": [
+                        "{{pf-svc-income-url}}/payroll/import/spreadsheet"
+                      ]
+                    },
+                    "description": "mode form field defaults to \"commit\" when omitted -- send mode=validate to preview reconciliation conflicts for the whole file without persisting anything (see pf-svc-income/docs/api.md).",
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "key": "file",
+                          "type": "file",
+                          "src": []
+                        },
+                        {
+                          "key": "mode",
+                          "type": "text",
+                          "value": "validate",
+                          "description": "\"commit\" (default) or \"validate\"."
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ],
+              "description": ""
+            },
+            {
+              "name": "Preview",
+              "item": [
+                {
+                  "name": "Preview a PDF payslip",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "// Stash the raw preview array so 'Import JSON (from last Preview)' can",
+                          "// wrap it into a { mode, periods } body without any copy/pasting.",
+                          "if (pm.response.code === 200) {",
+                          "    pm.collectionVariables.set('last_pdf_preview_response', pm.response.text());",
+                          "}"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-svc-income-api-key}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-svc-income-url}}/payroll/pdf-preview",
+                      "host": [
+                        "{{pf-svc-income-url}}/payroll/pdf-preview"
+                      ]
+                    },
+                    "description": "Read-only, never persists -- deliberately not under /payroll/import/*, since (unlike the two requests in the Import folder) this one never imports anything, it just converts one or more PDF payslips into a JSON array of previews (one per file, in upload order). Add more 'files' form-data rows with the same key to preview a batch of distinct liquidaciones in one request. See docs/payroll-workflow.md.",
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "key": "files",
+                          "type": "file",
+                          "src": []
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ],
+              "description": ""
+            },
+            {
               "name": "Queries",
               "item": [
+                {
+                  "name": "Get one payroll period",
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-svc-income-api-key}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-svc-income-url}}/payroll/{{period_id}}",
+                      "host": [
+                        "{{pf-svc-income-url}}/payroll/{{period_id}}"
+                      ]
+                    },
+                    "description": "Same unified nested shape (id/employer/period/amount) as one item of 'List payrolls' above, filtered to this period_id. Unlike that endpoint, not bound by any previous_months/future_months window -- works for any historical period_id. 404 if not found."
+                  },
+                  "response": []
+                },
                 {
                   "name": "List multiple payrolls",
                   "request": {
@@ -971,55 +1286,17 @@
                     "description": "Unifies the former separate Period range / Period summaries endpoints -- each item nests its temporal identity under 'period' ({year, month, date_range: {start, end}, timeframe: previous|current|future}) and its financial figures under 'amount' (gross_income_clp, taxable_income_clp, total_discounts_clp, net_pay_clp, net_pay_uf, net_pay_usd, net_pay_eur, increase, net_pay_clp_today); only a top-level 'id' and a nested employer object ({id, name}, null as a whole for synthetic entries) live outside those two buckets."
                   },
                   "response": []
-                },
-                {
-                  "name": "Get one payroll period",
-                  "request": {
-                    "method": "GET",
-                    "header": [
-                      {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-svc-income-api-key}}"
-                      }
-                    ],
-                    "url": {
-                      "raw": "{{pf-svc-income-url}}/payroll/{{period_id}}",
-                      "host": [
-                        "{{pf-svc-income-url}}/payroll/{{period_id}}"
-                      ]
-                    },
-                    "description": "Same unified nested shape (id/employer/period/amount) as one item of 'List payrolls' above, filtered to this period_id. Unlike that endpoint, not bound by any previous_months/future_months window -- works for any historical period_id. 404 if not found."
-                  },
-                  "response": []
                 }
               ],
               "description": ""
             },
             {
-              "name": "Delete",
+              "name": "Templates",
               "item": [
                 {
-                  "name": "Delete one period",
+                  "name": "Create a template",
                   "request": {
-                    "method": "DELETE",
-                    "header": [
-                      {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-svc-income-api-key}}"
-                      }
-                    ],
-                    "url": {
-                      "raw": "{{pf-svc-income-url}}/payroll/481",
-                      "host": [
-                        "{{pf-svc-income-url}}/payroll/481"
-                      ]
-                    }
-                  }
-                },
-                {
-                  "name": "Delete payroll (atomic batch)",
-                  "request": {
-                    "method": "DELETE",
+                    "method": "POST",
                     "header": [
                       {
                         "key": "X-Api-Key",
@@ -1031,171 +1308,135 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{pf-svc-income-url}}/payroll",
+                      "raw": "{{pf-svc-income-url}}/payroll/templates",
                       "host": [
-                        "{{pf-svc-income-url}}/payroll"
+                        "{{pf-svc-income-url}}/payroll/templates"
                       ]
                     },
+                    "description": "employer_id is required -- the employer must already have a PAY_EMPLOYER row (i.e. its first payroll import has already run; there is no standalone endpoint to create one ahead of that). It is an admin-only FK -- matching against a real PDF only ever uses employer_match_pattern. There is no employer_name field: the response's employer_name is always resolved fresh from PAY_EMPLOYER.name at read time, never stored. Every regex (employer_match_pattern and each field's pdf_label_pattern) is compile-checked before reaching the database -- an invalid one is a 422. Fields have no kind -- the server always resolves it from PAY_CONCEPT via concept_code (an unknown concept_code is a 400, not a silent guess). Returns 201. A duplicate template_id is also a 400 (see pf-svc-income/docs/api.md).",
                     "body": {
                       "mode": "raw",
-                      "raw": "{\"period_ids\": [481, 482]}",
+                      "raw": "{\n  \"template_id\": \"acme-chile-v1\",\n  \"employer_id\": 1,\n  \"employer_match_pattern\": \"(?i)acme-chile\",\n  \"version\": 1,\n  \"fields\": [\n    {\n      \"pdf_label_pattern\": \"(?i)^SUELDO$\",\n      \"concept_code\": \"SALARY_BASE\",\n      \"confidence\": 0.9\n    }\n  ]\n}",
                       "options": {
                         "raw": {
                           "language": "json"
                         }
                       }
                     }
-                  }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Deactivate a template",
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-svc-income-api-key}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-svc-income-url}}/payroll/templates/acme-chile-v1",
+                      "host": [
+                        "{{pf-svc-income-url}}/payroll/templates/acme-chile-v1"
+                      ]
+                    },
+                    "description": "Logical delete only -- sets is_active=false, never a row DELETE. A subsequent POST /payroll/pdf-preview no longer matches it, but Get one template still finds it. 404 if it doesn't exist."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get one template",
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-svc-income-api-key}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-svc-income-url}}/payroll/templates/walmart-chile-v1",
+                      "host": [
+                        "{{pf-svc-income-url}}/payroll/templates/walmart-chile-v1"
+                      ]
+                    },
+                    "description": "Found regardless of is_active status -- a direct lookup by template_id always finds it. 404 if it never existed."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "List templates",
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-svc-income-api-key}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-svc-income-url}}/payroll/templates?include_inactive=false",
+                      "host": [
+                        "{{pf-svc-income-url}}/payroll/templates"
+                      ],
+                      "query": [
+                        {
+                          "key": "include_inactive",
+                          "value": "false",
+                          "description": "Set true to also list logically-deleted (is_active=false) templates."
+                        }
+                      ]
+                    },
+                    "description": "Active-only by default."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Update a template",
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-svc-income-api-key}}"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-svc-income-url}}/payroll/templates/acme-chile-v1",
+                      "host": [
+                        "{{pf-svc-income-url}}/payroll/templates/acme-chile-v1"
+                      ]
+                    },
+                    "description": "Mutates the existing row in place -- does not create a new template_id/version (bump version in the body yourself if desired). Same body shape/validation as Create, minus template_id (taken from the path). 404 if it doesn't exist; 400 on the same constraint violations as Create.",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"employer_id\": 1,\n  \"employer_match_pattern\": \"(?i)acme-chile\",\n  \"version\": 2,\n  \"fields\": [\n    {\n      \"pdf_label_pattern\": \"(?i)^SUELDO\\\\s*BASE$\",\n      \"concept_code\": \"SALARY_BASE\",\n      \"confidence\": 0.9\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "response": []
                 }
-              ]
+              ],
+              "description": "Manages the versioned templates POST /payroll/pdf-preview matches PDFs against. Persisted in pf-db's PAY_PDF_TEMPLATE/PAY_PDF_TEMPLATE_FIELD tables, not a git-tracked file -- see https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/HIST-019-pdf-template-management/recommendation.md."
             }
           ],
           "description": ""
         },
         {
-          "name": "Templates",
-          "item": [
-            {
-              "name": "Create a template",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
-                  },
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-svc-income-url}}/payroll/templates",
-                  "host": [
-                    "{{pf-svc-income-url}}/payroll/templates"
-                  ]
-                },
-                "description": "employer_id is required -- the employer must already have a PAY_EMPLOYER row (i.e. its first payroll import has already run; there is no standalone endpoint to create one ahead of that). It is an admin-only FK -- matching against a real PDF only ever uses employer_match_pattern. There is no employer_name field: the response's employer_name is always resolved fresh from PAY_EMPLOYER.name at read time, never stored. Every regex (employer_match_pattern and each field's pdf_label_pattern) is compile-checked before reaching the database -- an invalid one is a 422. Fields have no kind -- the server always resolves it from PAY_CONCEPT via concept_code (an unknown concept_code is a 400, not a silent guess). Returns 201. A duplicate template_id is also a 400 (see pf-svc-income/docs/api.md).",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"template_id\": \"acme-chile-v1\",\n  \"employer_id\": 1,\n  \"employer_match_pattern\": \"(?i)acme-chile\",\n  \"version\": 1,\n  \"fields\": [\n    {\n      \"pdf_label_pattern\": \"(?i)^SUELDO$\",\n      \"concept_code\": \"SALARY_BASE\",\n      \"confidence\": 0.9\n    }\n  ]\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "List templates",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-svc-income-url}}/payroll/templates?include_inactive=false",
-                  "host": [
-                    "{{pf-svc-income-url}}/payroll/templates"
-                  ],
-                  "query": [
-                    {
-                      "key": "include_inactive",
-                      "value": "false",
-                      "description": "Set true to also list logically-deleted (is_active=false) templates."
-                    }
-                  ]
-                },
-                "description": "Active-only by default."
-              },
-              "response": []
-            },
-            {
-              "name": "Get one template",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-svc-income-url}}/payroll/templates/walmart-chile-v1",
-                  "host": [
-                    "{{pf-svc-income-url}}/payroll/templates/walmart-chile-v1"
-                  ]
-                },
-                "description": "Found regardless of is_active status -- a direct lookup by template_id always finds it. 404 if it never existed."
-              },
-              "response": []
-            },
-            {
-              "name": "Update a template",
-              "request": {
-                "method": "PUT",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
-                  },
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-svc-income-url}}/payroll/templates/acme-chile-v1",
-                  "host": [
-                    "{{pf-svc-income-url}}/payroll/templates/acme-chile-v1"
-                  ]
-                },
-                "description": "Mutates the existing row in place -- does not create a new template_id/version (bump version in the body yourself if desired). Same body shape/validation as Create, minus template_id (taken from the path). 404 if it doesn't exist; 400 on the same constraint violations as Create.",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"employer_id\": 1,\n  \"employer_match_pattern\": \"(?i)acme-chile\",\n  \"version\": 2,\n  \"fields\": [\n    {\n      \"pdf_label_pattern\": \"(?i)^SUELDO\\\\s*BASE$\",\n      \"concept_code\": \"SALARY_BASE\",\n      \"confidence\": 0.9\n    }\n  ]\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Deactivate a template",
-              "request": {
-                "method": "DELETE",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-svc-income-url}}/payroll/templates/acme-chile-v1",
-                  "host": [
-                    "{{pf-svc-income-url}}/payroll/templates/acme-chile-v1"
-                  ]
-                },
-                "description": "Logical delete only -- sets is_active=false, never a row DELETE. A subsequent POST /payroll/pdf-preview no longer matches it, but Get one template still finds it. 404 if it doesn't exist."
-              },
-              "response": []
-            }
-          ],
-          "description": "Manages the versioned templates POST /payroll/pdf-preview matches PDFs against. Persisted in pf-db's PAY_PDF_TEMPLATE/PAY_PDF_TEMPLATE_FIELD tables, not a git-tracked file -- see https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/HIST-019-pdf-template-management/recommendation.md."
-        },
-        {
           "name": "Reference data",
           "item": [
             {
-              "name": "Pension institutions",
+              "name": "Contribution caps",
               "request": {
                 "method": "GET",
                 "header": [
@@ -1205,9 +1446,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-svc-income-url}}/reference-data/pension-institutions",
+                  "raw": "{{pf-svc-income-url}}/reference-data/contribution-caps",
                   "host": [
-                    "{{pf-svc-income-url}}/reference-data/pension-institutions"
+                    "{{pf-svc-income-url}}/reference-data/contribution-caps"
                   ]
                 },
                 "description": ""
@@ -1235,26 +1476,6 @@
               "response": []
             },
             {
-              "name": "Pension plans",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-svc-income-url}}/reference-data/pension-plans",
-                  "host": [
-                    "{{pf-svc-income-url}}/reference-data/pension-plans"
-                  ]
-                },
-                "description": ""
-              },
-              "response": []
-            },
-            {
               "name": "Health plans",
               "request": {
                 "method": "GET",
@@ -1268,26 +1489,6 @@
                   "raw": "{{pf-svc-income-url}}/reference-data/health-plans",
                   "host": [
                     "{{pf-svc-income-url}}/reference-data/health-plans"
-                  ]
-                },
-                "description": ""
-              },
-              "response": []
-            },
-            {
-              "name": "Contribution caps",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-svc-income-url}}/reference-data/contribution-caps",
-                  "host": [
-                    "{{pf-svc-income-url}}/reference-data/contribution-caps"
                   ]
                 },
                 "description": ""
@@ -1313,253 +1514,52 @@
                 "description": ""
               },
               "response": []
+            },
+            {
+              "name": "Pension institutions",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-svc-income-api-key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-svc-income-url}}/reference-data/pension-institutions",
+                  "host": [
+                    "{{pf-svc-income-url}}/reference-data/pension-institutions"
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Pension plans",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-svc-income-api-key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-svc-income-url}}/reference-data/pension-plans",
+                  "host": [
+                    "{{pf-svc-income-url}}/reference-data/pension-plans"
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
             }
           ],
           "description": ""
-        },
-        {
-          "name": "Employer",
-          "item": [
-            {
-              "name": "List employers",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-svc-income-url}}/payroll/employers",
-                  "host": [
-                    "{{pf-svc-income-url}}/payroll/employers"
-                  ]
-                },
-                "description": "Lists employers with nested contracts. Each nested contract contains id, started_at, ended_at, is_indefinite, position, and is_in_effect; the employer is not repeated."
-              }
-            },
-            {
-              "name": "Create or update employers",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
-                  },
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-svc-income-url}}/payroll/employers",
-                  "host": [
-                    "{{pf-svc-income-url}}/payroll/employers"
-                  ]
-                },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"employers\": [\n    {\n      \"name\": \"Synthetic Employer\",\n      \"tax_id\": \"synthetic-tax-id\",\n      \"country_code\": \"CL\"\n    }\n  ]\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "description": "Atomic batch: omit id to create; include an existing id to update. Do not use this request as a negative-test fixture."
-              }
-            },
-            {
-              "name": "List contracts",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-svc-income-url}}/payroll/contracts",
-                  "host": [
-                    "{{pf-svc-income-url}}/payroll/contracts"
-                  ]
-                },
-                "description": "Lists contracts as { id, employer: { id, name }, started_at, ended_at, is_indefinite, position, is_in_effect }. is_in_effect reflects today's date within the contract interval."
-              }
-            },
-            {
-              "name": "Create or update contracts",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
-                  },
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-svc-income-url}}/payroll/contracts",
-                  "host": [
-                    "{{pf-svc-income-url}}/payroll/contracts"
-                  ]
-                },
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"contracts\": [\n    {\n      \"employer_id\": 1,\n      \"started_at\": \"2026-01-01\",\n      \"ended_at\": null,\n      \"is_indefinite\": true,\n      \"position\": \"Synthetic position\"\n    }\n  ]\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "description": "Atomic batch: contracts require a persisted employer_id and started_at."
-              }
-            },
-            {
-              "name": "Delete employers",
-              "request": {
-                "method": "DELETE",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
-                  },
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"ids\": [1]\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{pf-svc-income-url}}/payroll/employers",
-                  "host": [
-                    "{{pf-svc-income-url}}/payroll/employers"
-                  ]
-                },
-                "description": "Operational deletion by stable IDs. Use only with IDs whose dependency guards permit deletion."
-              }
-            },
-            {
-              "name": "Delete contracts",
-              "request": {
-                "method": "DELETE",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
-                  },
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"ids\": [1]\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{pf-svc-income-url}}/payroll/contracts",
-                  "host": [
-                    "{{pf-svc-income-url}}/payroll/contracts"
-                  ]
-                },
-                "description": "Operational deletion by stable IDs. Use only with IDs whose dependency guards permit deletion."
-              }
-            }
-          ]
         }
       ],
       "description": "See modules/pf-svc-income/docs/api.md for the full reference."
-    },
-    {
-      "name": "pf-sheets",
-      "item": [
-        {
-          "name": "GET_CLP (single lookup)",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{pf_sheets_webapp_url}}?date=2026-09-15&code=USD&key={{pf_sheets_api_key}}",
-              "host": [
-                "{{pf_sheets_webapp_url}}"
-              ],
-              "query": [
-                {
-                  "key": "date",
-                  "value": "2026-09-15"
-                },
-                {
-                  "key": "code",
-                  "value": "USD"
-                },
-                {
-                  "key": "key",
-                  "value": "{{pf_sheets_api_key}}"
-                }
-              ]
-            },
-            "description": "Plain-text response: a bare number, 'Unauthorized', 'Missing parameters', or 'Not found'."
-          },
-          "response": []
-        },
-        {
-          "name": "GET_CLP_RANGE (batch lookup)",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{pf_sheets_webapp_url}}?key={{pf_sheets_api_key}}",
-              "host": [
-                "{{pf_sheets_webapp_url}}"
-              ],
-              "query": [
-                {
-                  "key": "key",
-                  "value": "{{pf_sheets_api_key}}"
-                }
-              ]
-            },
-            "description": "JSON array response, same order/length as 'pairs'. Max 500 real pairs per request.",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"pairs\": [\n    {\n      \"date\": \"2026-09-15\",\n      \"code\": \"USD\"\n    },\n    {\n      \"date\": \"2026-09-16\",\n      \"code\": \"USD\"\n    }\n  ]\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": []
-        }
-      ],
-      "description": "Apps Script Web App -- see modules/pf-sheets/docs/api.md. pf-db has no HTTP API (DDL/migrations only), so it has no folder here."
     }
   ],
   "variable": [

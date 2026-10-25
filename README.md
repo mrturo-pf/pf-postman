@@ -122,6 +122,14 @@ variables instead of a third environment. `pf_sheets_webapp_url` is committed wi
 real value (an Apps Script deployment URL isn't a secret by itself); `pf_sheets_api_key`
 follows the same empty-in-git / injected-at-sync-time pattern as every other api-key.
 
+### Collection ordering
+
+Keep the collection deterministically ordered at every level: top-level service
+folders, nested folders, subfolders, and requests must be sorted alphabetically by
+`name`, using case-insensitive comparison. When adding or moving an item, reorder
+its containing `item` array before committing so the JSON remains easy to review
+and diffs do not depend on insertion history.
+
 ## Request selection policy
 
 The committed Postman collection is an **operational contract catalog**, not a
