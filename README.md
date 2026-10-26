@@ -150,7 +150,9 @@ tiers.
 collection containing only `GET`, `HEAD`, and `OPTIONS` requests, then runs it with
 Newman and produces a JUnit report. It excludes `pf-sheets` by default because its
 committed URL is an external Web App; pass `--include-sheets` only when that call is
-explicitly approved. It never changes the committed collection.
+explicitly approved. Specific export-job status requests are also excluded by
+default because job IDs are not stable fixtures; pass `--include-job-status` only
+when a valid job ID is prepared. It never changes the committed collection.
 
 Install Newman and run locally with a materialized environment:
 
