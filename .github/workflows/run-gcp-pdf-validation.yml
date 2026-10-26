@@ -65,13 +65,17 @@ jobs:
           Path(sys.argv[2]).write_text(json.dumps(payload))
           print(f"preview template={preview['template_id']} rows={len(preview['rows'])}")
           PY
-          import_status=$(curl --fail --silent --show-error --max-time 90 \
+          import_status=$(curl --silent --show-error --max-time 90 \
             --output "$RUNNER_TEMP/import-response.json" --write-out '%{http_code}' \
             -X POST "${SERVICE_URL%/}/payroll/import/json" \
             -H "X-Api-Key: ${API_KEY}" \
             -H 'Content-Type: application/json' \
             --data-binary "@${RUNNER_TEMP}/import.json")
-          test "$import_status" = 200
+          if [ "$import_status" != "200" ]; then
+            echo "::error::GCP JSON validate returned HTTP ${import_status}. Sanitized response follows:" >&2
+            cat "$RUNNER_TEMP/import-response.json" >&2
+            exit 1
+          fi
           python3 - "$RUNNER_TEMP/import-response.json" <<'PY'
           import json
           import sys
