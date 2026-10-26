@@ -20,15 +20,22 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--income-url", default="http://localhost:8000")
     parser.add_argument("--rates-key-env", default="PF_RATES_API_KEY")
     parser.add_argument("--income-key-env", default="PF_INCOME_API_KEY")
+    parser.add_argument(
+        "--allow-remote",
+        action="store_true",
+        help="Allow explicitly supplied non-loopback URLs; use only for the read-only GCP workflow.",
+    )
     return parser.parse_args()
 
 
-def local_url(value: str) -> str:
-    """Reject non-loopback targets."""
-    hostname = urlparse(value).hostname
-    if hostname not in {"localhost", "127.0.0.1", "::1"}:
-        raise ValueError("Error-contract checker accepts loopback URLs only")
-    return value.rstrip("/")
+def target_url(value: str, allow_remote: bool) -> str:
+    """Validate loopback targets, or explicitly approved HTTPS remote targets."""
+    parsed = urlparse(value)
+    if parsed.scheme == "http" and parsed.hostname in {"localhost", "127.0.0.1", "::1"}:
+        return value.rstrip("/")
+    if allow_remote and parsed.scheme == "https" and parsed.hostname:
+        return value.rstrip("/")
+    raise ValueError("Error-contract checker accepts loopback URLs, or explicit HTTPS remote mode")
 
 
 def request_status(
@@ -58,8 +65,8 @@ def main() -> int:
     """Run safe local error-contract cases."""
     arguments = parse_args()
     try:
-        rates_url = local_url(arguments.rates_url)
-        income_url = local_url(arguments.income_url)
+        rates_url = target_url(arguments.rates_url, arguments.allow_remote)
+        income_url = target_url(arguments.income_url, arguments.allow_remote)
         rates_key = os.environ.get(arguments.rates_key_env, "")
         income_key = os.environ.get(arguments.income_key_env, "")
         if not rates_key or not income_key:

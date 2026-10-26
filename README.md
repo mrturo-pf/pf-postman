@@ -138,6 +138,11 @@ python3 scripts/check-api-coverage.py \
 ```
 
 The manual workflow
+[`run-gcp-error-contracts.yml`](.github/workflows/run-gcp-error-contracts.yml)
+checks expected `403`, `404`, and `400/422` responses against explicitly supplied
+HTTPS GCP URLs using the GCP API-key secrets. It is read-only.
+
+The manual workflow
 [`run-api-coverage.yml`](.github/workflows/run-api-coverage.yml) accepts those
 read-only URLs, stores snapshots only in the ephemeral Actions runner directory,
 and fails when coverage differs. This coverage check is the first layer of

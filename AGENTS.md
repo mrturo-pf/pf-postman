@@ -83,7 +83,8 @@ git diff --check
   path and must remain loopback-only with disposable database reset cleanup.
 - Local error-contract checks may exercise expected `401/403`, `404`, and
   `400/422` responses without persisting data; do not add them to the happy-path
-  smoke tier.
+  smoke tier. Remote error checks require the explicit HTTPS-only workflow and
+  approved GCP target.
 - The local integration runner must reject non-loopback URLs, generate unique
   synthetic identifiers, and attempt cleanup in `finally`. The disposable wrapper
   may reset only the local database after creating a backup. Never run either

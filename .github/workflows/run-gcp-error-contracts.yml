@@ -1,0 +1,37 @@
+name: CI / Check GCP error contracts
+
+on:
+  workflow_dispatch:
+    inputs:
+      pf_rates_url:
+        description: "pf-rates HTTPS base URL"
+        required: true
+        type: string
+      pf_svc_income_url:
+        description: "pf-svc-income HTTPS base URL"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  errors:
+    name: Read-only GCP error contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check expected GCP errors
+        env:
+          PF_RATES_URL: ${{ inputs.pf_rates_url }}
+          PF_SVC_INCOME_URL: ${{ inputs.pf_svc_income_url }}
+          PF_RATES_API_KEY: ${{ secrets.PF_RATES_API_KEY_GCP }}
+          PF_INCOME_API_KEY: ${{ secrets.PF_SVC_INCOME_API_KEY_GCP }}
+        run: |
+          set -euo pipefail
+          test -n "$PF_RATES_API_KEY" && test -n "$PF_INCOME_API_KEY"
+          python3 scripts/check-local-error-contracts.py \
+            --allow-remote \
+            --rates-url "$PF_RATES_URL" \
+            --income-url "$PF_SVC_INCOME_URL"
