@@ -104,14 +104,14 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/economic-indices/value?code=UF&year=2026&month=1",
+                  "raw": "{{pf-rates-url}}/economic-indices/value?code=IPC_CL&year=2026&month=1",
                   "host": [
                     "{{pf-rates-url}}/economic-indices/value"
                   ],
                   "query": [
                     {
                       "key": "code",
-                      "value": "UF"
+                      "value": "IPC_CL"
                     },
                     {
                       "key": "year",
@@ -138,14 +138,14 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/economic-indices?code=UF",
+                  "raw": "{{pf-rates-url}}/economic-indices?code=IPC_CL",
                   "host": [
                     "{{pf-rates-url}}/economic-indices"
                   ],
                   "query": [
                     {
                       "key": "code",
-                      "value": "UF"
+                      "value": "IPC_CL"
                     }
                   ]
                 },
