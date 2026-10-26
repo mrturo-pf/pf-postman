@@ -163,6 +163,16 @@ python3 scripts/run-postman-smoke.py \
 
 Use `--include-sheets` only for an explicitly approved external Web App check.
 
+[`scripts/generate-synthetic-payroll-pdf.py`](scripts/generate-synthetic-payroll-pdf.py)
+generates the stable local PDF fixture used by the preview → JSON validation flow:
+
+```bash
+python3 scripts/generate-synthetic-payroll-pdf.py \
+  --output /tmp/pf-synthetic-payroll.pdf
+```
+
+The fixture contains no real payroll data and is written to a temporary path.
+
 The manual [`run-postman-smoke.yml`](.github/workflows/run-postman-smoke.yml)
 workflow injects API keys into an ephemeral environment file and supports LOCAL or
 GCP targets. It is intentionally read-only; imports, refreshes, creates, updates,
