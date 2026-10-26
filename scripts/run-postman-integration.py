@@ -78,6 +78,16 @@ def matching_id(body: object, key: str, field: str, expected: object) -> int:
     raise ValueError(f"Response did not contain a {key} item matching {field}={expected!r}")
 
 
+def require_object_fields(body: object, fields: tuple[str, ...], context: str) -> dict[str, object]:
+    """Assert a JSON object contains the domain fields required by a workflow."""
+    if not isinstance(body, dict):
+        raise ValueError(f"{context} response was not an object")
+    missing = [field for field in fields if field not in body]
+    if missing:
+        raise ValueError(f"{context} response is missing fields: {', '.join(missing)}")
+    return body
+
+
 class LocalApi:
     """Minimal JSON client for the local income service."""
 
@@ -126,18 +136,37 @@ def run_workflow(client: LocalApi, *, defer_cleanup: bool = False) -> None:
             {"contracts": [{"employer_id": employer_id, "started_at": "2026-01-01", "ended_at": None, "is_indefinite": True, "position": "Synthetic integration position"}]},
         )
         contract_id = matching_id(contracts, "contracts", "employer_id", employer_id)
-        client.request(
-            "POST",
-            "/payroll/templates",
-            {"template_id": template_id, "employer_id": employer_id, "employer_match_pattern": f"(?i){token}", "version": 1, "fields": [{"pdf_label_pattern": "(?i)^SUELDO$", "concept_code": "SALARY_BASE", "confidence": 0.9}]},
+        created_template = require_object_fields(
+            client.request(
+                "POST",
+                "/payroll/templates",
+                {"template_id": template_id, "employer_id": employer_id, "employer_match_pattern": f"(?i){token}", "version": 1, "fields": [{"pdf_label_pattern": "(?i)^SUELDO$", "concept_code": "SALARY_BASE", "confidence": 0.9}]},
+            ),
+            ("template_id", "version", "fields", "is_active"),
+            "Create template",
         )
+        if created_template["template_id"] != template_id or created_template["version"] != 1:
+            raise ValueError("Create template response did not echo the fixture identity/version")
         template_created = True
-        client.request(
-            "PUT",
-            f"/payroll/templates/{template_id}",
-            {"employer_id": employer_id, "employer_match_pattern": f"(?i){token}", "version": 2, "fields": [{"pdf_label_pattern": "(?i)^SUELDO\\s*BASE$", "concept_code": "SALARY_BASE", "confidence": 0.95}]},
+        updated_template = require_object_fields(
+            client.request(
+                "PUT",
+                f"/payroll/templates/{template_id}",
+                {"employer_id": employer_id, "employer_match_pattern": f"(?i){token}", "version": 2, "fields": [{"pdf_label_pattern": "(?i)^SUELDO\\s*BASE$", "concept_code": "SALARY_BASE", "confidence": 0.95}]},
+            ),
+            ("template_id", "version", "fields", "is_active"),
+            "Update template",
         )
-        print("Integration workflow passed: employer, contract, template create/update")
+        if updated_template["template_id"] != template_id or updated_template["version"] != 2:
+            raise ValueError("Update template response did not echo the fixture identity/version")
+        reread_template = require_object_fields(
+            client.request("GET", f"/payroll/templates/{template_id}"),
+            ("template_id", "version", "fields", "is_active"),
+            "Get updated template",
+        )
+        if reread_template["version"] != 2:
+            raise ValueError("Updated template could not be read back with version 2")
+        print("Integration workflow passed: employer, contract, template create/update/read")
     except Exception as error:  # noqa: BLE001 - cleanup must preserve the primary error
         primary_error = error
     finally:
