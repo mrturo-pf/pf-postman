@@ -79,6 +79,8 @@ git diff --check
 - The `run-postman-smoke.yml` workflow may execute only the generated read-only
   subset. Mutating, destructive, provider-refresh, and job-stop requests require
   isolated fixtures and a separate explicit safety boundary.
+- The `run-postman-integration-local.yml` workflow is the only automated mutation
+  path and must remain loopback-only with disposable database reset cleanup.
 - The local integration runner must reject non-loopback URLs, generate unique
   synthetic identifiers, and attempt cleanup in `finally`. The disposable wrapper
   may reset only the local database after creating a backup. Never run either

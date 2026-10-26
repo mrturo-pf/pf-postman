@@ -168,6 +168,12 @@ workflow injects API keys into an ephemeral environment file and supports LOCAL 
 GCP targets. It is intentionally read-only; imports, refreshes, creates, updates,
 deletes, and stop-job requests require a separate safety boundary.
 
+The [`run-postman-integration-local.yml`](.github/workflows/run-postman-integration-local.yml)
+workflow is the disposable LOCAL gate. It checks out the PF services, boots a
+PostgreSQL test database, runs OpenAPI coverage and read-only smoke tests, executes
+synthetic mutations, resets the database on exit, and uploads JUnit/log artifacts.
+It has no GCP, Neon, or production target.
+
 ### Local integration fixtures
 
 [`scripts/run-postman-integration.py`](scripts/run-postman-integration.py) runs a

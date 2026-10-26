@@ -21,10 +21,17 @@ case "${PF_INCOME_BASE_URL:-http://localhost:8000}" in
   *) printf 'Refusing non-loopback PF_INCOME_BASE_URL\n' >&2; exit 2 ;;
 esac
 
+compose_exec() {
+  if command -v nerdctl >/dev/null 2>&1; then
+    nerdctl --address /var/run/docker/containerd/containerd.sock \
+      compose -f "$DB_ROOT/docker-compose.yml" "$@"
+  else
+    docker compose -f "$DB_ROOT/docker-compose.yml" "$@"
+  fi
+}
+
 backup_database() {
-  nerdctl --address /var/run/docker/containerd/containerd.sock \
-    compose -f "$DB_ROOT/docker-compose.yml" exec -T db \
-    pg_dump -U pf_db -d pf_db --format=custom >"$BACKUP_PATH"
+  compose_exec exec -T db pg_dump -U pf_db -d pf_db --format=custom >"$BACKUP_PATH"
   chmod 600 "$BACKUP_PATH"
   printf 'Local database backup: %s\n' "$BACKUP_PATH"
 }

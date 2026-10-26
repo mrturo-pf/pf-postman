@@ -1,0 +1,136 @@
+name: CI / Run local Postman integration
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  integration:
+    name: Local API coverage, smoke, and mutation fixtures
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout pf-postman
+        uses: actions/checkout@v4
+        with:
+          path: postman
+
+      - name: Checkout pf-common
+        uses: actions/checkout@v4
+        with:
+          repository: mrturo-pf/pf-common
+          path: modules/pf-common
+
+      - name: Checkout pf-db
+        uses: actions/checkout@v4
+        with:
+          repository: mrturo-pf/pf-db
+          path: modules/pf-db
+
+      - name: Checkout pf-rates
+        uses: actions/checkout@v4
+        with:
+          repository: mrturo-pf/pf-rates
+          path: modules/pf-rates
+
+      - name: Checkout pf-svc-income
+        uses: actions/checkout@v4
+        with:
+          repository: mrturo-pf/pf-svc-income
+          path: modules/pf-svc-income
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            modules/pf-rates/pyproject.toml
+            modules/pf-svc-income/pyproject.toml
+
+      - name: Install service dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e modules/pf-rates
+          python -m pip install -e modules/pf-svc-income
+
+      - name: Set up Node.js and Newman
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Newman
+        run: npm install --global newman
+
+      - name: Bootstrap disposable PostgreSQL
+        working-directory: modules/pf-db
+        run: make local-up-test
+
+      - name: Start local APIs
+        env:
+          PF_DATABASE_URL: postgresql+asyncpg://pf_db:pf_db@localhost:5432/pf_db
+          PF_RATES_API_KEY: local-rates-key
+          PF_INCOME_API_KEY: local-income-key
+          PF_RATES_URL: http://localhost:8001
+        run: |
+          set -euo pipefail
+          (cd modules/pf-rates && python -m uvicorn rates.interfaces.api.main:app --host 127.0.0.1 --port 8001 >"$RUNNER_TEMP/pf-rates.log" 2>&1 & echo $! >"$RUNNER_TEMP/pf-rates.pid")
+          (cd modules/pf-svc-income && python -m uvicorn payroll.interfaces.api.main:app --host 127.0.0.1 --port 8000 >"$RUNNER_TEMP/pf-svc-income.log" 2>&1 & echo $! >"$RUNNER_TEMP/pf-svc-income.pid")
+          for attempt in $(seq 1 60); do
+            if curl --silent --fail http://localhost:8001/health >/dev/null && curl --silent --fail http://localhost:8000/health >/dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          cat "$RUNNER_TEMP/pf-rates.log" "$RUNNER_TEMP/pf-svc-income.log"
+          exit 1
+
+      - name: Fetch OpenAPI snapshots
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error http://localhost:8001/openapi.json -o "$RUNNER_TEMP/pf-rates-openapi.json"
+          curl --fail --silent --show-error http://localhost:8000/openapi.json -o "$RUNNER_TEMP/pf-svc-income-openapi.json"
+
+      - name: Check OpenAPI to Postman coverage
+        working-directory: postman
+        run: |
+          python3 scripts/check-api-coverage.py \
+            --openapi pf-rates="$RUNNER_TEMP/pf-rates-openapi.json" \
+            --openapi pf-svc-income="$RUNNER_TEMP/pf-svc-income-openapi.json"
+
+      - name: Materialize local Postman environment
+        working-directory: postman
+        run: |
+          jq \
+            --arg rates_key "local-rates-key" \
+            --arg income_key "local-income-key" \
+            '.values[] |= if .key == "pf-rates-api-key" then .value = $rates_key
+              elif .key == "pf-svc-income-api-key" then .value = $income_key
+              else . end' \
+            pf-ecosystem.postman_environment.local.json \
+            > "$RUNNER_TEMP/postman-local-environment.json"
+
+      - name: Run local read-only smoke tests
+        working-directory: postman
+        run: |
+          python3 scripts/run-postman-smoke.py \
+            --environment "$RUNNER_TEMP/postman-local-environment.json" \
+            --report "$RUNNER_TEMP/postman-smoke.xml"
+
+      - name: Run local mutation fixtures with reset cleanup
+        working-directory: postman
+        env:
+          PF_INCOME_API_KEY: local-income-key
+        run: scripts/run-local-integration.sh
+
+      - name: Upload JUnit reports and service logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: postman-local-integration-reports
+          path: |
+            ${{ runner.temp }}/postman-smoke.xml
+            ${{ runner.temp }}/pf-rates.log
+            ${{ runner.temp }}/pf-svc-income.log
+          if-no-files-found: ignore
