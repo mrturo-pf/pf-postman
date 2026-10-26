@@ -85,6 +85,8 @@ git diff --check
   `400/422` responses without persisting data; do not add them to the happy-path
   smoke tier. Remote error checks require the explicit HTTPS-only workflow and
   approved GCP target.
+- `run-gcp-pdf-validation.yml` may use only the synthetic PDF and import
+  `mode=validate`; it must not upload response bodies or persist payroll data.
 - The local integration runner must reject non-loopback URLs, generate unique
   synthetic identifiers, and attempt cleanup in `finally`. The disposable wrapper
   may reset only the local database after creating a backup. Never run either

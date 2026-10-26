@@ -142,6 +142,10 @@ The manual workflow
 checks expected `403`, `404`, and `400/422` responses against explicitly supplied
 HTTPS GCP URLs using the GCP API-key secrets. It is read-only.
 
+The manual [`run-gcp-pdf-validation.yml`](.github/workflows/run-gcp-pdf-validation.yml)
+uses a synthetic PDF against GCP, asserts template/row resolution, and sends the
+result to `mode=validate` only. It does not persist data or upload response bodies.
+
 The manual workflow
 [`run-api-coverage.yml`](.github/workflows/run-api-coverage.yml) accepts those
 read-only URLs, stores snapshots only in the ephemeral Actions runner directory,
