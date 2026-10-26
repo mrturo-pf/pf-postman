@@ -53,6 +53,11 @@ def parse_args() -> argparse.Namespace:
         help="Include status for a specific export job ID; disabled by default because IDs are not stable fixtures.",
     )
     parser.add_argument(
+        "--include-payroll-period",
+        action="store_true",
+        help="Include a specific payroll period ID; disabled by default because IDs are not stable fixtures.",
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Write the filtered collection and print its request count without running Newman.",
@@ -69,7 +74,9 @@ def read_json(path: Path) -> dict[str, Any]:
     return value
 
 
-def filter_items(items: list[Any], include_job_status: bool = False) -> tuple[list[Any], int]:
+def filter_items(
+    items: list[Any], include_job_status: bool = False, include_payroll_period: bool = False
+) -> tuple[list[Any], int]:
     """Keep only read-only requests while preserving folder structure."""
     filtered: list[Any] = []
     request_count = 0
@@ -77,6 +84,8 @@ def filter_items(items: list[Any], include_job_status: bool = False) -> tuple[li
         if not isinstance(item, dict):
             continue
         if item.get("name") == "Get export job status" and not include_job_status:
+            continue
+        if item.get("name") == "Get one payroll period" and not include_payroll_period:
             continue
         request = item.get("request")
         if isinstance(request, dict):
@@ -86,7 +95,9 @@ def filter_items(items: list[Any], include_job_status: bool = False) -> tuple[li
             continue
         children = item.get("item")
         if isinstance(children, list):
-            child_items, child_count = filter_items(children, include_job_status)
+            child_items, child_count = filter_items(
+                children, include_job_status, include_payroll_period
+            )
             if child_items:
                 folder = dict(item)
                 folder["item"] = child_items
@@ -96,7 +107,10 @@ def filter_items(items: list[Any], include_job_status: bool = False) -> tuple[li
 
 
 def build_smoke_collection(
-    collection: dict[str, Any], include_sheets: bool = False, include_job_status: bool = False
+    collection: dict[str, Any],
+    include_sheets: bool = False,
+    include_job_status: bool = False,
+    include_payroll_period: bool = False,
 ) -> tuple[dict[str, Any], int]:
     """Return a collection containing only read-only requests."""
     smoke = dict(collection)
@@ -119,6 +133,7 @@ def main() -> int:
             collection,
             include_sheets=arguments.include_sheets,
             include_job_status=arguments.include_job_status,
+            include_payroll_period=arguments.include_payroll_period,
         )
         if request_count == 0:
             raise ValueError("No read-only requests found in the collection")
