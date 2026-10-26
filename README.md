@@ -187,7 +187,9 @@ The [`run-postman-integration-local.yml`](.github/workflows/run-postman-integrat
 workflow is the disposable LOCAL gate. It checks out the PF services, boots a
 PostgreSQL test database, runs OpenAPI coverage and read-only smoke tests, executes
 synthetic mutations, resets the database on exit, and uploads JUnit/log artifacts.
-It has no GCP, Neon, or production target.
+It has no GCP, Neon, or production target. It also runs the loopback-only
+`check-local-error-contracts.py` cases for invalid auth, missing resources, and
+invalid import payloads.
 
 ### Local integration fixtures
 

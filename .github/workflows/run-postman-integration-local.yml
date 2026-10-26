@@ -111,6 +111,13 @@ jobs:
             pf-ecosystem.postman_environment.local.json \
             > "$RUNNER_TEMP/postman-local-environment.json"
 
+      - name: Check local error contracts
+        working-directory: postman
+        env:
+          PF_RATES_API_KEY: local-rates-key
+          PF_INCOME_API_KEY: local-income-key
+        run: python3 scripts/check-local-error-contracts.py
+
       - name: Run local read-only smoke tests
         working-directory: postman
         run: |

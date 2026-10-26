@@ -81,6 +81,9 @@ git diff --check
   isolated fixtures and a separate explicit safety boundary.
 - The `run-postman-integration-local.yml` workflow is the only automated mutation
   path and must remain loopback-only with disposable database reset cleanup.
+- Local error-contract checks may exercise expected `401/403`, `404`, and
+  `400/422` responses without persisting data; do not add them to the happy-path
+  smoke tier.
 - The local integration runner must reject non-loopback URLs, generate unique
   synthetic identifiers, and attempt cleanup in `finally`. The disposable wrapper
   may reset only the local database after creating a backup. Never run either
