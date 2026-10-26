@@ -58,6 +58,11 @@ def parse_args() -> argparse.Namespace:
         help="Include a specific payroll period ID; disabled by default because IDs are not stable fixtures.",
     )
     parser.add_argument(
+        "--include-template",
+        action="store_true",
+        help="Include a specific template ID; disabled by default because IDs are not stable fixtures.",
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Write the filtered collection and print its request count without running Newman.",
@@ -75,7 +80,10 @@ def read_json(path: Path) -> dict[str, Any]:
 
 
 def filter_items(
-    items: list[Any], include_job_status: bool = False, include_payroll_period: bool = False
+    items: list[Any],
+    include_job_status: bool = False,
+    include_payroll_period: bool = False,
+    include_template: bool = False,
 ) -> tuple[list[Any], int]:
     """Keep only read-only requests while preserving folder structure."""
     filtered: list[Any] = []
@@ -87,6 +95,8 @@ def filter_items(
             continue
         if item.get("name") == "Get one payroll period" and not include_payroll_period:
             continue
+        if item.get("name") == "Get one template" and not include_template:
+            continue
         request = item.get("request")
         if isinstance(request, dict):
             if str(request.get("method", "")).upper() in READ_ONLY_METHODS:
@@ -96,7 +106,7 @@ def filter_items(
         children = item.get("item")
         if isinstance(children, list):
             child_items, child_count = filter_items(
-                children, include_job_status, include_payroll_period
+                children, include_job_status, include_payroll_period, include_template
             )
             if child_items:
                 folder = dict(item)
@@ -111,6 +121,7 @@ def build_smoke_collection(
     include_sheets: bool = False,
     include_job_status: bool = False,
     include_payroll_period: bool = False,
+    include_template: bool = False,
 ) -> tuple[dict[str, Any], int]:
     """Return a collection containing only read-only requests."""
     smoke = dict(collection)
@@ -119,7 +130,9 @@ def build_smoke_collection(
         for item in collection.get("item", [])
         if include_sheets or not isinstance(item, dict) or item.get("name") != "pf-sheets"
     ]
-    items, request_count = filter_items(source_items)
+    items, request_count = filter_items(
+        source_items, include_job_status, include_payroll_period, include_template
+    )
     smoke["item"] = items
     return smoke, request_count
 
@@ -134,6 +147,7 @@ def main() -> int:
             include_sheets=arguments.include_sheets,
             include_job_status=arguments.include_job_status,
             include_payroll_period=arguments.include_payroll_period,
+            include_template=arguments.include_template,
         )
         if request_count == 0:
             raise ValueError("No read-only requests found in the collection")

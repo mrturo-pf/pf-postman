@@ -153,8 +153,9 @@ committed URL is an external Web App; pass `--include-sheets` only when that cal
 explicitly approved. Specific export-job status requests are also excluded by
 default because job IDs are not stable fixtures; pass `--include-job-status` only
 when a valid job ID is prepared. Specific payroll period IDs are also excluded by
-default; pass `--include-payroll-period` only with a valid fixture ID. It never
-changes the committed collection.
+default; pass `--include-payroll-period` only with a valid fixture ID. Specific
+template IDs are also excluded by default; pass `--include-template` only with a
+valid fixture ID. It never changes the committed collection.
 
 Install Newman and run locally with a materialized environment:
 
