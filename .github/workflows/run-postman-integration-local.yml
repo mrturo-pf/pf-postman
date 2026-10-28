@@ -66,8 +66,8 @@ jobs:
       - name: Bootstrap disposable PostgreSQL
         working-directory: modules/pf-db
         run: |
-          make local-up-real
-          make seed-test
+          make local-up-test
+          make seed-real
 
       - name: Start local APIs
         env:
