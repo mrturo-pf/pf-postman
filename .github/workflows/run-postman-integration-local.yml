@@ -52,6 +52,7 @@ jobs:
       - name: Install service dependencies
         run: |
           python -m pip install --upgrade pip
+          python -m pip install -e modules/pf-db
           python -m pip install -e modules/pf-rates
           python -m pip install -e modules/pf-svc-income
 
@@ -66,8 +67,8 @@ jobs:
       - name: Bootstrap disposable PostgreSQL
         working-directory: modules/pf-db
         run: |
-          make local-up-test
-          make seed-real
+          make local-up-real
+          make seed-test
 
       - name: Start local APIs
         env:
