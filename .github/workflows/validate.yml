@@ -1,6 +1,12 @@
 name: CI / Validate Postman assets
 
 on:
+  pull_request:
+    paths:
+      - "pf-ecosystem.postman_collection.json"
+      - "pf-ecosystem.postman_environment.local.json"
+      - "pf-ecosystem.postman_environment.gcp.json"
+      - ".github/workflows/validate.yml"
   push:
     branches: [main]
     paths:

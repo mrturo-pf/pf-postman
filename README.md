@@ -34,6 +34,82 @@ This is a **one-way sync: repo → Postman.** Edits made directly in the Postman
 than an api-key value, see below), export it and overwrite the matching JSON file here,
 or it gets clobbered on the next push.
 
+## CI trigger policy
+
+The policy below is the execution contract for this repository. It separates
+repository validation from requests that can mutate a service, call an external
+provider, or create a Google Drive artifact.
+
+| Change or operation | Automatic trigger | Manual trigger | Safety boundary |
+|---|---|---|---|
+| Collection, environment, or validation-workflow JSON/YAML | `validate.yml` on pull requests and pushes to `main` | `workflow_dispatch` for an intentional rerun | JSON/whitespace checks only; no HTTP calls |
+| Collection publication to Postman | Push to `main` after validation | `sync-postman.yml` dispatch for an approved retry | Secrets are injected into throwaway files; repository JSON stays sanitized |
+| OpenAPI or service-contract changes | Owning service CI remains authoritative; the Postman repository does not guess a target | Dispatch `run-api-coverage.yml` with explicit read-only OpenAPI URLs | Fetch only HTTPS/read-only `/openapi.json`; no API key or mutation |
+| Disposable fixtures or Postman runner changes | No remote execution | Dispatch `run-postman-integration-local.yml` | Loopback services, disposable database, synthetic identifiers, cleanup in `finally` |
+| Read-only smoke against LOCAL/GCP | No automatic remote execution | Dispatch `run-postman-smoke.yml` with explicit target and URLs | Bounded read-only subset; GCP requires explicit target selection and secrets |
+| Expected GCP error contracts | No automatic remote execution | Dispatch `run-gcp-error-contracts.yml` with explicit HTTPS URLs | Read-only `401/403`, `404`, and validation cases only |
+| Provider refresh, create/update/delete, destructive requests, async exports | Never automatic | Separate approved operator workflow only | Explicit non-production target, bounded timeout/window, synthetic fixture, cleanup evidence |
+
+A pull request that changes collection assets must pass validation before merge.
+A change to a service OpenAPI or contract must run the owning service checks and
+then the explicit Postman coverage workflow before release evidence is accepted.
+Cross-repository CI is intentionally not triggered by untrusted remote URLs or by
+committed API keys. Manual workflows must not be added to the default smoke subset
+without updating this policy and the IMP-011 safety checklist.
+
+### Rerun and retention rules
+
+- Rerun a failed automatic validation from the failed workflow; do not republish
+  manually edited Postman JSON.
+- Rerun a manual test only after confirming the target, fixture state, and failure
+  classification; never retry a mutating request automatically after an ambiguous
+  timeout.
+- Upload JUnit/CLI reports as workflow artifacts using sanitized output. Retain
+  them according to the repository's GitHub artifact policy; reports must not
+  contain API keys, authorization headers, payroll data, or raw provider payloads.
+- The workflow owner triages runner/fixture failures; the owning service team
+  triages contract or runtime failures; `pf-postman` owns collection mapping,
+  assertion, and environment wiring failures.
+
+### Operations and failure triage
+
+Use the workflow file names, not copied run URLs, so reruns remain reproducible:
+
+```bash
+# Rerun safe repository validation after confirming the target commit.
+gh workflow run validate.yml --repo mrturo-pf/pf-postman
+
+# Compare explicit read-only OpenAPI targets.
+gh workflow run run-api-coverage.yml --repo mrturo-pf/pf-postman \
+  -f pf_rates_openapi_url=https://<approved-target>/openapi.json \
+  -f pf_svc_income_openapi_url=https://<approved-target>/openapi.json
+
+# Run the bounded read-only smoke subset.
+gh workflow run run-postman-smoke.yml --repo mrturo-pf/pf-postman \
+  -f environment=gcp \
+  -f pf_rates_url=https://<approved-rates-target> \
+  -f pf_svc_income_url=https://<approved-income-target>
+```
+
+Before any `gh` command, use the repository's required proxy cleanup. Never
+paste API keys into workflow inputs; the workflows resolve them from GitHub
+Secrets. For a failed run, classify the first failure before rerunning:
+
+| Symptom | Owner | Classification and action |
+|---|---|---|
+| JSON, YAML, ordering, or whitespace failure | `pf-postman` | Collection/runner defect; fix the repository asset, then rerun validation |
+| OpenAPI mapping missing, stale, or duplicate | `pf-postman` plus owning service | Contract drift; compare the service OpenAPI and collection, then update the owner of the stale side |
+| Fixture setup or cleanup failure | Integration workflow owner | Quarantine synthetic identifiers; do not rerun mutations until cleanup is confirmed |
+| HTTP schema/status or runtime failure | Owning service team | Reproduce with the same target and sanitized request; do not hide it with a weaker assertion |
+| Authentication, URL, or secret materialization failure | Workflow/environment owner | Check target wiring and secret presence without printing values |
+| Timeout after a mutating or external request | Operator and owning service | Inspect job/resource state first; never blindly retry or send stop automatically |
+
+JUnit and CLI reports are uploaded as sanitized GitHub Actions artifacts. The
+standard retention is **14 days**; evidence needed for IMP closure must also be
+recorded in the improvement plan with run ID, target, counts, and sanitized
+failures. Artifacts must never contain API keys, authorization headers, payroll
+payloads, personal data, or raw provider responses.
+
 > Postman Team/Enterprise plans also offer a native bidirectional Git sync (no custom
 > workflow needed) -- if you upgrade later, you can drop `sync-postman.yml` and use that
 > instead. This setup works on **any** Postman plan, including Free.

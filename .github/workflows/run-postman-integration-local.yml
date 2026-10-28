@@ -162,4 +162,5 @@ jobs:
             ${{ runner.temp }}/postman-payroll-contracts.xml
             ${{ runner.temp }}/pf-rates.log
             ${{ runner.temp }}/pf-svc-income.log
+          retention-days: 14
           if-no-files-found: ignore

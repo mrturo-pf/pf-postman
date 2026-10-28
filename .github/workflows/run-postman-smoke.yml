@@ -87,4 +87,5 @@ jobs:
         with:
           name: postman-smoke-report
           path: ${{ runner.temp }}/postman-smoke.xml
+          retention-days: 14
           if-no-files-found: ignore
