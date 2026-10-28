@@ -1213,6 +1213,62 @@
                     "description": "Bulk-exports every persisted period matching the (optional, disabled by default) employer/period_year/period_month filters -- omitting all three exports every persisted period. Includes two extra computed-only columns (income_tax, unemployment_insurance) that Import Spreadsheet silently ignores on re-import, so exporting and re-importing this exact file back through 'Import Spreadsheet (mode=validate)' is safe and idempotent for every other column."
                   },
                   "response": []
+                },
+                {
+                  "name": "Export spreadsheet (format=xlsx)",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test('XLSX export returns HTTP 200', function () { pm.response.to.have.status(200); });",
+                          "const contentType = (pm.response.headers.get('Content-Type') || '').toLowerCase();",
+                          "pm.test('XLSX export has spreadsheet content type', function () { pm.expect(contentType).to.include('spreadsheetml'); });",
+                          "pm.test('XLSX export has a binary body', function () { pm.expect(pm.response.stream.length).to.be.above(0); });"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-svc-income-api-key}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-svc-income-url}}/payroll/spreadsheet?format=xlsx",
+                      "host": [
+                        "{{pf-svc-income-url}}/payroll/spreadsheet"
+                      ],
+                      "query": [
+                        {
+                          "key": "format",
+                          "value": "xlsx",
+                          "description": "\"csv\" (default) or \"xlsx\"."
+                        },
+                        {
+                          "key": "employer",
+                          "value": "",
+                          "disabled": true
+                        },
+                        {
+                          "key": "period_year",
+                          "value": "",
+                          "disabled": true
+                        },
+                        {
+                          "key": "period_month",
+                          "value": "",
+                          "disabled": true
+                        }
+                      ]
+                    },
+                    "description": "Bulk-exports the payroll spreadsheet as an XLSX binary response. Optional filters remain disabled by default."
+                  },
+                  "response": []
                 }
               ],
               "description": ""

@@ -14,6 +14,7 @@ REQUEST_NAMES = (
     "Preview a PDF payslip",
     "Import JSON (from last Preview)",
     "Import Spreadsheet (mode=validate)",
+    "Export spreadsheet (format=xlsx)",
 )
 
 
