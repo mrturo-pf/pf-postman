@@ -320,3 +320,21 @@ If you add more chained pairs like this in the future, follow the same shape: a
 `pm.request.body.raw` -- keep the two requests next to each other in the JSON and name
 the consumer `"<Thing> (from last <Producer>)"` so the relationship is obvious just
 from the sidebar.
+
+## Async export lifecycle
+
+The `pf-rates` export folder contains assertions for the supported async contract:
+
+```text
+Trigger financial-data export (async)
+  → job_id collection variable
+  → Get export job status
+  → terminal status
+  → file_id on success or error_message on failure/cancellation
+```
+
+The trigger and status requests are intentionally not part of the default smoke
+workflow. They can start a Google Drive export and therefore require an explicit
+manual workflow, approved target, bounded date window, and cleanup/ownership plan.
+The `Stop one export job` request remains a separate operator action and is never
+invoked automatically.

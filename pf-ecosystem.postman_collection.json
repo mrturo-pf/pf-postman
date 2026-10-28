@@ -502,6 +502,20 @@
           "item": [
             {
               "name": "Get export job status",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Export job status returns HTTP 200', function () { pm.response.to.have.status(200); });",
+                      "const body = pm.response.json();",
+                      "pm.test('Export job status has a valid state', function () { pm.expect(['pending', 'running', 'succeeded', 'failed', 'cancelled']).to.include(body.status); pm.expect(body.job_id).to.be.a('number'); });",
+                      "pm.test('Terminal export state has a result contract', function () { if (['succeeded', 'failed', 'cancelled'].includes(body.status)) { pm.expect(body.status === 'succeeded' ? body.file_id : body.error_message).to.not.equal(undefined); } });"
+                    ]
+                  }
+                }
+              ],
               "request": {
                 "method": "GET",
                 "header": [
@@ -592,6 +606,20 @@
             },
             {
               "name": "Trigger financial-data export (async)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Async export trigger returns HTTP 202', function () { pm.response.to.have.status(202); });",
+                      "const body = pm.response.json();",
+                      "pm.test('Async export trigger returns a pending job', function () { pm.expect(body.job_id).to.be.a('number'); pm.expect(body.status).to.eql('pending'); pm.expect(body.monitor_url).to.be.a('string').and.not.empty; });",
+                      "pm.collectionVariables.set('job_id', String(body.job_id));"
+                    ]
+                  }
+                }
+              ],
               "request": {
                 "method": "POST",
                 "header": [
