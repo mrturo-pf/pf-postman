@@ -36,9 +36,6 @@ def find_requests(items: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
         if item.get("name") in REQUEST_NAMES and "request" in item:
             found[item["name"]] = item
         found.update(find_requests(item.get("item", [])))
-    missing = [name for name in REQUEST_NAMES if name not in found]
-    if missing:
-        raise ValueError(f"Collection is missing requests: {', '.join(missing)}")
     return found
 
 
@@ -54,6 +51,9 @@ def set_file_source(request: dict[str, Any], path: Path) -> None:
 def build_contract_collection(source: dict[str, Any], pdf: Path, xlsx: Path) -> dict[str, Any]:
     """Build a temporary collection containing only safe validation requests."""
     requests = find_requests(source.get("item", []))
+    missing = [name for name in REQUEST_NAMES if name not in requests]
+    if missing:
+        raise ValueError(f"Collection is missing requests: {', '.join(missing)}")
     selected = [json.loads(json.dumps(requests[name])) for name in REQUEST_NAMES]
     set_file_source(selected[0], pdf)
     set_file_source(selected[2], xlsx)
