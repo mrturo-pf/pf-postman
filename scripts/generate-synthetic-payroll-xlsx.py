@@ -16,8 +16,8 @@ def main() -> int:
     arguments = parser.parse_args()
     workbook = Workbook()
     sheet = workbook.active
-    sheet.append(["period_year", "period_month", "employer", "contract_kind", "salary_base"])
-    sheet.append([2026, 10, "WALMART-CHILE", "indefinite", 1_000_000])
+    sheet.append(["period_month", "period_year", "employer", "payment_date", "salary_base"])
+    sheet.append([10, 2026, "WALMART-CHILE", "2026-10-31", 1_000_000])
     workbook.save(arguments.output)
     return 0
 
