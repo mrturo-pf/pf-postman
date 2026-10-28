@@ -20,6 +20,7 @@ INTENTIONAL_DUPLICATES = {
     ("pf-rates", "POST", "/exchange-rates/refresh"),
     ("pf-rates", "POST", "/exports/financial-data"),
     ("pf-svc-income", "POST", "/payroll/import/json"),
+    ("pf-svc-income", "GET", "/payroll/spreadsheet"),
 }
 PATH_PARAMETER_PATTERN = re.compile(r":([A-Za-z0-9_]+)")
 
