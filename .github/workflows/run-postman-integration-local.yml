@@ -66,6 +66,8 @@ jobs:
 
       - name: Bootstrap disposable PostgreSQL
         working-directory: modules/pf-db
+        env:
+          DATABASE_URL: postgresql+asyncpg://pf_db:pf_db@localhost:5432/pf_db
         run: |
           make local-up-real
           make seed-test
