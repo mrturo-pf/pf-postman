@@ -111,12 +111,28 @@ jobs:
             pf-ecosystem.postman_environment.local.json \
             > "$RUNNER_TEMP/postman-local-environment.json"
 
+      - name: Generate synthetic payroll fixtures
+        working-directory: postman
+        run: |
+          python3 scripts/generate-synthetic-payroll-pdf.py --output "$RUNNER_TEMP/synthetic-payroll.pdf"
+          python3 scripts/generate-synthetic-payroll-xlsx.py --output "$RUNNER_TEMP/synthetic-payroll.xlsx"
+
       - name: Check local error contracts
         working-directory: postman
         env:
           PF_RATES_API_KEY: local-rates-key
           PF_INCOME_API_KEY: local-income-key
         run: python3 scripts/check-local-error-contracts.py
+
+      - name: Run Newman payroll validation contracts
+        working-directory: postman
+        run: |
+          python3 scripts/run-postman-payroll-contracts.py \
+            --collection pf-ecosystem.postman_collection.json \
+            --environment "$RUNNER_TEMP/postman-local-environment.json" \
+            --pdf "$RUNNER_TEMP/synthetic-payroll.pdf" \
+            --xlsx "$RUNNER_TEMP/synthetic-payroll.xlsx" \
+            --report "$RUNNER_TEMP/postman-payroll-contracts.xml"
 
       - name: Run local read-only smoke tests
         working-directory: postman
@@ -138,6 +154,7 @@ jobs:
           name: postman-local-integration-reports
           path: |
             ${{ runner.temp }}/postman-smoke.xml
+            ${{ runner.temp }}/postman-payroll-contracts.xml
             ${{ runner.temp }}/pf-rates.log
             ${{ runner.temp }}/pf-svc-income.log
           if-no-files-found: ignore

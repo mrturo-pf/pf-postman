@@ -1216,6 +1216,18 @@
                           "pm.request.body.raw = JSON.stringify({ mode: mode, periods: periods }, null, 2);"
                         ]
                       }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test('JSON validate returns HTTP 200', function () { pm.response.to.have.status(200); });",
+                          "const body = pm.response.json();",
+                          "pm.test('JSON validate is non-persisting', function () { pm.expect(body.validated).to.eql(true); pm.expect(body.saved).to.eql(null); });",
+                          "pm.test('JSON validate reports item count', function () { pm.expect(body.item_count).to.be.a('number'); pm.expect(body.item_count).to.be.above(0); });"
+                        ]
+                      }
                     }
                   ],
                   "request": {
@@ -1280,6 +1292,20 @@
                       }
                     }
                   },
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test('JSON validate returns HTTP 200', function () { pm.response.to.have.status(200); });",
+                          "const body = pm.response.json();",
+                          "pm.test('JSON validate is non-persisting', function () { pm.expect(body.validated).to.eql(true); pm.expect(body.saved).to.eql(null); });",
+                          "pm.test('JSON validate reports item count', function () { pm.expect(body.item_count).to.be.a('number'); pm.expect(body.item_count).to.be.above(0); });"
+                        ]
+                      }
+                    }
+                  ],
                   "response": []
                 },
                 {
@@ -1316,6 +1342,20 @@
                       ]
                     }
                   },
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test('Spreadsheet validate returns HTTP 200', function () { pm.response.to.have.status(200); });",
+                          "const body = pm.response.json();",
+                          "pm.test('Spreadsheet validate is non-persisting', function () { pm.expect(body.validated).to.eql(true); pm.expect(body.saved).to.eql(null); });",
+                          "pm.test('Spreadsheet validate reports item count', function () { pm.expect(body.item_count).to.be.a('number'); pm.expect(body.item_count).to.be.above(0); });"
+                        ]
+                      }
+                    }
+                  ],
                   "response": []
                 }
               ],
@@ -1332,11 +1372,11 @@
                       "script": {
                         "type": "text/javascript",
                         "exec": [
-                          "// Stash the raw preview array so 'Import JSON (from last Preview)' can",
-                          "// wrap it into a { mode, periods } body without any copy/pasting.",
-                          "if (pm.response.code === 200) {",
-                          "    pm.collectionVariables.set('last_pdf_preview_response', pm.response.text());",
-                          "}"
+                          "pm.test('PDF preview returns HTTP 200', function () { pm.response.to.have.status(200); });",
+                          "const previews = pm.response.json();",
+                          "pm.test('PDF preview resolves a template', function () { pm.expect(previews).to.be.an('array').with.length.above(0); pm.expect(previews[0].template_id).to.be.a('string').and.not.empty; });",
+                          "pm.test('PDF preview resolves three mapped rows', function () { pm.expect(previews[0].rows).to.be.an('array').with.length(3); previews[0].rows.forEach(function (row) { pm.expect(row.concept_code).to.be.a('string').and.not.empty; }); });",
+                          "pm.collectionVariables.set('last_pdf_preview_response', pm.response.text());"
                         ]
                       }
                     }
