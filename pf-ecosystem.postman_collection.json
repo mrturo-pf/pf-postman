@@ -1579,7 +1579,7 @@
                         "{{pf-svc-income-url}}/payroll/templates"
                       ]
                     },
-                    "description": "employer_id is required -- the employer must already have a PAY_EMPLOYER row (i.e. its first payroll import has already run; there is no standalone endpoint to create one ahead of that). It is an admin-only FK -- matching against a real PDF only ever uses employer_match_pattern. There is no employer_name field: the response's employer_name is always resolved fresh from PAY_EMPLOYER.name at read time, never stored. Every regex (employer_match_pattern and each field's pdf_label_pattern) is compile-checked before reaching the database -- an invalid one is a 422. Fields have no kind -- the server always resolves it from PAY_CONCEPT via concept_code (an unknown concept_code is a 400, not a silent guess). Returns 201. A duplicate template_id is also a 400 (see pf-svc-income/docs/api.md).",
+                    "description": "employer_id is required -- the employer must already have a INC_EMPLOYER row (i.e. its first payroll import has already run; there is no standalone endpoint to create one ahead of that). It is an admin-only FK -- matching against a real PDF only ever uses employer_match_pattern. There is no employer_name field: the response's employer_name is always resolved fresh from INC_EMPLOYER.name at read time, never stored. Every regex (employer_match_pattern and each field's pdf_label_pattern) is compile-checked before reaching the database -- an invalid one is a 422. Fields have no kind -- the server always resolves it from INC_CONCEPT via concept_code (an unknown concept_code is a 400, not a silent guess). Returns 201. A duplicate template_id is also a 400 (see pf-svc-income/docs/api.md).",
                     "body": {
                       "mode": "raw",
                       "raw": "{\n  \"template_id\": \"acme-chile-v1\",\n  \"employer_id\": 1,\n  \"employer_match_pattern\": \"(?i)acme-chile\",\n  \"version\": 1,\n  \"fields\": [\n    {\n      \"pdf_label_pattern\": \"(?i)^SUELDO$\",\n      \"concept_code\": \"SALARY_BASE\",\n      \"confidence\": 0.9\n    }\n  ]\n}",
@@ -1693,7 +1693,7 @@
                   "response": []
                 }
               ],
-              "description": "Manages the versioned templates POST /payroll/pdf-preview matches PDFs against. Persisted in pf-db's PAY_PDF_TEMPLATE/PAY_PDF_TEMPLATE_FIELD tables, not a git-tracked file -- see https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/HIST-019-pdf-template-management/recommendation.md."
+              "description": "Manages the versioned templates POST /payroll/pdf-preview matches PDFs against. Persisted in pf-db's INC_PDF_TEMPLATE/INC_PDF_TEMPLATE_FIELD tables, not a git-tracked file -- see https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/HIST-019-pdf-template-management/recommendation.md."
             }
           ],
           "description": ""
