@@ -119,16 +119,16 @@ def run_workflow(client: LocalApi, *, defer_cleanup: bool = False) -> None:
     token = uuid.uuid4().hex[:10]
     employer_id: int | None = None
     contract_id: int | None = None
-    template_id = f"imp-011-{token}"
+    template_id = f"pflocal-{token}"
     template_created = False
     primary_error: Exception | None = None
     try:
         employers = client.request(
             "POST",
             "/payroll/employers",
-            {"employers": [{"name": f"IMP-011 Synthetic {token}", "tax_id": f"IMP011-{token}", "country_code": "CL"}]},
+            {"employers": [{"name": f"PFLOCAL Synthetic {token}", "tax_id": f"PFLOCAL-{token}", "country_code": "CL"}]},
         )
-        employer_id = matching_id(employers, "employers", "tax_id", f"IMP011-{token}")
+        employer_id = matching_id(employers, "employers", "tax_id", f"PFLOCAL-{token}")
         print(f"Synthetic employer created: {employer_id}")
         contracts = client.request(
             "POST",

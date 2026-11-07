@@ -55,7 +55,7 @@ A change to a service OpenAPI or contract must run the owning service checks and
 then the explicit Postman coverage workflow before release evidence is accepted.
 Cross-repository CI is intentionally not triggered by untrusted remote URLs or by
 committed API keys. Manual workflows must not be added to the default smoke subset
-without updating this policy and the IMP-011 safety checklist.
+without updating this policy and the local mutation safety checklist.
 
 ### Rerun and retention rules
 
@@ -225,9 +225,8 @@ result to `mode=validate` only. It does not persist data or upload response bodi
 The manual workflow
 [`run-api-coverage.yml`](.github/workflows/run-api-coverage.yml) accepts those
 read-only URLs, stores snapshots only in the ephemeral Actions runner directory,
-and fails when coverage differs. This coverage check is the first layer of
-`IMP-011`; Newman execution and mutating fixture workflows remain separate safety
-tiers.
+and fails when coverage differs. This coverage check is the first layer of local API validation; Newman execution
+and mutating fixture workflows remain separate safety tiers.
 
 ### Read-only Newman smoke tests
 

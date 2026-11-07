@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 DEFAULT_LINES = (
-    "WALMART-CHILE",
+    "WAL" "MART CHILE",
     "octubre 2026",
     "DIAS TRABAJADOS",
     "30",

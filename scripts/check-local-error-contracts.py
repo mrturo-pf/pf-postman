@@ -89,7 +89,7 @@ def main() -> int:
         )
         check_case(
             "pf-svc-income missing template",
-            request_status(income_url, "/payroll/templates/imp-011-missing", api_key=income_key),
+            request_status(income_url, "/payroll/templates/pflocal-missing", api_key=income_key),
             {404},
         )
         check_case(

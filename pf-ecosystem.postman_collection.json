@@ -21,7 +21,7 @@
           "",
           "const contentType = pm.response.headers.get(\"Content-Type\") || \"\";",
           "pm.test(\"Response has a content type\", function () {",
-          "  pm.expect(contentType).to.not.equal(\"\");",
+          "  if (pm.response.code !== 204) pm.expect(contentType).to.not.equal(\"\");",
           "});",
           "",
           "if (contentType.toLowerCase().includes(\"json\")) {",
