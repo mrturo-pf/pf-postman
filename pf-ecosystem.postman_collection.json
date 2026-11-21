@@ -161,7 +161,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -178,9 +178,9 @@
                   }
                 },
                 "url": {
-                  "raw": "{{pf-rates-url}}/economic-indices/values",
+                  "raw": "{{pf-reference-url}}/economic-indices/values",
                   "host": [
-                    "{{pf-rates-url}}/economic-indices/values"
+                    "{{pf-reference-url}}/economic-indices/values"
                   ]
                 },
                 "description": "Batch lookup; each result preserves its input pair and may return null when the value is unavailable. Maximum 500 pairs."
@@ -194,13 +194,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/economic-indices/value?code=IPC_CL&year=2026&month=1",
+                  "raw": "{{pf-reference-url}}/economic-indices/value?code=IPC_CL&year=2026&month=1",
                   "host": [
-                    "{{pf-rates-url}}/economic-indices/value"
+                    "{{pf-reference-url}}/economic-indices/value"
                   ],
                   "query": [
                     {
@@ -228,13 +228,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/economic-indices?code=IPC_CL",
+                  "raw": "{{pf-reference-url}}/economic-indices?code=IPC_CL",
                   "host": [
-                    "{{pf-rates-url}}/economic-indices"
+                    "{{pf-reference-url}}/economic-indices"
                   ],
                   "query": [
                     {
@@ -254,7 +254,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -262,9 +262,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/economic-indices/refresh",
+                  "raw": "{{pf-reference-url}}/economic-indices/refresh",
                   "host": [
-                    "{{pf-rates-url}}/economic-indices/refresh"
+                    "{{pf-reference-url}}/economic-indices/refresh"
                   ]
                 },
                 "description": "",
@@ -287,7 +287,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -295,9 +295,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/economic-indices/refresh",
+                  "raw": "{{pf-reference-url}}/economic-indices/refresh",
                   "host": [
-                    "{{pf-rates-url}}/economic-indices/refresh"
+                    "{{pf-reference-url}}/economic-indices/refresh"
                   ]
                 },
                 "description": "",
@@ -326,7 +326,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -343,9 +343,9 @@
                   }
                 },
                 "url": {
-                  "raw": "{{pf-rates-url}}/exchange-rates/values",
+                  "raw": "{{pf-reference-url}}/exchange-rates/values",
                   "host": [
-                    "{{pf-rates-url}}/exchange-rates/values"
+                    "{{pf-reference-url}}/exchange-rates/values"
                   ]
                 },
                 "description": "Batch lookup; each result preserves its input pair and may return null when the value is unavailable. Maximum 500 pairs."
@@ -359,13 +359,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/exchange-rates/value?currency_code=USD&rate_date=2026-01-15",
+                  "raw": "{{pf-reference-url}}/exchange-rates/value?currency_code=USD&rate_date=2026-01-15",
                   "host": [
-                    "{{pf-rates-url}}/exchange-rates/value"
+                    "{{pf-reference-url}}/exchange-rates/value"
                   ],
                   "query": [
                     {
@@ -389,13 +389,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/exchange-rates?currency_code=USD",
+                  "raw": "{{pf-reference-url}}/exchange-rates?currency_code=USD",
                   "host": [
-                    "{{pf-rates-url}}/exchange-rates"
+                    "{{pf-reference-url}}/exchange-rates"
                   ],
                   "query": [
                     {
@@ -415,13 +415,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/monetary-units",
+                  "raw": "{{pf-reference-url}}/monetary-units",
                   "host": [
-                    "{{pf-rates-url}}/monetary-units"
+                    "{{pf-reference-url}}/monetary-units"
                   ]
                 },
                 "description": "Renamed from /currencies -- returns both fiat currencies (is_fiat=true, unit_kind=currency) and index units like UF/UTM (is_fiat=false, unit_kind=index_unit); see pf-rates/docs/api.md."
@@ -435,7 +435,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -443,9 +443,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/exchange-rates/refresh",
+                  "raw": "{{pf-reference-url}}/exchange-rates/refresh",
                   "host": [
-                    "{{pf-rates-url}}/exchange-rates/refresh"
+                    "{{pf-reference-url}}/exchange-rates/refresh"
                   ]
                 },
                 "description": "",
@@ -468,7 +468,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -476,9 +476,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/exchange-rates/refresh",
+                  "raw": "{{pf-reference-url}}/exchange-rates/refresh",
                   "host": [
-                    "{{pf-rates-url}}/exchange-rates/refresh"
+                    "{{pf-reference-url}}/exchange-rates/refresh"
                   ]
                 },
                 "description": "",
@@ -521,13 +521,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/exports/jobs/{{job_id}}",
+                  "raw": "{{pf-reference-url}}/exports/jobs/{{job_id}}",
                   "host": [
-                    "{{pf-rates-url}}/exports/jobs/{{job_id}}"
+                    "{{pf-reference-url}}/exports/jobs/{{job_id}}"
                   ]
                 },
                 "description": ""
@@ -541,13 +541,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/exports/jobs?status=failed&limit=20",
+                  "raw": "{{pf-reference-url}}/exports/jobs?status=failed&limit=20",
                   "host": [
-                    "{{pf-rates-url}}/exports/jobs"
+                    "{{pf-reference-url}}/exports/jobs"
                   ],
                   "query": [
                     {
@@ -571,13 +571,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/exports/jobs/stop",
+                  "raw": "{{pf-reference-url}}/exports/jobs/stop",
                   "host": [
-                    "{{pf-rates-url}}/exports/jobs/stop"
+                    "{{pf-reference-url}}/exports/jobs/stop"
                   ]
                 },
                 "description": ""
@@ -591,13 +591,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/exports/jobs/{{job_id}}/stop",
+                  "raw": "{{pf-reference-url}}/exports/jobs/{{job_id}}/stop",
                   "host": [
-                    "{{pf-rates-url}}/exports/jobs/{{job_id}}/stop"
+                    "{{pf-reference-url}}/exports/jobs/{{job_id}}/stop"
                   ]
                 },
                 "description": ""
@@ -625,7 +625,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -633,9 +633,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/exports/financial-data",
+                  "raw": "{{pf-reference-url}}/exports/financial-data",
                   "host": [
-                    "{{pf-rates-url}}/exports/financial-data"
+                    "{{pf-reference-url}}/exports/financial-data"
                   ]
                 },
                 "description": "",
@@ -658,13 +658,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/exports/financial-data",
+                  "raw": "{{pf-reference-url}}/exports/financial-data",
                   "host": [
-                    "{{pf-rates-url}}/exports/financial-data"
+                    "{{pf-reference-url}}/exports/financial-data"
                   ]
                 },
                 "description": ""
@@ -680,9 +680,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{pf-rates-url}}/health",
+              "raw": "{{pf-reference-url}}/health",
               "host": [
-                "{{pf-rates-url}}/health"
+                "{{pf-reference-url}}/health"
               ]
             },
             "description": "No auth required."
@@ -699,13 +699,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/income-tax-brackets?reference_date=2026-01-15&taxable_base_utm=10.5",
+                  "raw": "{{pf-reference-url}}/income-tax-brackets?reference_date=2026-01-15&taxable_base_utm=10.5",
                   "host": [
-                    "{{pf-rates-url}}/income-tax-brackets"
+                    "{{pf-reference-url}}/income-tax-brackets"
                   ],
                   "query": [
                     {
@@ -729,13 +729,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/income-tax-brackets/list?year=2026",
+                  "raw": "{{pf-reference-url}}/income-tax-brackets/list?year=2026",
                   "host": [
-                    "{{pf-rates-url}}/income-tax-brackets/list"
+                    "{{pf-reference-url}}/income-tax-brackets/list"
                   ],
                   "query": [
                     {
@@ -755,7 +755,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -763,9 +763,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/income-tax-brackets/refresh",
+                  "raw": "{{pf-reference-url}}/income-tax-brackets/refresh",
                   "host": [
-                    "{{pf-rates-url}}/income-tax-brackets/refresh"
+                    "{{pf-reference-url}}/income-tax-brackets/refresh"
                   ]
                 },
                 "description": "",
@@ -794,7 +794,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf-rates-api-key}}"
+                    "value": "{{pf-reference-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -802,9 +802,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-rates-url}}/sync",
+                  "raw": "{{pf-reference-url}}/sync",
                   "host": [
-                    "{{pf-rates-url}}/sync"
+                    "{{pf-reference-url}}/sync"
                   ]
                 },
                 "description": "",
@@ -1830,12 +1830,12 @@
   ],
   "variable": [
     {
-      "key": "pf-rates-url",
+      "key": "pf-reference-url",
       "value": "http://localhost:8001",
       "type": "string"
     },
     {
-      "key": "pf-rates-api-key",
+      "key": "pf-reference-api-key",
       "value": "",
       "type": "string"
     },

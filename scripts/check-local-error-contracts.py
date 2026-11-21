@@ -18,7 +18,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--rates-url", default="http://localhost:8001")
     parser.add_argument("--income-url", default="http://localhost:8000")
-    parser.add_argument("--rates-key-env", default="PF_RATES_API_KEY")
+    parser.add_argument("--rates-key-env", default="PF_REFERENCE_API_KEY")
     parser.add_argument("--income-key-env", default="PF_INCOME_API_KEY")
     parser.add_argument(
         "--allow-remote",
