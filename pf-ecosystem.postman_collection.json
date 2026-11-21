@@ -140,7 +140,7 @@
           "    pm.expect(health.status).to.equal(\"ok\");",
           "  });",
           "  pm.test(\"Health identifies a PF service\", function () {",
-          "    pm.expect([\"pf-rates\", \"pf-svc-income\"]).to.include(health.service);",
+          "    pm.expect([\"pf-svc-reference\", \"pf-svc-income\"]).to.include(health.service);",
           "  });",
           "}"
         ]
