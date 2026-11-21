@@ -3,7 +3,7 @@ name: CI / Check API coverage
 on:
   workflow_dispatch:
     inputs:
-      pf_rates_openapi_url:
+      pf_financial_data_openapi_url:
         description: "Read-only pf-rates /openapi.json URL"
         required: true
         type: string
@@ -24,7 +24,7 @@ jobs:
 
       - name: Fetch OpenAPI snapshots
         env:
-          PF_RATES_OPENAPI_URL: ${{ inputs.pf_rates_openapi_url }}
+          PF_RATES_OPENAPI_URL: ${{ inputs.pf_financial_data_openapi_url }}
           PF_SVC_INCOME_OPENAPI_URL: ${{ inputs.pf_svc_income_openapi_url }}
         run: |
           set -euo pipefail

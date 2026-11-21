@@ -39,22 +39,22 @@ jobs:
       - name: Materialize smoke environment
         env:
           TARGET: ${{ inputs.environment }}
-          PF_RATES_URL: ${{ inputs.pf_rates_url }}
+          PF_REFERENCE_URL: ${{ inputs.pf_rates_url }}
           PF_SVC_INCOME_URL: ${{ inputs.pf_svc_income_url }}
-          PF_RATES_API_KEY_LOCAL: ${{ secrets.PF_RATES_API_KEY_LOCAL }}
+          PF_REFERENCE_API_KEY_LOCAL: ${{ secrets.PF_REFERENCE_API_KEY_LOCAL }}
           PF_SVC_INCOME_API_KEY_LOCAL: ${{ secrets.PF_SVC_INCOME_API_KEY_LOCAL }}
-          PF_RATES_API_KEY_GCP: ${{ secrets.PF_RATES_API_KEY_GCP }}
+          PF_REFERENCE_API_KEY_GCP: ${{ secrets.PF_REFERENCE_API_KEY_GCP }}
           PF_SVC_INCOME_API_KEY_GCP: ${{ secrets.PF_SVC_INCOME_API_KEY_GCP }}
         run: |
           set -euo pipefail
           case "$TARGET" in
             local)
-              rates_key="$PF_RATES_API_KEY_LOCAL"
+              rates_key="$PF_REFERENCE_API_KEY_LOCAL"
               income_key="$PF_SVC_INCOME_API_KEY_LOCAL"
               template="pf-ecosystem.postman_environment.local.json"
               ;;
             gcp)
-              rates_key="$PF_RATES_API_KEY_GCP"
+              rates_key="$PF_REFERENCE_API_KEY_GCP"
               income_key="$PF_SVC_INCOME_API_KEY_GCP"
               template="pf-ecosystem.postman_environment.gcp.json"
               ;;
@@ -65,12 +65,12 @@ jobs:
           esac
           test -n "$rates_key" && test -n "$income_key"
           jq \
-            --arg rates_url "$PF_RATES_URL" \
+            --arg rates_url "$PF_REFERENCE_URL" \
             --arg income_url "$PF_SVC_INCOME_URL" \
             --arg rates_key "$rates_key" \
             --arg income_key "$income_key" \
-            '(.values[] | select(.key == "pf-rates-url") | .value) = $rates_url
-             | (.values[] | select(.key == "pf-rates-api-key") | .value) = $rates_key
+            '(.values[] | select(.key == "pf-reference-url") | .value) = $rates_url
+             | (.values[] | select(.key == "pf-reference-api-key") | .value) = $rates_key
              | (.values[] | select(.key == "pf-svc-income-url") | .value) = $income_url
              | (.values[] | select(.key == "pf-svc-income-api-key") | .value) = $income_key' \
             "$template" > "$RUNNER_TEMP/postman-smoke-environment.json"

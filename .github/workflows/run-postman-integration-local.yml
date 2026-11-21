@@ -75,9 +75,9 @@ jobs:
       - name: Start local APIs
         env:
           PF_DATABASE_URL: postgresql+asyncpg://pf_db:pf_db@localhost:5432/pf_db
-          PF_RATES_API_KEY: local-rates-key
+          PF_REFERENCE_API_KEY: local-rates-key
           PF_INCOME_API_KEY: local-income-key
-          PF_RATES_URL: http://localhost:8001
+          PF_REFERENCE_URL: http://localhost:8001
         run: |
           set -euo pipefail
           (cd modules/pf-rates && python -m uvicorn rates.interfaces.api.main:app --host 127.0.0.1 --port 8001 >"$RUNNER_TEMP/pf-rates.log" 2>&1 & echo $! >"$RUNNER_TEMP/pf-rates.pid")
@@ -110,7 +110,7 @@ jobs:
           jq \
             --arg rates_key "local-rates-key" \
             --arg income_key "local-income-key" \
-            '.values[] |= if .key == "pf-rates-api-key" then .value = $rates_key
+            '.values[] |= if .key == "pf-reference-api-key" then .value = $rates_key
               elif .key == "pf-svc-income-api-key" then .value = $income_key
               else . end' \
             pf-ecosystem.postman_environment.local.json \
@@ -125,7 +125,7 @@ jobs:
       - name: Check local error contracts
         working-directory: postman
         env:
-          PF_RATES_API_KEY: local-rates-key
+          PF_REFERENCE_API_KEY: local-rates-key
           PF_INCOME_API_KEY: local-income-key
         run: python3 scripts/check-local-error-contracts.py
 

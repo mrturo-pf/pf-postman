@@ -81,7 +81,7 @@ gh workflow run validate.yml --repo mrturo-pf/pf-postman
 
 # Compare explicit read-only OpenAPI targets.
 gh workflow run run-api-coverage.yml --repo mrturo-pf/pf-postman \
-  -f pf_rates_openapi_url=https://<approved-target>/openapi.json \
+  -f pf_financial_data_openapi_url=https://<approved-target>/openapi.json \
   -f pf_svc_income_openapi_url=https://<approved-target>/openapi.json
 
 # Run the bounded read-only smoke subset.
@@ -117,7 +117,7 @@ payloads, personal data, or raw provider responses.
 ## Environments: LOCAL vs GCP
 
 Both environments share the same four variable names (matching the collection's
-requests): `pf-rates-url`, `pf-rates-api-key`, `pf-svc-income-url`, `pf-svc-income-api-key`.
+requests): `pf-reference-url`, `pf-reference-api-key`, `pf-svc-income-url`, `pf-svc-income-api-key`.
 Whichever environment is active in the Postman UI overrides the collection's own
 (harmless localhost) defaults, so switching target just means picking a different
 environment from the dropdown -- no request needs editing.
@@ -126,7 +126,7 @@ environment from the dropdown -- no request needs editing.
 |---|---|---|
 | `*-url` values | `http://localhost:8001` / `:8000` | real Cloud Run URLs |
 | `*-api-key` values in the committed file | always `""` | always `""` |
-| Real key comes from | GitHub Secret `PF_RATES_API_KEY_LOCAL` / `PF_SVC_INCOME_API_KEY_LOCAL` | GitHub Secret `PF_RATES_API_KEY_GCP` / `PF_SVC_INCOME_API_KEY_GCP` |
+| Real key comes from | GitHub Secret `PF_REFERENCE_API_KEY_LOCAL` / `PF_SVC_INCOME_API_KEY_LOCAL` | GitHub Secret `PF_REFERENCE_API_KEY_GCP` / `PF_SVC_INCOME_API_KEY_GCP` |
 
 **Why the api-key fields are always empty in git:** a Postman `"type": "secret"` variable
 only *masks* the value in the UI -- the raw value is still plain text in the exported
@@ -139,7 +139,7 @@ deleted. The repo itself never sees a real key.
 Practical effect: editing `*-url` values here and pushing updates Postman immediately.
 Editing an `*-api-key` value here does **nothing** (it always gets overwritten with the
 GitHub Secret's value on sync) -- to rotate a key, update the GitHub Secret instead
-(`gh secret set PF_RATES_API_KEY_GCP --repo mrturo-pf/pf-postman`) and re-run the workflow
+(`gh secret set PF_REFERENCE_API_KEY_GCP --repo mrturo-pf/pf-postman`) and re-run the workflow
 (push any change under `this repository`, or `gh workflow run "CI / Sync Postman Collection" --repo mrturo-pf/pf-postman`).
 
 ## One-time setup
@@ -164,17 +164,17 @@ GitHub Secret's value on sync) -- to rotate a key, update the GitHub Secret inst
    | `POSTMAN_COLLECTION_UID` | the collection's UID |
    | `POSTMAN_ENV_UID_LOCAL` | the `LOCAL` environment's UID |
    | `POSTMAN_ENV_UID_GCP` | the `GCP` environment's UID |
-   | `PF_RATES_API_KEY_LOCAL` | pf-rates dev API key (from `modules/pf-rates/.env`) |
+   | `PF_REFERENCE_API_KEY_LOCAL` | pf-rates dev API key (from `modules/pf-rates/.env`) |
    | `PF_SVC_INCOME_API_KEY_LOCAL` | pf-svc-income dev API key (from `modules/pf-svc-income/.env`) |
-   | `PF_RATES_API_KEY_GCP` | pf-rates production API key (GCP Secret Manager, secret `PF_RATES_API_KEY`) |
+   | `PF_REFERENCE_API_KEY_GCP` | pf-rates production API key (GCP Secret Manager, secret `PF_REFERENCE_API_KEY`) |
    | `PF_SVC_INCOME_API_KEY_GCP` | pf-svc-income production API key (GCP Secret Manager, secret `PF_SVC_INCOME_API_KEY`) |
    | `PF_SHEETS_API_KEY` | pf-sheets `GET_CLP_API_KEY` Script Property -- Apps Script editor → Project Settings → Script Properties (no CLI/file access, it's cloud-only) |
 
    Prefer piping values into `gh secret set` over pasting them anywhere they'd be
    echoed/logged, e.g.:
    ```bash
-   grep '^PF_RATES_API_KEY=' modules/pf-rates/.env | cut -d'=' -f2- \
-     | gh secret set PF_RATES_API_KEY_LOCAL --repo mrturo-pf/pf-postman
+   grep '^PF_REFERENCE_API_KEY=' modules/pf-rates/.env | cut -d'=' -f2- \
+     | gh secret set PF_REFERENCE_API_KEY_LOCAL --repo mrturo-pf/pf-postman
    ```
    Production values living in GCP Secret Manager may be blocked from direct CLI access
    by VPC Service Controls, depending on org policy -- fetch them via the GCP Console
