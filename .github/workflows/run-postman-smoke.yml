@@ -10,7 +10,7 @@ on:
         options:
           - local
           - gcp
-      pf_rates_url:
+      pf_reference_url:
         description: "pf-rates base URL"
         required: true
         type: string
@@ -39,7 +39,7 @@ jobs:
       - name: Materialize smoke environment
         env:
           TARGET: ${{ inputs.environment }}
-          PF_REFERENCE_URL: ${{ inputs.pf_rates_url }}
+          PF_REFERENCE_URL: ${{ inputs.pf_reference_url }}
           PF_SVC_INCOME_URL: ${{ inputs.pf_svc_income_url }}
           PF_REFERENCE_API_KEY_LOCAL: ${{ secrets.PF_REFERENCE_API_KEY_LOCAL }}
           PF_SVC_INCOME_API_KEY_LOCAL: ${{ secrets.PF_SVC_INCOME_API_KEY_LOCAL }}
