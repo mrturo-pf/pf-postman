@@ -166,6 +166,11 @@
                   {
                     "key": "Content-Type",
                     "value": "application/json"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "body": {
@@ -195,6 +200,11 @@
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-reference-api-key}}"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -229,6 +239,11 @@
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-reference-api-key}}"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -259,6 +274,11 @@
                   {
                     "key": "Content-Type",
                     "value": "application/json"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -292,6 +312,11 @@
                   {
                     "key": "Content-Type",
                     "value": "application/json"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -331,6 +356,11 @@
                   {
                     "key": "Content-Type",
                     "value": "application/json"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "body": {
@@ -360,6 +390,11 @@
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-reference-api-key}}"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -390,6 +425,11 @@
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-reference-api-key}}"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -416,6 +456,11 @@
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-reference-api-key}}"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -440,6 +485,11 @@
                   {
                     "key": "Content-Type",
                     "value": "application/json"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -473,6 +523,11 @@
                   {
                     "key": "Content-Type",
                     "value": "application/json"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -522,6 +577,11 @@
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-reference-api-key}}"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -542,6 +602,11 @@
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-reference-api-key}}"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -572,6 +637,11 @@
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-reference-api-key}}"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -592,6 +662,11 @@
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-reference-api-key}}"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -630,6 +705,11 @@
                   {
                     "key": "Content-Type",
                     "value": "application/json"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -659,6 +739,11 @@
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-reference-api-key}}"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -678,7 +763,13 @@
           "name": "Health",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "X-Request-ID",
+                "value": "{{request-id-example}}",
+                "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
+              }
+            ],
             "url": {
               "raw": "{{pf-reference-url}}/health",
               "host": [
@@ -700,6 +791,11 @@
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-reference-api-key}}"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -730,6 +826,11 @@
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-reference-api-key}}"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -760,6 +861,11 @@
                   {
                     "key": "Content-Type",
                     "value": "application/json"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -799,6 +905,11 @@
                   {
                     "key": "Content-Type",
                     "value": "application/json"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -914,6 +1025,11 @@
                   {
                     "key": "Content-Type",
                     "value": "application/json"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -946,6 +1062,11 @@
                   {
                     "key": "Content-Type",
                     "value": "application/json"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -978,6 +1099,11 @@
                   {
                     "key": "Content-Type",
                     "value": "application/json"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "body": {
@@ -1010,6 +1136,11 @@
                   {
                     "key": "Content-Type",
                     "value": "application/json"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "body": {
@@ -1038,6 +1169,11 @@
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-svc-income-api-key}}"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -1057,6 +1193,11 @@
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-svc-income-api-key}}"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -1074,7 +1215,13 @@
           "name": "Health",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "X-Request-ID",
+                "value": "{{request-id-example}}",
+                "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
+              }
+            ],
             "url": {
               "raw": "{{pf-svc-income-url}}/health",
               "host": [
@@ -1099,6 +1246,11 @@
                       {
                         "key": "X-Api-Key",
                         "value": "{{pf-svc-income-api-key}}"
+                      },
+                      {
+                        "key": "X-Request-ID",
+                        "value": "{{request-id-example}}",
+                        "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                       }
                     ],
                     "url": {
@@ -1121,6 +1273,11 @@
                       {
                         "key": "Content-Type",
                         "value": "application/json"
+                      },
+                      {
+                        "key": "X-Request-ID",
+                        "value": "{{request-id-example}}",
+                        "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                       }
                     ],
                     "url": {
@@ -1153,6 +1310,11 @@
                       {
                         "key": "X-Api-Key",
                         "value": "{{pf-svc-income-api-key}}"
+                      },
+                      {
+                        "key": "X-Request-ID",
+                        "value": "{{request-id-example}}",
+                        "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                       }
                     ],
                     "url": {
@@ -1180,6 +1342,11 @@
                       {
                         "key": "X-Api-Key",
                         "value": "{{pf-svc-income-api-key}}"
+                      },
+                      {
+                        "key": "X-Request-ID",
+                        "value": "{{request-id-example}}",
+                        "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                       }
                     ],
                     "url": {
@@ -1236,6 +1403,11 @@
                       {
                         "key": "X-Api-Key",
                         "value": "{{pf-svc-income-api-key}}"
+                      },
+                      {
+                        "key": "X-Request-ID",
+                        "value": "{{request-id-example}}",
+                        "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                       }
                     ],
                     "url": {
@@ -1324,6 +1496,11 @@
                       {
                         "key": "Content-Type",
                         "value": "application/json"
+                      },
+                      {
+                        "key": "X-Request-ID",
+                        "value": "{{request-id-example}}",
+                        "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                       }
                     ],
                     "url": {
@@ -1357,6 +1534,11 @@
                       {
                         "key": "Content-Type",
                         "value": "application/json"
+                      },
+                      {
+                        "key": "X-Request-ID",
+                        "value": "{{request-id-example}}",
+                        "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                       }
                     ],
                     "url": {
@@ -1400,6 +1582,11 @@
                       {
                         "key": "X-Api-Key",
                         "value": "{{pf-svc-income-api-key}}"
+                      },
+                      {
+                        "key": "X-Request-ID",
+                        "value": "{{request-id-example}}",
+                        "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                       }
                     ],
                     "url": {
@@ -1471,6 +1658,11 @@
                       {
                         "key": "X-Api-Key",
                         "value": "{{pf-svc-income-api-key}}"
+                      },
+                      {
+                        "key": "X-Request-ID",
+                        "value": "{{request-id-example}}",
+                        "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                       }
                     ],
                     "url": {
@@ -1507,6 +1699,11 @@
                       {
                         "key": "X-Api-Key",
                         "value": "{{pf-svc-income-api-key}}"
+                      },
+                      {
+                        "key": "X-Request-ID",
+                        "value": "{{request-id-example}}",
+                        "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                       }
                     ],
                     "url": {
@@ -1527,6 +1724,11 @@
                       {
                         "key": "X-Api-Key",
                         "value": "{{pf-svc-income-api-key}}"
+                      },
+                      {
+                        "key": "X-Request-ID",
+                        "value": "{{request-id-example}}",
+                        "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                       }
                     ],
                     "url": {
@@ -1571,6 +1773,11 @@
                       {
                         "key": "Content-Type",
                         "value": "application/json"
+                      },
+                      {
+                        "key": "X-Request-ID",
+                        "value": "{{request-id-example}}",
+                        "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                       }
                     ],
                     "url": {
@@ -1600,6 +1807,11 @@
                       {
                         "key": "X-Api-Key",
                         "value": "{{pf-svc-income-api-key}}"
+                      },
+                      {
+                        "key": "X-Request-ID",
+                        "value": "{{request-id-example}}",
+                        "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                       }
                     ],
                     "url": {
@@ -1620,6 +1832,11 @@
                       {
                         "key": "X-Api-Key",
                         "value": "{{pf-svc-income-api-key}}"
+                      },
+                      {
+                        "key": "X-Request-ID",
+                        "value": "{{request-id-example}}",
+                        "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                       }
                     ],
                     "url": {
@@ -1640,6 +1857,11 @@
                       {
                         "key": "X-Api-Key",
                         "value": "{{pf-svc-income-api-key}}"
+                      },
+                      {
+                        "key": "X-Request-ID",
+                        "value": "{{request-id-example}}",
+                        "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                       }
                     ],
                     "url": {
@@ -1671,6 +1893,11 @@
                       {
                         "key": "Content-Type",
                         "value": "application/json"
+                      },
+                      {
+                        "key": "X-Request-ID",
+                        "value": "{{request-id-example}}",
+                        "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                       }
                     ],
                     "url": {
@@ -1709,6 +1936,11 @@
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-svc-income-api-key}}"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -1729,6 +1961,11 @@
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-svc-income-api-key}}"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -1749,6 +1986,11 @@
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-svc-income-api-key}}"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -1769,6 +2011,11 @@
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-svc-income-api-key}}"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -1789,6 +2036,11 @@
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-svc-income-api-key}}"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -1809,6 +2061,11 @@
                   {
                     "key": "X-Api-Key",
                     "value": "{{pf-svc-income-api-key}}"
+                  },
+                  {
+                    "key": "X-Request-ID",
+                    "value": "{{request-id-example}}",
+                    "description": "Optional UUIDv4 correlation ID; the service generates one when omitted."
                   }
                 ],
                 "url": {
@@ -1890,6 +2147,12 @@
       "key": "template_id",
       "value": "walmart-chile-v1",
       "type": "string"
+    },
+    {
+      "key": "request-id-example",
+      "value": "550e8400-e29b-41d4-a716-446655440000",
+      "type": "string",
+      "description": "Canonical lowercase UUIDv4 example for backend request correlation."
     }
   ]
 }
