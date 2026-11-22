@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "1b67e88d-11f3-475f-982d-404d16227e85",
     "name": "pf ecosystem",
-    "description": "All pf-* services in one collection: pf-svc-reference, pf-svc-income, pf-sheets. pf-db is DDL/migrations only and exposes no HTTP API. Managed as JSON in pf-postman -- see the pf-postman README for how edits here sync to your real Postman workspace.",
+    "description": "All pf-* services in one collection: pf-svc-reference, pf-svc-income, pf-sheets, plus the GCP API Gateway facade. Gateway routes use {{pf-gateway-url}}/reference/* and {{pf-gateway-url}}/income/*; the facade preserves X-API-Key and X-Request-ID. pf-db is DDL/migrations only and exposes no HTTP API. Managed as JSON in pf-postman -- see the pf-postman README for how edits here sync to your real Postman workspace.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "event": [
@@ -2086,6 +2086,24 @@
     }
   ],
   "variable": [
+    {
+      "key": "pf-gateway-url",
+      "value": "https://pf-backend-gateway-poc-88uq0qjn.uc.gateway.dev",
+      "type": "string",
+      "description": "GCP API Gateway facade. Routes: /reference/* and /income/*; direct Cloud Run URLs remain rollback paths."
+    },
+    {
+      "key": "pf-gateway-reference-url",
+      "value": "{{pf-gateway-url}}/reference",
+      "type": "string",
+      "description": "Gateway prefix for pf-svc-reference routes."
+    },
+    {
+      "key": "pf-gateway-income-url",
+      "value": "{{pf-gateway-url}}/income",
+      "type": "string",
+      "description": "Gateway prefix for pf-svc-income routes."
+    },
     {
       "key": "pf-reference-url",
       "value": "http://localhost:8001",
