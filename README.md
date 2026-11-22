@@ -1,6 +1,6 @@
 # Postman collection — pf ecosystem
 
-Single Postman collection covering all `pf-*` services with an HTTP surface (`pf-rates`,
+Single Postman collection covering all `pf-*` services with an HTTP surface (`pf-svc-reference`,
 `pf-svc-income`, and `pf-sheets` — `pf-db` has no HTTP API; it is DDL/migrations only),
 plus two environments (`LOCAL`, `GCP`). After an authorized push to `main`, the workflow
 syncs the repository assets to Postman. Everything lives here as plain JSON so it can be
@@ -164,16 +164,16 @@ GitHub Secret's value on sync) -- to rotate a key, update the GitHub Secret inst
    | `POSTMAN_COLLECTION_UID` | the collection's UID |
    | `POSTMAN_ENV_UID_LOCAL` | the `LOCAL` environment's UID |
    | `POSTMAN_ENV_UID_GCP` | the `GCP` environment's UID |
-   | `PF_REFERENCE_API_KEY_LOCAL` | pf-rates dev API key (from `modules/pf-rates/.env`) |
+   | `PF_REFERENCE_API_KEY_LOCAL` | pf-svc-reference dev API key (from `modules/pf-svc-reference/.env`) |
    | `PF_SVC_INCOME_API_KEY_LOCAL` | pf-svc-income dev API key (from `modules/pf-svc-income/.env`) |
-   | `PF_REFERENCE_API_KEY_GCP` | pf-rates production API key (GCP Secret Manager, secret `PF_REFERENCE_API_KEY`) |
+   | `PF_REFERENCE_API_KEY_GCP` | pf-svc-reference production API key (GCP Secret Manager, secret `PF_REFERENCE_API_KEY`) |
    | `PF_SVC_INCOME_API_KEY_GCP` | pf-svc-income production API key (GCP Secret Manager, secret `PF_SVC_INCOME_API_KEY`) |
    | `PF_SHEETS_API_KEY` | pf-sheets `GET_CLP_API_KEY` Script Property -- Apps Script editor → Project Settings → Script Properties (no CLI/file access, it's cloud-only) |
 
    Prefer piping values into `gh secret set` over pasting them anywhere they'd be
    echoed/logged, e.g.:
    ```bash
-   grep '^PF_REFERENCE_API_KEY=' modules/pf-rates/.env | cut -d'=' -f2- \
+   grep '^PF_REFERENCE_API_KEY=' modules/pf-svc-reference/.env | cut -d'=' -f2- \
      | gh secret set PF_REFERENCE_API_KEY_LOCAL --repo mrturo-pf/pf-postman
    ```
    Production values living in GCP Secret Manager may be blocked from direct CLI access
@@ -187,7 +187,7 @@ GitHub Secret's value on sync) -- to rotate a key, update the GitHub Secret inst
 ## Automated endpoint coverage
 
 [`scripts/check-api-coverage.py`](scripts/check-api-coverage.py) compares the
-OpenAPI operations exported by `pf-rates` and `pf-svc-income` with the requests
+OpenAPI operations exported by `pf-svc-reference` and `pf-svc-income` with the requests
 in this collection. It reports missing and stale method/path pairs without
 calling an API or mutating data.
 
@@ -195,7 +195,7 @@ Generate sanitized OpenAPI snapshots from the running services, then run:
 
 ```bash
 python3 scripts/check-api-coverage.py \
-  --openapi pf-rates=/tmp/pf-rates-openapi.json \
+  --openapi pf-svc-reference=/tmp/pf-svc-reference-openapi.json \
   --openapi pf-svc-income=/tmp/pf-svc-income-openapi.json
 ```
 
@@ -209,7 +209,7 @@ production payloads. The checker can also fetch the documents directly with GET:
 
 ```bash
 python3 scripts/check-api-coverage.py \
-  --openapi-url pf-rates=https://example-rates/openapi.json \
+  --openapi-url pf-svc-reference=https://example-rates/openapi.json \
   --openapi-url pf-svc-income=https://example-income/openapi.json
 ```
 
@@ -361,7 +361,7 @@ is only a fixture, keep it in tests instead.
 
 Just edit the JSON by hand, or ask code-puppy to add it (e.g. "add a POST to
 /payroll/import/json under the pf-svc-income folder, with this example body"). Keep requests
-grouped in a top-level folder per service (`pf-rates`, `pf-svc-income`, `pf-sheets`),
+grouped in a top-level folder per service (`pf-svc-reference`, `pf-svc-income`, `pf-sheets`),
 matching each service's `docs/api.md`, so this collection never drifts further from
 reality than those docs do.
 
@@ -398,7 +398,7 @@ from the sidebar.
 
 ## Async export lifecycle
 
-The `pf-rates` export folder contains assertions for the supported async contract:
+The `pf-svc-reference` export folder contains assertions for the supported async contract:
 
 ```text
 Trigger financial-data export (async)

@@ -11,7 +11,7 @@ on:
           - local
           - gcp
       pf_reference_url:
-        description: "pf-rates base URL"
+        description: "pf-svc-reference base URL"
         required: true
         type: string
       pf_svc_income_url:

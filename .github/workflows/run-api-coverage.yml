@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       pf_reference_openapi_url:
-        description: "Read-only pf-rates /openapi.json URL"
+        description: "Read-only pf-svc-reference /openapi.json URL"
         required: true
         type: string
       pf_svc_income_openapi_url:
@@ -32,16 +32,16 @@ jobs:
           curl --fail --silent --show-error --location --retry 2 --max-time 30 \
             --header 'Accept: application/json' \
             "$PF_REFERENCE_OPENAPI_URL" \
-            --output "$RUNNER_TEMP/openapi/pf-rates.json"
+            --output "$RUNNER_TEMP/openapi/pf-svc-reference.json"
           curl --fail --silent --show-error --location --retry 2 --max-time 30 \
             --header 'Accept: application/json' \
             "$PF_SVC_INCOME_OPENAPI_URL" \
             --output "$RUNNER_TEMP/openapi/pf-svc-income.json"
-          jq empty "$RUNNER_TEMP/openapi/pf-rates.json"
+          jq empty "$RUNNER_TEMP/openapi/pf-svc-reference.json"
           jq empty "$RUNNER_TEMP/openapi/pf-svc-income.json"
 
       - name: Check OpenAPI to Postman coverage
         run: |
           python3 scripts/check-api-coverage.py \
-            --openapi pf-rates="$RUNNER_TEMP/openapi/pf-rates.json" \
+            --openapi pf-svc-reference="$RUNNER_TEMP/openapi/pf-svc-reference.json" \
             --openapi pf-svc-income="$RUNNER_TEMP/openapi/pf-svc-income.json"
