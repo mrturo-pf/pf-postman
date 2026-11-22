@@ -11,9 +11,9 @@
 #   POSTMAN_COLLECTION_UID   — target collection's UID
 #   POSTMAN_ENV_UID_LOCAL    — LOCAL environment's UID
 #   POSTMAN_ENV_UID_GCP      — GCP environment's UID
-#   PF_REFERENCE_API_KEY_LOCAL   — pf-rates dev API key (injected into LOCAL env)
+#   PF_REFERENCE_API_KEY_LOCAL   — pf-svc-reference dev API key (injected into LOCAL env)
 #   PF_SVC_INCOME_API_KEY_LOCAL — pf-svc-income dev API key (injected into LOCAL env)
-#   PF_REFERENCE_API_KEY_GCP     — pf-rates production API key (injected into GCP env)
+#   PF_REFERENCE_API_KEY_GCP     — pf-svc-reference production API key (injected into GCP env)
 #   PF_SVC_INCOME_API_KEY_GCP   — pf-svc-income production API key (injected into GCP env)
 #   PF_SHEETS_API_KEY        — pf-sheets GET_CLP_API_KEY Script Property
 #                              (injected into the collection's own variable --

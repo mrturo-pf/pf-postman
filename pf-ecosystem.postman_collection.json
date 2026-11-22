@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "1b67e88d-11f3-475f-982d-404d16227e85",
     "name": "pf ecosystem",
-    "description": "All pf-* services in one collection: pf-rates, pf-svc-income, pf-sheets. pf-db is DDL/migrations only and exposes no HTTP API. Managed as JSON in pf-postman -- see the pf-postman README for how edits here sync to your real Postman workspace.",
+    "description": "All pf-* services in one collection: pf-svc-reference, pf-svc-income, pf-sheets. pf-db is DDL/migrations only and exposes no HTTP API. Managed as JSON in pf-postman -- see the pf-postman README for how edits here sync to your real Postman workspace.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "event": [
@@ -149,7 +149,7 @@
   ],
   "item": [
     {
-      "name": "pf-rates",
+      "name": "pf-svc-reference",
       "item": [
         {
           "name": "Economic indices",
@@ -424,7 +424,7 @@
                     "{{pf-reference-url}}/monetary-units"
                   ]
                 },
-                "description": "Renamed from /currencies -- returns both fiat currencies (is_fiat=true, unit_kind=currency) and index units like UF/UTM (is_fiat=false, unit_kind=index_unit); see pf-rates/docs/api.md."
+                "description": "Renamed from /currencies -- returns both fiat currencies (is_fiat=true, unit_kind=currency) and index units like UF/UTM (is_fiat=false, unit_kind=index_unit); see pf-svc-reference/docs/api.md."
               },
               "response": []
             },
@@ -824,7 +824,7 @@
           "description": ""
         }
       ],
-      "description": "See modules/pf-rates/docs/api.md for the full reference."
+      "description": "See modules/pf-svc-reference/docs/api.md for the full reference."
     },
     {
       "name": "pf-sheets",

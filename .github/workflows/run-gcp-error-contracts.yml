@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       pf_reference_url:
-        description: "pf-rates HTTPS base URL"
+        description: "pf-svc-reference HTTPS base URL"
         required: true
         type: string
       pf_svc_income_url:

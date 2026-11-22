@@ -73,7 +73,7 @@ def main() -> int:
             raise ValueError("Both local API key environment variables are required")
 
         check_case(
-            "pf-rates invalid API key",
+            "pf-svc-reference invalid API key",
             request_status(rates_url, "/monetary-units", api_key="invalid-local-key"),
             {401, 403},
         )

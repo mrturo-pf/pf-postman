@@ -14,11 +14,11 @@ from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 
 
-SERVICE_FOLDER_NAMES = {"pf-rates", "pf-svc-income"}
+SERVICE_FOLDER_NAMES = {"pf-svc-reference", "pf-svc-income"}
 INTENTIONAL_DUPLICATES = {
-    ("pf-rates", "POST", "/economic-indices/refresh"),
-    ("pf-rates", "POST", "/exchange-rates/refresh"),
-    ("pf-rates", "POST", "/exports/financial-data"),
+    ("pf-svc-reference", "POST", "/economic-indices/refresh"),
+    ("pf-svc-reference", "POST", "/exchange-rates/refresh"),
+    ("pf-svc-reference", "POST", "/exports/financial-data"),
     ("pf-svc-income", "POST", "/payroll/import/json"),
     ("pf-svc-income", "GET", "/payroll/spreadsheet"),
 }
