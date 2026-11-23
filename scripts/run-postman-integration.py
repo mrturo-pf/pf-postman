@@ -96,7 +96,7 @@ class LocalApi:
         self.base_url = base_url
         self.headers = {"Content-Type": "application/json"}
         if api_key:
-            self.headers["X-Gateway-API-Key"] = api_key
+            self.headers["X-API-Key"] = api_key
 
     def request(self, method: str, path: str, body: object | None = None) -> object:
         """Send one request and fail with a sanitized status/path diagnostic."""

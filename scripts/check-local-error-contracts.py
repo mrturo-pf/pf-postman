@@ -41,7 +41,7 @@ def request_status(
     base_url: str, path: str, *, api_key: str, method: str = "GET", body: object | None = None
 ) -> int:
     """Return an HTTP status without printing response bodies."""
-    headers = {"X-Gateway-API-Key": api_key, "Content-Type": "application/json"}
+    headers = {"X-API-Key": api_key, "Content-Type": "application/json"}
     request = Request(f"{base_url}{path}", method=method, headers=headers)
     if body is not None:
         request.data = json.dumps(body).encode()
