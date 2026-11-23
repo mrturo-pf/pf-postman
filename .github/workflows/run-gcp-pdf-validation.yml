@@ -28,14 +28,14 @@ jobs:
       - name: Preview PDF and validate JSON import
         env:
           SERVICE_URL: ${{ inputs.pf_svc_income_url }}
-          API_KEY: ${{ secrets.PF_SVC_INCOME_API_KEY_GCP }}
+          API_KEY: ${{ secrets.PF_GATEWAY_API_KEY_GCP }}
         run: |
           set -euo pipefail
           test -n "$API_KEY"
           preview_status=$(curl --fail --silent --show-error --max-time 60 \
             --output "$RUNNER_TEMP/preview.json" --write-out '%{http_code}' \
             -X POST "${SERVICE_URL%/}/payroll/pdf-preview" \
-            -H "X-Api-Key: ${API_KEY}" \
+            -H "X-Gateway-API-Key: ${API_KEY}" \
             -F "files=@${RUNNER_TEMP}/synthetic-payroll.pdf;type=application/pdf")
           test "$preview_status" = 200
           python3 - "$RUNNER_TEMP/preview.json" "$RUNNER_TEMP/import.json" <<'PY'
@@ -68,7 +68,7 @@ jobs:
           import_status=$(curl --silent --show-error --max-time 90 \
             --output "$RUNNER_TEMP/import-response.json" --write-out '%{http_code}' \
             -X POST "${SERVICE_URL%/}/payroll/import/json" \
-            -H "X-Api-Key: ${API_KEY}" \
+            -H "X-Gateway-API-Key: ${API_KEY}" \
             -H 'Content-Type: application/json' \
             --data-binary "@${RUNNER_TEMP}/import.json")
           if [ "$import_status" != "200" ]; then

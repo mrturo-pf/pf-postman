@@ -75,8 +75,6 @@ jobs:
       - name: Start local APIs
         env:
           PF_DATABASE_URL: postgresql+asyncpg://pf_db:pf_db@localhost:5432/pf_db
-          PF_REFERENCE_API_KEY: local-rates-key
-          PF_INCOME_API_KEY: local-income-key
           PF_REFERENCE_URL: http://localhost:8001
         run: |
           set -euo pipefail
@@ -107,12 +105,7 @@ jobs:
       - name: Materialize local Postman environment
         working-directory: postman
         run: |
-          jq \
-            --arg rates_key "local-rates-key" \
-            --arg income_key "local-income-key" \
-            '.values[] |= if .key == "pf-reference-api-key" then .value = $rates_key
-              elif .key == "pf-svc-income-api-key" then .value = $income_key
-              else . end' \
+          jq '.values[] |= if .key == "pf-gateway-api-key" then .value = "" else . end' \
             pf-ecosystem.postman_environment.local.json \
             > "$RUNNER_TEMP/postman-local-environment.json"
 
@@ -121,13 +114,6 @@ jobs:
         run: |
           python3 scripts/generate-synthetic-payroll-pdf.py --output "$RUNNER_TEMP/synthetic-payroll.pdf"
           python3 scripts/generate-synthetic-payroll-xlsx.py --output "$RUNNER_TEMP/synthetic-payroll.xlsx"
-
-      - name: Check local error contracts
-        working-directory: postman
-        env:
-          PF_REFERENCE_API_KEY: local-rates-key
-          PF_INCOME_API_KEY: local-income-key
-        run: python3 scripts/check-local-error-contracts.py
 
       - name: Run Newman payroll validation contracts
         working-directory: postman
@@ -148,8 +134,6 @@ jobs:
 
       - name: Run local mutation fixtures with reset cleanup
         working-directory: postman
-        env:
-          PF_INCOME_API_KEY: local-income-key
         run: scripts/run-local-integration.sh
 
       - name: Upload JUnit reports and service logs

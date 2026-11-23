@@ -18,8 +18,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--rates-url", default="http://localhost:8001")
     parser.add_argument("--income-url", default="http://localhost:8000")
-    parser.add_argument("--rates-key-env", default="PF_REFERENCE_API_KEY")
-    parser.add_argument("--income-key-env", default="PF_INCOME_API_KEY")
+    parser.add_argument("--gateway-key-env", default="PF_GATEWAY_API_KEY")
     parser.add_argument(
         "--allow-remote",
         action="store_true",
@@ -42,7 +41,7 @@ def request_status(
     base_url: str, path: str, *, api_key: str, method: str = "GET", body: object | None = None
 ) -> int:
     """Return an HTTP status without printing response bodies."""
-    headers = {"X-API-Key": api_key, "Content-Type": "application/json"}
+    headers = {"X-Gateway-API-Key": api_key, "Content-Type": "application/json"}
     request = Request(f"{base_url}{path}", method=method, headers=headers)
     if body is not None:
         request.data = json.dumps(body).encode()
@@ -67,10 +66,11 @@ def main() -> int:
     try:
         rates_url = target_url(arguments.rates_url, arguments.allow_remote)
         income_url = target_url(arguments.income_url, arguments.allow_remote)
-        rates_key = os.environ.get(arguments.rates_key_env, "")
-        income_key = os.environ.get(arguments.income_key_env, "")
-        if not rates_key or not income_key:
-            raise ValueError("Both local API key environment variables are required")
+        gateway_key = os.environ.get(arguments.gateway_key_env, "")
+        if not gateway_key:
+            raise ValueError("The gateway API key environment variable is required")
+        rates_key = gateway_key
+        income_key = gateway_key
 
         check_case(
             "pf-svc-reference invalid API key",

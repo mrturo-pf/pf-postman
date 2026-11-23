@@ -50,8 +50,7 @@ backup_database
 reset_database
 trap cleanup EXIT
 
-income_key="${PF_INCOME_API_KEY:?PF_INCOME_API_KEY is required}"
-PF_INCOME_API_KEY="$income_key" \
+PF_GATEWAY_API_KEY="${PF_GATEWAY_API_KEY:-}" \
   python3 "$SCRIPT_DIR/run-postman-integration.py" \
   --base-url "${PF_INCOME_BASE_URL:-http://localhost:8000}" \
   --defer-cleanup

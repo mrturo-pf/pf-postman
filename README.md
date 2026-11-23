@@ -116,17 +116,18 @@ payloads, personal data, or raw provider responses.
 
 ## Environments: LOCAL vs GCP
 
-Both environments share the same four variable names (matching the collection's
-requests): `pf-reference-url`, `pf-reference-api-key`, `pf-svc-income-url`, `pf-svc-income-api-key`.
-Whichever environment is active in the Postman UI overrides the collection's own
-(harmless localhost) defaults, so switching target just means picking a different
-environment from the dropdown -- no request needs editing.
+Both environments share the URL variables and the single gateway variable
+`pf-gateway-api-key`. Business requests send `X-Gateway-API-Key`; health requests send
+no key. Whichever environment is active in the Postman UI overrides the collection's
+own harmless defaults, so switching target just means picking a different environment
+from the dropdown -- no request needs editing. LOCAL intentionally keeps the gateway
+variable empty because direct local services do not require a client key.
 
 | | `pf-ecosystem.postman_environment.local.json` | `pf-ecosystem.postman_environment.gcp.json` |
 |---|---|---|
 | `*-url` values | `http://localhost:8001` / `:8000` | real Cloud Run URLs |
-| `*-api-key` values in the committed file | always `""` | always `""` |
-| Real key comes from | GitHub Secret `PF_REFERENCE_API_KEY_LOCAL` / `PF_SVC_INCOME_API_KEY_LOCAL` | GitHub Secret `PF_REFERENCE_API_KEY_GCP` / `PF_SVC_INCOME_API_KEY_GCP` |
+| `pf-gateway-api-key` in the committed file | always `""` | always `""` |
+| Real key comes from | no key; direct local services | GitHub Secret `PF_GATEWAY_API_KEY_GCP` |
 
 **Why the api-key fields are always empty in git:** a Postman `"type": "secret"` variable
 only *masks* the value in the UI -- the raw value is still plain text in the exported
@@ -139,7 +140,7 @@ deleted. The repo itself never sees a real key.
 Practical effect: editing `*-url` values here and pushing updates Postman immediately.
 Editing an `*-api-key` value here does **nothing** (it always gets overwritten with the
 GitHub Secret's value on sync) -- to rotate a key, update the GitHub Secret instead
-(`gh secret set PF_REFERENCE_API_KEY_GCP --repo mrturo-pf/pf-postman`) and re-run the workflow
+(`gh secret set PF_GATEWAY_API_KEY_GCP --repo mrturo-pf/pf-postman`) and re-run the workflow
 (push any change under `this repository`, or `gh workflow run "CI / Sync Postman Collection" --repo mrturo-pf/pf-postman`).
 
 ## One-time setup
@@ -164,17 +165,16 @@ GitHub Secret's value on sync) -- to rotate a key, update the GitHub Secret inst
    | `POSTMAN_COLLECTION_UID` | the collection's UID |
    | `POSTMAN_ENV_UID_LOCAL` | the `LOCAL` environment's UID |
    | `POSTMAN_ENV_UID_GCP` | the `GCP` environment's UID |
-   | `PF_REFERENCE_API_KEY_LOCAL` | pf-svc-reference dev API key (from `modules/pf-svc-reference/.env`) |
-   | `PF_SVC_INCOME_API_KEY_LOCAL` | pf-svc-income dev API key (from `modules/pf-svc-income/.env`) |
-   | `PF_REFERENCE_API_KEY_GCP` | pf-svc-reference production API key (GCP Secret Manager, secret `PF_REFERENCE_API_KEY`) |
-   | `PF_SVC_INCOME_API_KEY_GCP` | pf-svc-income production API key (GCP Secret Manager, secret `PF_SVC_INCOME_API_KEY`) |
+   | `PF_GATEWAY_API_KEY_LOCAL` | optional; leave empty because local direct services do not require a key |
+   | `PF_GATEWAY_API_KEY_GCP` | restricted GCP API Gateway consumer key for the managed PF gateway service |
    | `PF_SHEETS_API_KEY` | pf-sheets `GET_CLP_API_KEY` Script Property -- Apps Script editor → Project Settings → Script Properties (no CLI/file access, it's cloud-only) |
 
    Prefer piping values into `gh secret set` over pasting them anywhere they'd be
    echoed/logged, e.g.:
    ```bash
-   grep '^PF_REFERENCE_API_KEY=' modules/pf-svc-reference/.env | cut -d'=' -f2- \
-     | gh secret set PF_REFERENCE_API_KEY_LOCAL --repo mrturo-pf/pf-postman
+   # Local services intentionally need no gateway key; only configure the GCP key.
+   gcloud services api-keys get-key-string <gateway-key-id> \
+     | gh secret set PF_GATEWAY_API_KEY_GCP --repo mrturo-pf/pf-postman
    ```
    Production values living in GCP Secret Manager may be blocked from direct CLI access
    by VPC Service Controls, depending on org policy -- fetch them via the GCP Console
@@ -271,28 +271,27 @@ The [`run-postman-integration-local.yml`](.github/workflows/run-postman-integrat
 workflow is the disposable LOCAL gate. It checks out the PF services, boots a
 PostgreSQL test database, runs OpenAPI coverage and read-only smoke tests, executes
 synthetic mutations, resets the database on exit, and uploads JUnit/log artifacts.
-It has no GCP, Neon, or production target. It also runs the loopback-only
-`check-local-error-contracts.py` cases for invalid auth, missing resources, and
-invalid import payloads.
+It has no GCP, Neon, or production target. Invalid gateway-key cases are reserved for
+explicit GCP gateway validation; local direct services intentionally do not require a
+client key.
 
 ### Local integration fixtures
 
 [`scripts/run-postman-integration.py`](scripts/run-postman-integration.py) runs a
 synthetic `pf-svc-income` employer → contract → template create/update workflow.
-It rejects non-loopback URLs, requires an explicit local API key, generates unique
-fixture identifiers, and always attempts cleanup in `finally`:
+It rejects non-loopback URLs, accepts an optional gateway key (local direct services
+need none), generates unique fixture identifiers, and always attempts cleanup in
+`finally`:
 
 ```bash
-PF_INCOME_API_KEY="..." \
-  python3 scripts/run-postman-integration.py
+python3 scripts/run-postman-integration.py
 ```
 
 Use `--dry-run` to inspect the workflow without mutation. For the full disposable
 local run, use:
 
 ```bash
-PF_INCOME_API_KEY="..." \
-  scripts/run-local-integration.sh
+scripts/run-local-integration.sh
 ```
 
 That wrapper backs up the local database, rebuilds it with `local-up-test`, runs the

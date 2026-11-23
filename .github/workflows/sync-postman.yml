@@ -11,10 +11,8 @@
 #   POSTMAN_COLLECTION_UID   — target collection's UID
 #   POSTMAN_ENV_UID_LOCAL    — LOCAL environment's UID
 #   POSTMAN_ENV_UID_GCP      — GCP environment's UID
-#   PF_REFERENCE_API_KEY_LOCAL   — pf-svc-reference dev API key (injected into LOCAL env)
-#   PF_SVC_INCOME_API_KEY_LOCAL — pf-svc-income dev API key (injected into LOCAL env)
-#   PF_REFERENCE_API_KEY_GCP     — pf-svc-reference production API key (injected into GCP env)
-#   PF_SVC_INCOME_API_KEY_GCP   — pf-svc-income production API key (injected into GCP env)
+#   PF_GATEWAY_API_KEY_LOCAL   — optional; local requests do not require a key
+#   PF_GATEWAY_API_KEY_GCP     — restricted GCP API Gateway consumer key (injected into GCP env)
 #   PF_SHEETS_API_KEY        — pf-sheets GET_CLP_API_KEY Script Property
 #                              (injected into the collection's own variable --
 #                              pf-sheets has no local/gcp split, single deployment)
@@ -135,13 +133,13 @@ jobs:
           - name: LOCAL
             file: pf-ecosystem.postman_environment.local.json
             env_uid_secret: POSTMAN_ENV_UID_LOCAL
-            rates_key_secret: PF_REFERENCE_API_KEY_LOCAL
-            income_key_secret: PF_SVC_INCOME_API_KEY_LOCAL
+            gateway_key_secret: PF_GATEWAY_API_KEY_LOCAL
+            require_gateway_key: false
           - name: GCP
             file: pf-ecosystem.postman_environment.gcp.json
             env_uid_secret: POSTMAN_ENV_UID_GCP
-            rates_key_secret: PF_REFERENCE_API_KEY_GCP
-            income_key_secret: PF_SVC_INCOME_API_KEY_GCP
+            gateway_key_secret: PF_GATEWAY_API_KEY_GCP
+            require_gateway_key: true
     steps:
       - uses: actions/checkout@v7
 
@@ -152,8 +150,7 @@ jobs:
         env:
           POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
           ENV_UID: ${{ secrets[matrix.env_uid_secret] }}
-          RATES_API_KEY: ${{ secrets[matrix.rates_key_secret] }}
-          SVC_INCOME_API_KEY: ${{ secrets[matrix.income_key_secret] }}
+          GATEWAY_API_KEY: ${{ secrets[matrix.gateway_key_secret] }}
         run: |
           set -euo pipefail
 
@@ -166,18 +163,17 @@ jobs:
           # Refuse to sync with a blank api-key -- a missing secret must
           # fail loudly, never silently overwrite a real key already set in
           # Postman with an empty string (this happened once, see git log).
-          if [ -z "${RATES_API_KEY}" ] || [ -z "${SVC_INCOME_API_KEY}" ]; then
-            echo "::error::${{ matrix.rates_key_secret }} and/or ${{ matrix.income_key_secret }} secrets are not set or empty." \
-                 "Refusing to push -- this would overwrite the real keys already in Postman with blanks." >&2
+          if [ "${{ matrix.require_gateway_key }}" = "true" ] && [ -z "${GATEWAY_API_KEY}" ]; then
+            echo "::error::${{ matrix.gateway_key_secret }} is not set or empty." \
+                 "Refusing to push a GCP environment without its gateway key." >&2
             exit 1
           fi
 
           # Inject by variable key name, never by blind text substitution --
           # the committed template's api-key values are just empty strings,
           # no placeholder marker syntax to keep in sync.
-          jq --arg rates_key "${RATES_API_KEY}" --arg svc_income_key "${SVC_INCOME_API_KEY}" '
-            (.values[] | select(.key == "pf-reference-api-key") | .value) = $rates_key
-            | (.values[] | select(.key == "pf-svc-income-api-key") | .value) = $svc_income_key
+          jq --arg gateway_key "${GATEWAY_API_KEY}" '\
+            (.values[] | select(.key == "pf-gateway-api-key") | .value) = $gateway_key
           ' "${{ matrix.file }}" > /tmp/materialized-environment.json
 
           jq -n --slurpfile environment /tmp/materialized-environment.json \

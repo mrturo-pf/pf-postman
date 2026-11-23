@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "1b67e88d-11f3-475f-982d-404d16227e85",
     "name": "pf ecosystem",
-    "description": "All pf-* services in one collection: pf-svc-reference, pf-svc-income, pf-sheets, plus the GCP API Gateway facade. Gateway routes use {{pf-gateway-url}}/reference/* and {{pf-gateway-url}}/income/*; the facade preserves X-API-Key and X-Request-ID. pf-db is DDL/migrations only and exposes no HTTP API. Managed as JSON in pf-postman -- see the pf-postman README for how edits here sync to your real Postman workspace.",
+    "description": "All pf-* services in one collection: pf-svc-reference, pf-svc-income, pf-sheets, plus the GCP API Gateway facade. Gateway routes use {{pf-gateway-url}}/reference/* and {{pf-gateway-url}}/income/*; the gateway validates X-Gateway-API-Key and the proxy preserves X-Request-ID. pf-db is DDL/migrations only and exposes no HTTP API. Managed as JSON in pf-postman -- see the pf-postman README for how edits here sync to your real Postman workspace.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "event": [
@@ -160,8 +160,8 @@
                 "method": "POST",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -198,8 +198,8 @@
                 "method": "GET",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "X-Request-ID",
@@ -237,8 +237,8 @@
                 "method": "GET",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "X-Request-ID",
@@ -268,8 +268,8 @@
                 "method": "POST",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -306,8 +306,8 @@
                 "method": "POST",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -350,8 +350,8 @@
                 "method": "POST",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -388,8 +388,8 @@
                 "method": "GET",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "X-Request-ID",
@@ -423,8 +423,8 @@
                 "method": "GET",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "X-Request-ID",
@@ -454,8 +454,8 @@
                 "method": "GET",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "X-Request-ID",
@@ -479,8 +479,8 @@
                 "method": "POST",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -517,8 +517,8 @@
                 "method": "POST",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -575,8 +575,8 @@
                 "method": "GET",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "X-Request-ID",
@@ -600,8 +600,8 @@
                 "method": "GET",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "X-Request-ID",
@@ -635,8 +635,8 @@
                 "method": "POST",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "X-Request-ID",
@@ -660,8 +660,8 @@
                 "method": "POST",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "X-Request-ID",
@@ -699,8 +699,8 @@
                 "method": "POST",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -737,8 +737,8 @@
                 "method": "POST",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "X-Request-ID",
@@ -789,8 +789,8 @@
                 "method": "GET",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "X-Request-ID",
@@ -824,8 +824,8 @@
                 "method": "GET",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "X-Request-ID",
@@ -855,8 +855,8 @@
                 "method": "POST",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -899,8 +899,8 @@
                 "method": "POST",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-reference-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -1019,8 +1019,8 @@
                 "method": "POST",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -1056,8 +1056,8 @@
                 "method": "POST",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -1093,8 +1093,8 @@
                 "method": "DELETE",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -1130,8 +1130,8 @@
                 "method": "DELETE",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -1167,8 +1167,8 @@
                 "method": "GET",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "X-Request-ID",
@@ -1191,8 +1191,8 @@
                 "method": "GET",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "X-Request-ID",
@@ -1244,8 +1244,8 @@
                     "method": "DELETE",
                     "header": [
                       {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-svc-income-api-key}}"
+                        "key": "X-Gateway-API-Key",
+                        "value": "{{pf-gateway-api-key}}"
                       },
                       {
                         "key": "X-Request-ID",
@@ -1267,8 +1267,8 @@
                     "method": "DELETE",
                     "header": [
                       {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-svc-income-api-key}}"
+                        "key": "X-Gateway-API-Key",
+                        "value": "{{pf-gateway-api-key}}"
                       },
                       {
                         "key": "Content-Type",
@@ -1308,8 +1308,8 @@
                     "method": "GET",
                     "header": [
                       {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-svc-income-api-key}}"
+                        "key": "X-Gateway-API-Key",
+                        "value": "{{pf-gateway-api-key}}"
                       },
                       {
                         "key": "X-Request-ID",
@@ -1340,8 +1340,8 @@
                     "method": "GET",
                     "header": [
                       {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-svc-income-api-key}}"
+                        "key": "X-Gateway-API-Key",
+                        "value": "{{pf-gateway-api-key}}"
                       },
                       {
                         "key": "X-Request-ID",
@@ -1401,8 +1401,8 @@
                     "method": "GET",
                     "header": [
                       {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-svc-income-api-key}}"
+                        "key": "X-Gateway-API-Key",
+                        "value": "{{pf-gateway-api-key}}"
                       },
                       {
                         "key": "X-Request-ID",
@@ -1490,8 +1490,8 @@
                     "method": "POST",
                     "header": [
                       {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-svc-income-api-key}}"
+                        "key": "X-Gateway-API-Key",
+                        "value": "{{pf-gateway-api-key}}"
                       },
                       {
                         "key": "Content-Type",
@@ -1528,8 +1528,8 @@
                     "method": "POST",
                     "header": [
                       {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-svc-income-api-key}}"
+                        "key": "X-Gateway-API-Key",
+                        "value": "{{pf-gateway-api-key}}"
                       },
                       {
                         "key": "Content-Type",
@@ -1580,8 +1580,8 @@
                     "method": "POST",
                     "header": [
                       {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-svc-income-api-key}}"
+                        "key": "X-Gateway-API-Key",
+                        "value": "{{pf-gateway-api-key}}"
                       },
                       {
                         "key": "X-Request-ID",
@@ -1656,8 +1656,8 @@
                     "method": "POST",
                     "header": [
                       {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-svc-income-api-key}}"
+                        "key": "X-Gateway-API-Key",
+                        "value": "{{pf-gateway-api-key}}"
                       },
                       {
                         "key": "X-Request-ID",
@@ -1697,8 +1697,8 @@
                     "method": "GET",
                     "header": [
                       {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-svc-income-api-key}}"
+                        "key": "X-Gateway-API-Key",
+                        "value": "{{pf-gateway-api-key}}"
                       },
                       {
                         "key": "X-Request-ID",
@@ -1722,8 +1722,8 @@
                     "method": "GET",
                     "header": [
                       {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-svc-income-api-key}}"
+                        "key": "X-Gateway-API-Key",
+                        "value": "{{pf-gateway-api-key}}"
                       },
                       {
                         "key": "X-Request-ID",
@@ -1767,8 +1767,8 @@
                     "method": "POST",
                     "header": [
                       {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-svc-income-api-key}}"
+                        "key": "X-Gateway-API-Key",
+                        "value": "{{pf-gateway-api-key}}"
                       },
                       {
                         "key": "Content-Type",
@@ -1805,8 +1805,8 @@
                     "method": "DELETE",
                     "header": [
                       {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-svc-income-api-key}}"
+                        "key": "X-Gateway-API-Key",
+                        "value": "{{pf-gateway-api-key}}"
                       },
                       {
                         "key": "X-Request-ID",
@@ -1830,8 +1830,8 @@
                     "method": "GET",
                     "header": [
                       {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-svc-income-api-key}}"
+                        "key": "X-Gateway-API-Key",
+                        "value": "{{pf-gateway-api-key}}"
                       },
                       {
                         "key": "X-Request-ID",
@@ -1855,8 +1855,8 @@
                     "method": "GET",
                     "header": [
                       {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-svc-income-api-key}}"
+                        "key": "X-Gateway-API-Key",
+                        "value": "{{pf-gateway-api-key}}"
                       },
                       {
                         "key": "X-Request-ID",
@@ -1887,8 +1887,8 @@
                     "method": "PUT",
                     "header": [
                       {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-svc-income-api-key}}"
+                        "key": "X-Gateway-API-Key",
+                        "value": "{{pf-gateway-api-key}}"
                       },
                       {
                         "key": "Content-Type",
@@ -1934,8 +1934,8 @@
                 "method": "GET",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "X-Request-ID",
@@ -1959,8 +1959,8 @@
                 "method": "GET",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "X-Request-ID",
@@ -1984,8 +1984,8 @@
                 "method": "GET",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "X-Request-ID",
@@ -2009,8 +2009,8 @@
                 "method": "GET",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "X-Request-ID",
@@ -2034,8 +2034,8 @@
                 "method": "GET",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "X-Request-ID",
@@ -2059,8 +2059,8 @@
                 "method": "GET",
                 "header": [
                   {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-svc-income-api-key}}"
+                    "key": "X-Gateway-API-Key",
+                    "value": "{{pf-gateway-api-key}}"
                   },
                   {
                     "key": "X-Request-ID",
@@ -2110,18 +2110,8 @@
       "type": "string"
     },
     {
-      "key": "pf-reference-api-key",
-      "value": "",
-      "type": "string"
-    },
-    {
       "key": "pf-svc-income-url",
       "value": "http://localhost:8000",
-      "type": "string"
-    },
-    {
-      "key": "pf-svc-income-api-key",
-      "value": "",
       "type": "string"
     },
     {
@@ -2171,6 +2161,11 @@
       "value": "550e8400-e29b-41d4-a716-446655440000",
       "type": "string",
       "description": "Canonical lowercase UUIDv4 example for backend request correlation."
+    },
+    {
+      "key": "pf-gateway-api-key",
+      "value": "",
+      "type": "string"
     }
   ]
 }

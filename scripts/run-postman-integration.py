@@ -29,8 +29,8 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--api-key-env",
-        default="PF_INCOME_API_KEY",
-        help="Environment variable containing the local API key.",
+        default="PF_GATEWAY_API_KEY",
+        help="Optional gateway key environment variable; local direct services need none.",
     )
     parser.add_argument(
         "--dry-run",
@@ -94,7 +94,9 @@ class LocalApi:
     def __init__(self, base_url: str, api_key: str) -> None:
         """Initialize the client."""
         self.base_url = base_url
-        self.headers = {"Content-Type": "application/json", "X-API-Key": api_key}
+        self.headers = {"Content-Type": "application/json"}
+        if api_key:
+            self.headers["X-Gateway-API-Key"] = api_key
 
     def request(self, method: str, path: str, body: object | None = None) -> object:
         """Send one request and fail with a sanitized status/path diagnostic."""
@@ -207,8 +209,6 @@ def main() -> int:
             print("Dry run only: LOCAL employer → contract → template create/update → cleanup")
             return 0
         api_key = os.environ.get(arguments.api_key_env, "")
-        if not api_key:
-            raise ValueError(f"Missing API key environment variable: {arguments.api_key_env}")
         run_workflow(
             LocalApi(base_url, api_key),
             defer_cleanup=arguments.defer_cleanup,
