@@ -150,7 +150,8 @@ jobs:
         env:
           POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
           ENV_UID: ${{ secrets[matrix.env_uid_secret] }}
-          GATEWAY_API_KEY: ${{ secrets[matrix.gateway_key_secret] }}
+          PF_GATEWAY_API_KEY_LOCAL: ${{ secrets.PF_GATEWAY_API_KEY_LOCAL }}
+          PF_GATEWAY_API_KEY_GCP: ${{ secrets.PF_GATEWAY_API_KEY_GCP }}
         run: |
           set -euo pipefail
 
@@ -163,10 +164,14 @@ jobs:
           # Refuse to sync with a blank api-key -- a missing secret must
           # fail loudly, never silently overwrite a real key already set in
           # Postman with an empty string (this happened once, see git log).
-          if [ "${{ matrix.require_gateway_key }}" = "true" ] && [ -z "${GATEWAY_API_KEY}" ]; then
-            echo "::error::${{ matrix.gateway_key_secret }} is not set or empty." \
-                 "Refusing to push a GCP environment without its gateway key." >&2
-            exit 1
+          if [ "${{ matrix.name }}" = "GCP" ]; then
+            GATEWAY_API_KEY="$PF_GATEWAY_API_KEY_GCP"
+            if [ -z "${GATEWAY_API_KEY}" ]; then
+              echo "::error::PF_GATEWAY_API_KEY_GCP is not set or empty." >&2
+              exit 1
+            fi
+          else
+            GATEWAY_API_KEY=""
           fi
 
           # Inject by variable key name, never by blind text substitution --
