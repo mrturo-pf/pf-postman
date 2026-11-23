@@ -398,7 +398,7 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-reference-url}}/exchange-rates/value?currency_code=UF&rate_date=2027-01-31",
+                  "raw": "{{pf-reference-url}}/exchange-rates/value?currency_code=UF&rate_date=2026-01-31",
                   "host": [
                     "{{pf-reference-url}}/exchange-rates/value"
                   ],
