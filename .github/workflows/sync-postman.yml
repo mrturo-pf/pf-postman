@@ -172,7 +172,7 @@ jobs:
           # Inject by variable key name, never by blind text substitution --
           # the committed template's api-key values are just empty strings,
           # no placeholder marker syntax to keep in sync.
-          jq --arg gateway_key "${GATEWAY_API_KEY}" '\
+          jq --arg gateway_key "${GATEWAY_API_KEY}" '
             (.values[] | select(.key == "pf-gateway-api-key") | .value) = $gateway_key
           ' "${{ matrix.file }}" > /tmp/materialized-environment.json
 
