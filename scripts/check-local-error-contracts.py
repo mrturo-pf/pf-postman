@@ -66,21 +66,21 @@ def main() -> int:
     try:
         rates_url = target_url(arguments.rates_url, arguments.allow_remote)
         income_url = target_url(arguments.income_url, arguments.allow_remote)
-        gateway_key = os.environ.get(arguments.gateway_key_env, "")
-        if not gateway_key:
-            raise ValueError("The gateway API key environment variable is required")
-        rates_key = gateway_key
-        income_key = gateway_key
+        # Local direct service execution intentionally does not require the
+        # public gateway API key. API-key rejection belongs to the gateway
+        # error-contract workflow, not this loopback-only checker.
+        rates_key = ""
+        income_key = ""
 
         check_case(
-            "pf-svc-reference invalid API key",
-            request_status(rates_url, "/monetary-units", api_key="invalid-local-key"),
-            {401, 403},
+            "pf-svc-reference local no-key request",
+            request_status(rates_url, "/monetary-units", api_key=rates_key),
+            {200},
         )
         check_case(
-            "pf-svc-income invalid API key",
-            request_status(income_url, "/payroll/employers", api_key="invalid-local-key"),
-            {401, 403},
+            "pf-svc-income local no-key request",
+            request_status(income_url, "/payroll/employers", api_key=income_key),
+            {200},
         )
         check_case(
             "pf-svc-income missing payroll",
