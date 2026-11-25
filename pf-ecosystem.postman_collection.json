@@ -183,9 +183,9 @@
                   }
                 },
                 "url": {
-                  "raw": "{{pf-reference-url}}/economic-indices/values",
+                  "raw": "{{pf-svc-reference-url}}/economic-indices/values",
                   "host": [
-                    "{{pf-reference-url}}/economic-indices/values"
+                    "{{pf-svc-reference-url}}/economic-indices/values"
                   ]
                 },
                 "description": "Batch lookup; each result preserves its input pair and may return null when the value is unavailable. Maximum 500 pairs."
@@ -208,9 +208,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-reference-url}}/economic-indices/value?code=IPC_CL&year=2026&month=1",
+                  "raw": "{{pf-svc-reference-url}}/economic-indices/value?code=IPC_CL&year=2026&month=1",
                   "host": [
-                    "{{pf-reference-url}}/economic-indices/value"
+                    "{{pf-svc-reference-url}}/economic-indices/value"
                   ],
                   "query": [
                     {
@@ -247,9 +247,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-reference-url}}/economic-indices?code=IPC_CL",
+                  "raw": "{{pf-svc-reference-url}}/economic-indices?code=IPC_CL",
                   "host": [
-                    "{{pf-reference-url}}/economic-indices"
+                    "{{pf-svc-reference-url}}/economic-indices"
                   ],
                   "query": [
                     {
@@ -282,9 +282,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-reference-url}}/economic-indices/refresh",
+                  "raw": "{{pf-svc-reference-url}}/economic-indices/refresh",
                   "host": [
-                    "{{pf-reference-url}}/economic-indices/refresh"
+                    "{{pf-svc-reference-url}}/economic-indices/refresh"
                   ]
                 },
                 "description": "",
@@ -320,9 +320,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-reference-url}}/economic-indices/refresh",
+                  "raw": "{{pf-svc-reference-url}}/economic-indices/refresh",
                   "host": [
-                    "{{pf-reference-url}}/economic-indices/refresh"
+                    "{{pf-svc-reference-url}}/economic-indices/refresh"
                   ]
                 },
                 "description": "",
@@ -373,9 +373,9 @@
                   }
                 },
                 "url": {
-                  "raw": "{{pf-reference-url}}/exchange-rates/values",
+                  "raw": "{{pf-svc-reference-url}}/exchange-rates/values",
                   "host": [
-                    "{{pf-reference-url}}/exchange-rates/values"
+                    "{{pf-svc-reference-url}}/exchange-rates/values"
                   ]
                 },
                 "description": "Batch lookup; each result preserves its input pair and may return null when the value is unavailable. Maximum 500 pairs."
@@ -398,9 +398,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-reference-url}}/exchange-rates/value?currency_code=UF&rate_date=2026-01-31",
+                  "raw": "{{pf-svc-reference-url}}/exchange-rates/value?currency_code=UF&rate_date=2026-01-31",
                   "host": [
-                    "{{pf-reference-url}}/exchange-rates/value"
+                    "{{pf-svc-reference-url}}/exchange-rates/value"
                   ],
                   "query": [
                     {
@@ -433,9 +433,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-reference-url}}/exchange-rates?currency_code=USD",
+                  "raw": "{{pf-svc-reference-url}}/exchange-rates?currency_code=USD",
                   "host": [
-                    "{{pf-reference-url}}/exchange-rates"
+                    "{{pf-svc-reference-url}}/exchange-rates"
                   ],
                   "query": [
                     {
@@ -464,9 +464,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-reference-url}}/monetary-units",
+                  "raw": "{{pf-svc-reference-url}}/monetary-units",
                   "host": [
-                    "{{pf-reference-url}}/monetary-units"
+                    "{{pf-svc-reference-url}}/monetary-units"
                   ]
                 },
                 "description": "Renamed from /currencies -- returns both fiat currencies (is_fiat=true, unit_kind=currency) and index units like UF/UTM (is_fiat=false, unit_kind=index_unit); see pf-svc-reference/docs/api.md."
@@ -493,9 +493,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-reference-url}}/exchange-rates/refresh",
+                  "raw": "{{pf-svc-reference-url}}/exchange-rates/refresh",
                   "host": [
-                    "{{pf-reference-url}}/exchange-rates/refresh"
+                    "{{pf-svc-reference-url}}/exchange-rates/refresh"
                   ]
                 },
                 "description": "",
@@ -531,9 +531,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-reference-url}}/exchange-rates/refresh",
+                  "raw": "{{pf-svc-reference-url}}/exchange-rates/refresh",
                   "host": [
-                    "{{pf-reference-url}}/exchange-rates/refresh"
+                    "{{pf-svc-reference-url}}/exchange-rates/refresh"
                   ]
                 },
                 "description": "",
@@ -585,9 +585,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-reference-url}}/exports/jobs/{{job_id}}",
+                  "raw": "{{pf-svc-reference-url}}/exports/jobs/{{job_id}}",
                   "host": [
-                    "{{pf-reference-url}}/exports/jobs/{{job_id}}"
+                    "{{pf-svc-reference-url}}/exports/jobs/{{job_id}}"
                   ]
                 },
                 "description": ""
@@ -610,9 +610,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-reference-url}}/exports/jobs?status=failed&limit=20",
+                  "raw": "{{pf-svc-reference-url}}/exports/jobs?status=failed&limit=20",
                   "host": [
-                    "{{pf-reference-url}}/exports/jobs"
+                    "{{pf-svc-reference-url}}/exports/jobs"
                   ],
                   "query": [
                     {
@@ -645,9 +645,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-reference-url}}/exports/jobs/stop",
+                  "raw": "{{pf-svc-reference-url}}/exports/jobs/stop",
                   "host": [
-                    "{{pf-reference-url}}/exports/jobs/stop"
+                    "{{pf-svc-reference-url}}/exports/jobs/stop"
                   ]
                 },
                 "description": ""
@@ -670,9 +670,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-reference-url}}/exports/jobs/{{job_id}}/stop",
+                  "raw": "{{pf-svc-reference-url}}/exports/jobs/{{job_id}}/stop",
                   "host": [
-                    "{{pf-reference-url}}/exports/jobs/{{job_id}}/stop"
+                    "{{pf-svc-reference-url}}/exports/jobs/{{job_id}}/stop"
                   ]
                 },
                 "description": ""
@@ -713,9 +713,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-reference-url}}/exports/financial-data",
+                  "raw": "{{pf-svc-reference-url}}/exports/financial-data",
                   "host": [
-                    "{{pf-reference-url}}/exports/financial-data"
+                    "{{pf-svc-reference-url}}/exports/financial-data"
                   ]
                 },
                 "description": "",
@@ -747,9 +747,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-reference-url}}/exports/financial-data",
+                  "raw": "{{pf-svc-reference-url}}/exports/financial-data",
                   "host": [
-                    "{{pf-reference-url}}/exports/financial-data"
+                    "{{pf-svc-reference-url}}/exports/financial-data"
                   ]
                 },
                 "description": ""
@@ -771,9 +771,9 @@
               }
             ],
             "url": {
-              "raw": "{{pf-reference-url}}/health",
+              "raw": "{{pf-svc-reference-url}}/health",
               "host": [
-                "{{pf-reference-url}}/health"
+                "{{pf-svc-reference-url}}/health"
               ]
             },
             "description": "No auth required."
@@ -799,9 +799,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-reference-url}}/income-tax-brackets?reference_date=2026-01-15&taxable_base_utm=10.5",
+                  "raw": "{{pf-svc-reference-url}}/income-tax-brackets?reference_date=2026-01-15&taxable_base_utm=10.5",
                   "host": [
-                    "{{pf-reference-url}}/income-tax-brackets"
+                    "{{pf-svc-reference-url}}/income-tax-brackets"
                   ],
                   "query": [
                     {
@@ -834,9 +834,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-reference-url}}/income-tax-brackets/list?year=2026",
+                  "raw": "{{pf-svc-reference-url}}/income-tax-brackets/list?year=2026",
                   "host": [
-                    "{{pf-reference-url}}/income-tax-brackets/list"
+                    "{{pf-svc-reference-url}}/income-tax-brackets/list"
                   ],
                   "query": [
                     {
@@ -869,9 +869,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-reference-url}}/income-tax-brackets/refresh",
+                  "raw": "{{pf-svc-reference-url}}/income-tax-brackets/refresh",
                   "host": [
-                    "{{pf-reference-url}}/income-tax-brackets/refresh"
+                    "{{pf-svc-reference-url}}/income-tax-brackets/refresh"
                   ]
                 },
                 "description": "",
@@ -913,9 +913,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-reference-url}}/sync",
+                  "raw": "{{pf-svc-reference-url}}/sync",
                   "host": [
-                    "{{pf-reference-url}}/sync"
+                    "{{pf-svc-reference-url}}/sync"
                   ]
                 },
                 "description": "",
@@ -2105,7 +2105,7 @@
       "description": "Gateway prefix for pf-svc-income routes."
     },
     {
-      "key": "pf-reference-url",
+      "key": "pf-svc-reference-url",
       "value": "http://localhost:8001",
       "type": "string"
     },

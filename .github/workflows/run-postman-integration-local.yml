@@ -75,7 +75,7 @@ jobs:
       - name: Start local APIs
         env:
           PF_DATABASE_URL: postgresql+asyncpg://pf_db:pf_db@localhost:5432/pf_db
-          PF_REFERENCE_URL: http://localhost:8001
+          PF_SVC_REFERENCE_URL: http://localhost:8001
         run: |
           set -euo pipefail
           (cd modules/pf-svc-reference && python -m uvicorn rates.interfaces.api.main:app --host 127.0.0.1 --port 8001 >"$RUNNER_TEMP/pf-svc-reference.log" 2>&1 & echo $! >"$RUNNER_TEMP/pf-svc-reference.pid")

@@ -10,7 +10,7 @@ on:
         options:
           - local
           - gcp
-      pf_reference_url:
+      pf_svc_reference_url:
         description: "pf-svc-reference base URL"
         required: true
         type: string
@@ -39,7 +39,7 @@ jobs:
       - name: Materialize smoke environment
         env:
           TARGET: ${{ inputs.environment }}
-          PF_REFERENCE_URL: ${{ inputs.pf_reference_url }}
+          PF_SVC_REFERENCE_URL: ${{ inputs.pf_svc_reference_url }}
           PF_SVC_INCOME_URL: ${{ inputs.pf_svc_income_url }}
           PF_GATEWAY_API_KEY_LOCAL: ${{ secrets.PF_GATEWAY_API_KEY_LOCAL }}
           PF_GATEWAY_API_KEY_GCP: ${{ secrets.PF_GATEWAY_API_KEY_GCP }}
@@ -63,10 +63,10 @@ jobs:
             test -n "$gateway_key"
           fi
           jq \
-            --arg rates_url "$PF_REFERENCE_URL" \
+            --arg rates_url "$PF_SVC_REFERENCE_URL" \
             --arg income_url "$PF_SVC_INCOME_URL" \
             --arg gateway_key "$gateway_key" \
-            '(.values[] | select(.key == "pf-reference-url") | .value) = $rates_url
+            '(.values[] | select(.key == "pf-svc-reference-url") | .value) = $rates_url
              | (.values[] | select(.key == "pf-svc-income-url") | .value) = $income_url
              | (.values[] | select(.key == "pf-gateway-api-key") | .value) = $gateway_key' \
             "$template" > "$RUNNER_TEMP/postman-smoke-environment.json"

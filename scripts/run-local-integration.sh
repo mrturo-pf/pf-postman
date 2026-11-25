@@ -16,9 +16,9 @@ BACKUP_PATH="${PF_LOCAL_BACKUP_PATH:-/tmp/pf-local-integration-$(date -u +%Y%m%d
   exit 2
 }
 
-case "${PF_INCOME_BASE_URL:-http://localhost:8000}" in
+case "${PF_SVC_INCOME_BASE_URL:-http://localhost:8000}" in
   http://localhost:*|http://127.0.0.1:*|http://\[::1\]:*) ;;
-  *) printf 'Refusing non-loopback PF_INCOME_BASE_URL\n' >&2; exit 2 ;;
+  *) printf 'Refusing non-loopback PF_SVC_INCOME_BASE_URL\n' >&2; exit 2 ;;
 esac
 
 compose_exec() {
@@ -52,5 +52,5 @@ trap cleanup EXIT
 
 PF_GATEWAY_API_KEY="${PF_GATEWAY_API_KEY:-}" \
   python3 "$SCRIPT_DIR/run-postman-integration.py" \
-  --base-url "${PF_INCOME_BASE_URL:-http://localhost:8000}" \
+  --base-url "${PF_SVC_INCOME_BASE_URL:-http://localhost:8000}" \
   --defer-cleanup

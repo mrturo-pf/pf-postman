@@ -81,13 +81,13 @@ gh workflow run validate.yml --repo mrturo-pf/pf-postman
 
 # Compare explicit read-only OpenAPI targets.
 gh workflow run run-api-coverage.yml --repo mrturo-pf/pf-postman \
-  -f pf_reference_openapi_url=https://<approved-target>/openapi.json \
+  -f pf_svc_reference_openapi_url=https://<approved-target>/openapi.json \
   -f pf_svc_income_openapi_url=https://<approved-target>/openapi.json
 
 # Run the bounded read-only smoke subset.
 gh workflow run run-postman-smoke.yml --repo mrturo-pf/pf-postman \
   -f environment=gcp \
-  -f pf_reference_url=https://<approved-rates-target> \
+  -f pf_svc_reference_url=https://<approved-rates-target> \
   -f pf_svc_income_url=https://<approved-income-target>
 ```
 
